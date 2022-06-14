@@ -7,11 +7,11 @@
 </head>
 
 <body>
+<?php session_start(); ?>
 <div class="container">
     <div class="row vh-100 justify-content-center align-items-center">
         <div class="col-auto bg-dark p-5 rounded">
             <div class="text-center text-light h1 my-2">S'inscrire en tant que professionnel</div>
-            <?php var_dump($_POST['ville'])?>
             <form action="register_med.php" method="post">
                 <div class="row my-2 g-2">
                     <div class="col-md">
@@ -62,7 +62,6 @@
                 <div class="text-center text-light h3 my-2">Adresse</div>
 
                 <?php
-                session_start();
                 $bdd = mysqli_connect("localhost", "root", "", "ordonnance", "3307");
                 if (isset($_SESSION["spe"]) && $_SESSION["spe"] == 4) {
                     echo "<div class=\"form-floating\">
