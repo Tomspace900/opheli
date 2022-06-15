@@ -9,6 +9,17 @@
 <?php
 session_start();
 session_destroy();
+include("functions.php");
+$bdd = mysqli_connect("localhost", "root", "", "ordonnance", "3307");
+if (isset($_POST['code']) && isset($_POST['spe'])) {
+    if (checkCode($bdd, $_POST['code'])) {
+        session_start();
+        $_SESSION['spe'] = $_POST['spe'];
+        header('Location: register_med.php');
+    } else {
+        echo "<div>Mauvais code.</div>";
+    }
+}
 ?>
 
 <body>
@@ -16,9 +27,9 @@ session_destroy();
     <div class="row vh-100 justify-content-center align-items-center">
         <div class="col-auto bg-dark p-5 rounded">
             <div class="text-center text-light h1 my-2">S'inscrire en tant que professionnel</div>
-            <form action="register.php" method="post">
+            <div class="text-center text-white">Afin d'obtenir un code de création, merci d'envoyer un mail à cette adresse : </div>
+            <form action="register_pro.php" method="post">
                 <?php
-                $bdd = mysqli_connect("localhost", "root", "", "ordonnance", "3307");
                 $t = $bdd -> query("SELECT * FROM specialite");
                 ?>
                 <!-- Prenom & Nom -->
@@ -28,12 +39,14 @@ session_destroy();
                         <label for="code">Code de création de compte</label>
                     </div>
                     <div class="form-floating">
-                        <select>
+                        <select id="spe" name="spe" class="form-control">
                             <?php
-
+                                while ($test = mysqli_fetch_row($t)) {
+                                    echo "<option value='".$test[0]."'>".$test[1]."</option>";
+                                }
                             ?>
                         </select>
-                        <label for="code">Code de création de compte</label>
+                        <label for="code">Catégorie</label>
                     </div>
 
                     <div class="row my-2 g-2 justify-content-center">
@@ -47,19 +60,6 @@ session_destroy();
                 <div class="text-center text-white"><a style="color:white" href="login.php">J'ai déjà une compte</a></div>
                 <div class="text-center text-white"><a style="color:white" href="register.php">S'inscrire en tant que patient</a></div>
             </form>
-            <?php
-            include("functions.php");
-            if (isset($_POST['code']) && isset($_POST['type'])) {
-                if (checkCode($bdd, $_POST['code'])) {
-                    session_start();
-                    $_SESSION['verify'] = 1;
-                    $_SESSION['type'] = $_POST['type'];
-                    //CHANGEMENT
-                } else {
-                    echo "<div>Mauvais code.</div>";
-                }
-            }
-            ?>
         </div>
     </div>
 </div>

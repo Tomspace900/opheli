@@ -40,6 +40,76 @@ function createUser($bdd, $mail,$mdp,$nom,$prenom,$date,$num) {
     }
 }
 
+function createPharm1($bdd,$mail,$mdp,$nom,$prenom,$num,$nomp,$rue,$code,$ville) {
+    $t = $bdd -> query("SELECT * FROM utilisateur WHERE Mail = \"".$mail."\"");
+    $test = mysqli_fetch_row($t);
+    if ($test != null) {
+        return false;
+    } else {
+        $bdd -> query("INSERT INTO `utilisateur` (`IdUtilisateur`, `Nom`, `Prenom`, `Mail`, `MotDePasse`) VALUES (NULL, '".$nom."', '".$prenom."', '".$mail."', '".password_hash($mdp,PASSWORD_DEFAULT)."');");
+        $t = $bdd -> query("SELECT * FROM utilisateur WHERE Mail = \"".$mail."\"");
+        $id = mysqli_fetch_row($t);
+        $adresse = createAdress($bdd,$rue,$code,$ville);
+        $pharm = createPharmacy($bdd,$nomp,$adresse);
+        $bdd -> query("INSERT INTO `pharmacien` (`IdPharmacien`, `IdPharmacie`, `IdUtilisateur`) VALUES ('".$num."', '".$pharm."', '".$id[0]."');");
+        return true;
+    }
+}
+function createPharm2($bdd,$mail,$mdp,$nom,$prenom,$num,$pharm) {
+    $t = $bdd -> query("SELECT * FROM utilisateur WHERE Mail = \"".$mail."\"");
+    $test = mysqli_fetch_row($t);
+    if ($test != null) {
+        return false;
+    } else {
+        $bdd -> query("INSERT INTO `utilisateur` (`IdUtilisateur`, `Nom`, `Prenom`, `Mail`, `MotDePasse`) VALUES (NULL, '".$nom."', '".$prenom."', '".$mail."', '".password_hash($mdp,PASSWORD_DEFAULT)."');");
+        $t = $bdd -> query("SELECT * FROM utilisateur WHERE Mail = \"".$mail."\"");
+        $id = mysqli_fetch_row($t);
+        $bdd -> query("INSERT INTO `pharmacien` (`IdPharmacien`, `IdPharmacie`, `IdUtilisateur`) VALUES ('".$num."', '".$pharm."', '".$id[0]."');");
+        return true;
+    }
+}
+
+function createPharmacy($bdd, $nom, $adresse) {
+    $t = $bdd -> query("SELECT * FROM pharmacie WHERE Nom = \"".$nom."\" AND IdAdresse = ".$adresse."");
+    if ($t != false) {
+        $pharm = mysqli_fetch_row($t);
+        if ($pharm != null) {
+            return $pharm[0];
+        }
+    }
+    $bdd -> query("INSERT INTO `pharmacie` (`IdPharmacie`, `Nom`, `IdAdresse`) VALUES (NULL, '".$nom."', '".$adresse."');");
+    $t = $bdd -> query("SELECT * FROM pharmacie WHERE Nom = \"".$nom."\" AND IdAdresse = '".$adresse."'");
+    $pharm = mysqli_fetch_row($t);
+    return $pharm[0];
+}
+
+function createAdress($bdd,$rue,$code,$ville) {
+    $t = $bdd -> query("SELECT * FROM adresse WHERE Rue = \"".$rue."\" AND Code = \"".$code."\" AND Ville = \"".$ville."\";");
+    $adresse = mysqli_fetch_row($t);
+    if ($adresse != null) {
+        return $adresse[0];
+    }
+    $bdd -> query("INSERT INTO `adresse` (`IdAdresse`, `Rue`, `Code`, `Ville`) VALUES (NULL, '".$rue."', '".$code."', '".$ville."');");
+    $t = $bdd -> query("SELECT * FROM adresse WHERE Rue = \"".$rue."\" AND Code = \"".$code."\" AND Ville = \"".$ville."\";");
+    $adresse = mysqli_fetch_row($t);
+    return $adresse[0];
+}
+
+function createMedic($bdd, $mail,$mdp,$nom,$prenom,$num,$rue,$code,$ville) {
+    $t = $bdd -> query("SELECT * FROM utilisateur WHERE Mail = \"".$mail."\"");
+    $test = mysqli_fetch_row($t);
+    if ($test != null) {
+        return false;
+    } else {
+        $bdd -> query("INSERT INTO `utilisateur` (`IdUtilisateur`, `Nom`, `Prenom`, `Mail`, `MotDePasse`) VALUES (NULL, '".$nom."', '".$prenom."', '".$mail."', '".password_hash($mdp,PASSWORD_DEFAULT)."');");
+        $t = $bdd -> query("SELECT * FROM utilisateur WHERE Mail = \"".$mail."\"");
+        $id = mysqli_fetch_row($t);
+        $adresse = createAdress($bdd,$rue,$code,$ville);
+        $bdd -> query("INSERT INTO `prescripteur` (`IdPrescripteur`, `Signature`, `IdAdresse`, `IdSpecialite`, `IdUtilisateur`) VALUES ('".$num."', NULL, '".$adresse."', '".$_SESSION['spe']."', '".$id[0]."');");
+        return true;
+    }
+}
+
 function checkCode($bdd, $code) {
     $t = $bdd -> query("SELECT * FROM code WHERE Code = \"".$code."\"");
     $test = mysqli_fetch_row($t);
