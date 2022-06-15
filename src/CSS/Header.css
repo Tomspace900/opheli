@@ -1,11 +1,13 @@
 .header {
     display: flex;
-    background-color: pink;
-    height: 200px;
+    height: 130px;
+    border-radius: 0 0 40px 40px;
+    box-shadow: var(--shadow-blue);
 }
 
 .opheli {
     font-size: 6em;
     width: 25%;
     margin-left: 5%;
+    margin-top: 1%;
 }

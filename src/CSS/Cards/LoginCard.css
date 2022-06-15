@@ -1,0 +1,51 @@
+.login-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    font-size: 1.2em;
+    width: 100%;
+    max-width: 650px;
+    border: #5ccdc4a9 solid 2px;
+    border-radius: 22px;
+}
+
+.login-card-menu {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.login-card-menu div {
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    width: 25%;
+}
+
+.login-card-menu div :hover {
+    background-color: #5ccdc4a9;
+}
+
+.login-form {
+    border-radius: 0 0 20px 20px;
+    width: 100%;
+    padding: 30px 0 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #5ccdc4a9;
+}
+
+.login-form div {
+    width: 60%;
+    max-width: 300px;
+}
+
+.login-form input {
+    width: 100%;
+    border-radius: 5px;
+    border: solid black 1px;
+    height: 2em;
+}
