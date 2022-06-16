@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 src/const.js
 opheli-front-end/node_modules
-opheli-front-end/const.js
+opheli-front-end/src/const.js
 .vscode
