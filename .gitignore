@@ -22,3 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 src/const.js
+opheli-front-end/node_modules
+opheli-front-end/const.js
+.vscode
