@@ -62,6 +62,7 @@
                 <div class="text-center text-light h3 my-2">Adresse</div>
 
                 <?php
+                //A TRADUIRE EN REACT
                 $bdd = mysqli_connect("localhost", "root", "", "ordonnance", "3307");
                 if (isset($_SESSION["spe"]) && $_SESSION["spe"] == 4) {
                     echo "<div class=\"form-floating\">

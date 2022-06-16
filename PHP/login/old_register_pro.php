@@ -41,6 +41,7 @@ if (isset($_POST['code']) && isset($_POST['spe'])) {
                     <div class="form-floating">
                         <select id="spe" name="spe" class="form-control">
                             <?php
+                            //A TRADUIRE EN REACT
                                 while ($test = mysqli_fetch_row($t)) {
                                     echo "<option value='".$test[0]."'>".$test[1]."</option>";
                                 }
