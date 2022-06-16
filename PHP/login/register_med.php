@@ -1,4 +1,5 @@
 <?php
+session_start();
 $bdd = mysqli_connect("localhost", "root", "", "ordonnance", "3307");
 include("functions.php");
 if (isset($_POST['mail']) && isset($_POST['pwd']) && isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['num'])) {
