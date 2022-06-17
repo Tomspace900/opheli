@@ -25,7 +25,3 @@ opheli-front-end/src/const.js
 opheli-front-end/node_modules
 .vscode
 /opheli-front-end/node_modules/
-opheli-back-end/PHP/login/backend_test.php
-opheli-front-end/src/Components/Form_test.jsx
-package-lock.json
-package.json
