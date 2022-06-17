@@ -22,11 +22,10 @@ function App() {
             },
         });
     };
-
     return (
         <div className="App">
             <form
-                action="http://localhost/opheli/opheli-back-end/PHP/login/backend_test.php"
+                action="http://opheli/opheli-back-end/PHP/login/backend_test.php"
                 method="post"
                 onSubmit={(event) => handleSumbit(event)}
             >
