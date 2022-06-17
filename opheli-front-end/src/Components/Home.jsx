@@ -3,6 +3,16 @@ import Form from './Form';
 import './../CSS/Home.css';
 
 const Home = () => {
+    let home_cards = document.getElementsByClassName('home-cards');
+
+    // home_cards
+    //     .on('mouseenter', function (e) {
+    //         this.addClassName('mouse-over');
+    //     })
+    //     .on('mouseleave', function (e) {
+    //         this.removeClassName('mouse-over');
+    //     });
+
     return (
         <div className="home">
             <div className="home-cards">

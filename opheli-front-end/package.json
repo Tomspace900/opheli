@@ -7,7 +7,10 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
+<<<<<<< Updated upstream
     "flowtype": "^2.0.0",
+=======
+>>>>>>> Stashed changes
     "jquery": "^3.6.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
