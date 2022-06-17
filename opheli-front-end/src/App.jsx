@@ -5,6 +5,7 @@ import Home from './Components/Home';
 import './CSS/Reset.css';
 import './CSS/App.css';
 import Login from './Components/Login';
+import Form_test from "./Components/Form_test";
 
 const App = () => {
     return (
@@ -15,6 +16,7 @@ const App = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="*" element={<Home />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/prout" element={<Form_test/>} />
                 </Routes>
                 <Footer />
             </BrowserRouter>
