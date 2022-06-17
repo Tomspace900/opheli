@@ -5,10 +5,8 @@ import LoginCard from './Cards/LoginCard';
 const Login = () => {
     return (
         <div className="login">
-            <div className="login-content">
-                <span className="login-title">Connexion à votre compte</span>
-                <LoginCard />
-            </div>
+            <span className="login-title">Connexion à votre compte</span>
+            <LoginCard />
         </div>
     );
 };
