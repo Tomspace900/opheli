@@ -1,41 +1,49 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import form from "./Form";
-import axios from "axios";
+import $ from "jquery";
 
-class Form_test extends Component{
-    state = {
-        text : ""
+function App() {
+    const [name, setName] = useState("");
+    const [result, setResult] = useState("");
+
+    const handleChange = (e) => {
+        setName(e.target.value);
     };
 
-    handleAdd = async e =>{
-        await this.setState({
-            text : e.target.value
-        })
-    }
+    const handleSumbit = (e) => {
+        e.preventDefault();
+        const form = $(e.target);
+        $.ajax({
+            type: "POST",
+            url: form.attr("action"),
+            data: form.serialize(),
+            success(data) {
+                setResult(data);
+            },
+        });
+    };
 
-    handleSubmit = e =>{
-        //e.preventDefault();
-        console.log(this.state.text);
-        let formData = new FormData();
-        formData.append('text', this.state.text);
-        const url = "http://localhost/opheli/opheli-back-end/PHP/login/backend_test.php";
-        axios.post(url, formData)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err));
-    }
-
-    render() {
     return (
-        <div className="form">
-            <form>
-                <label>Date de prescription : </label>
-                <input onChange={this.handleAdd} value={this.state.text} type="text" id="text" name="text" />
-
-                <button onClick={this.handleSubmit()}>Générer</button>
+        <div className="App">
+            <form
+                action="http://localhost/opheli/opheli-back-end/PHP/login/backend_test.php"
+                method="post"
+                onSubmit={(event) => handleSumbit(event)}
+            >
+                <label htmlFor="name">Name: </label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={name}
+                    onChange={(event) => handleChange(event)}
+                />
+                <br />
+                <button type="submit">Submit</button>
             </form>
+            <h1>{result}</h1>
         </div>
     );
-    }
 }
 
-export default Form_test;
+export default App;
