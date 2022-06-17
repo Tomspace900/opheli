@@ -1,10 +1,14 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import form from "./Form";
 import $ from "jquery";
 
 function App() {
     const [name, setName] = useState("");
     const [result, setResult] = useState("");
+
+    useEffect(() => { //execute au lancement de la page
+        setResult(sessionStorage.getItem("info")); //chercher la donnée en stockage
+    })
 
     const handleChange = (e) => {
         setName(e.target.value);
@@ -19,14 +23,14 @@ function App() {
             data: form.serialize(),
             success(data) {
                 setResult(data);
+                sessionStorage.setItem("info",data); //foutre la donnée en stockage du navigateur
             },
         });
     };
-
     return (
         <div className="App">
             <form
-                action="http://localhost/opheli/opheli-back-end/PHP/login/backend_test.php"
+                action="http://opheli/opheli-back-end/PHP/login/backend_test.php"
                 method="post"
                 onSubmit={(event) => handleSumbit(event)}
             >
