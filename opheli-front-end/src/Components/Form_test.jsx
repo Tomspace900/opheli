@@ -3,15 +3,21 @@ import form from "./Form";
 import $ from "jquery";
 
 function App() {
+    const [connected, setConnected] = useState(false);
     const [name, setName] = useState("");
+    const [pass, setPass] = useState("");
     const [result, setResult] = useState("");
 
-    useEffect(() => { //execute au lancement de la page
+    useEffect(() => { //executé au lancement de la page
         setResult(sessionStorage.getItem("info")); //chercher la donnée en stockage
     })
 
-    const handleChange = (e) => {
+    const handleNameChange = (e) => {
         setName(e.target.value);
+    };
+
+    const handlePassChange = (e) => {
+        setPass(e.target.value);
     };
 
     const handleSumbit = (e) => {
@@ -23,7 +29,8 @@ function App() {
             data: form.serialize(),
             success(data) {
                 setResult(data);
-                sessionStorage.setItem("info",data); //foutre la donnée en stockage du navigateur
+                setConnected(data);
+                console.log(data);
             },
         });
     };
@@ -32,15 +39,23 @@ function App() {
             <form
                 action="http://opheli/opheli-back-end/PHP/login/backend_test.php"
                 method="post"
-                onSubmit={(event) => handleSumbit(event)}
-            >
+                onSubmit={(event) => handleSumbit(event)}>
                 <label htmlFor="name">Name: </label>
                 <input
                     type="text"
                     id="name"
                     name="name"
                     value={name}
-                    onChange={(event) => handleChange(event)}
+                    onChange={(event) => handleNameChange(event)}
+                />
+                <br />
+                <label htmlFor="pass">Password: </label>
+                <input
+                    type="text"
+                    id="pass"
+                    name="pass"
+                    value={pass}
+                    onChange={(event) => handlePassChange(event)}
                 />
                 <br />
                 <button type="submit">Submit</button>
