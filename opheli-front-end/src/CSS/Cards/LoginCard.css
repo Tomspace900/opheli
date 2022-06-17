@@ -24,8 +24,8 @@
     width: 25%;
 }
 
-.login-card-menu div :hover {
-    background-color: #5ccdc4a9;
+.login-card-menu div * {
+    pointer-events: none;
 }
 
 .login-form {

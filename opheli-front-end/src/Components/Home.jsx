@@ -1,37 +1,33 @@
 import React from 'react';
-import Form from './Form';
 import './../CSS/Home.css';
 
 const Home = () => {
-    let home_cards = document.getElementsByClassName('home-cards');
-
-    // home_cards
-    //     .on('mouseenter', function (e) {
-    //         this.addClassName('mouse-over');
-    //     })
-    //     .on('mouseleave', function (e) {
-    //         this.removeClassName('mouse-over');
-    //     });
+    function mouseOver(e) {
+        e.target.style.background = '#5ccdc4a9';
+    }
+    function mouseOut(e) {
+        e.target.style.background = '';
+    }
 
     return (
         <div className="home">
             <div className="home-cards">
-                <div className="home-div-left">
+                <div className="home-div-left" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     <div className="home-left-title-div">
-                        <span className="home-left-title">Ajouter une ordonnance</span>
+                        <span className="home-leftm-title">Ajouter une ordonnance</span>
                     </div>
                     <div className="home-left-svg-div">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            class="icon icon-tabler icon-tabler-file-plus"
+                            className="icon icon-tabler icon-tabler-file-plus"
                             width="100"
                             height="100"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="#000000"
                             fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
+                            strokeLinecap="round"
+                            strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M14 3v4a1 1 0 0 0 1 1h4" />
                             <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
@@ -40,22 +36,22 @@ const Home = () => {
                         </svg>
                     </div>
                 </div>
-                <div className="home-div-right">
+                <div className="home-div-right" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     <div className="home-right-title-div">
                         <span className="home-right-title">Modifier une ordonnance</span>
                     </div>
                     <div className="home-right-svg-div">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            class="icon icon-tabler icon-tabler-file-diff"
+                            className="icon icon-tabler icon-tabler-file-diff"
                             width="100"
                             height="100"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="#000000"
                             fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
+                            strokeLinecap="round"
+                            strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M14 3v4a1 1 0 0 0 1 1h4" />
                             <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />

@@ -1,15 +1,11 @@
 .home {
-    margin: 50px 0;
+    margin: 4% 0;
 }
 
 .home-cards {
     display: flex;
     justify-content: center;
-    margin-bottom: 50px;
-}
-
-.home-cards :hover {
-    background-color: #5ccdc4a9;
+    margin-bottom: 4%;
 }
 
 .home-div-left,
@@ -24,6 +20,11 @@
     border-radius: 30px;
     width: 35%;
     height: 300px;
+}
+
+.home-div-left *,
+.home-div-right * {
+    pointer-events: none;
 }
 
 .home-div-left {
