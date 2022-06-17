@@ -25,3 +25,5 @@ opheli-front-end/src/const.js
 opheli-front-end/node_modules
 .vscode
 /opheli-front-end/node_modules/
+opheli-front-end/package-lock.json
+opheli-front-end/package.json
