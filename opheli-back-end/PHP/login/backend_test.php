@@ -7,21 +7,21 @@ $database_name = $_POST['DATABASE'];
 */
 $hostName = "localhost";
 $username = "root";
-$password = "root";
-$database_name = "php_test";
+$password = "";
+$database_name = "ordonnance";
 $port = "3306";
 
 $conn = mysqli_connect($hostName, $username, $password, $database_name, $port);
 
-print_r($_POST);
+//print_r($_POST);
 
 //echo $_POST['text'];
 
-//$recText = $_POST['text'];
+$recText = $_POST['text'];
 
-//$query = "INSERT INTO php_test (text) VALUES('$recText')";
+$query = "INSERT INTO php_test (text) VALUES('$recText')";
 
-$query = "INSERT INTO text (Nom) VALUES('nique ta mère Quentin')";
+//$query = "INSERT INTO text (Nom) VALUES('nique ta mère Quentin')";
 
 //$query = "SELECT * FROM text";
 

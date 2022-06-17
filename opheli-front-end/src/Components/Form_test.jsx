@@ -18,7 +18,7 @@ class Form_test extends Component{
         console.log(this.state.text);
         let formData = new FormData();
         formData.append('text', this.state.text);
-        const url = "http://ophelibackend/PHP/login/backend_test.php";
+        const url = "http://localhost/opheli/opheli-back-end/PHP/login/backend_test.php";
         axios.post(url, formData)
             .then(res => console.log(res.data))
             .catch(err => console.log(err));
