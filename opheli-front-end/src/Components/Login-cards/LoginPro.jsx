@@ -8,7 +8,7 @@ const LoginPro = () => {
             </div>
             <br />
             <div className="login-input-id">
-                <input type="text" id="id" />
+                <input type="text" id="id" placeholder="12345678901" />
             </div>
             <br />
             <div className="login-label-pwd">

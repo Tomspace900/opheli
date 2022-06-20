@@ -5,7 +5,7 @@ import LoginPro from './LoginPro';
 
 const LoginCard = () => {
     const [login, setLogin] = useState(true);
-    //test pour max
+
     const handleLogin = () => {
         setLogin((actual) => !actual);
     };

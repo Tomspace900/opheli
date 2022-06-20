@@ -1,4 +1,4 @@
-.login-card {
+.card {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,13 +10,13 @@
     border-radius: 23px;
 }
 
-.login-card-menu {
+.card-menu {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-.login-card-menu div {
+.card-menu div {
     border-radius: 20px 20px 0 0;
     width: 100%;
     padding: 20px;
@@ -25,11 +25,12 @@
     cursor: pointer;
 }
 
-.login-card-menu div * {
+.card-menu div * {
     pointer-events: none;
 }
 
-.login-form {
+.login-form,
+.register-form {
     border-radius: 0 0 20px 20px;
     width: 100%;
     padding: 30px 0 30px 0;
@@ -39,12 +40,14 @@
     background-color: #5ccdc4a9;
 }
 
-.login-form div {
+.login-form div,
+.register-form div {
     width: 60%;
     max-width: 300px;
 }
 
-.login-form input {
+.login-form input,
+.register-form input {
     width: 100%;
     border-radius: 5px;
     border: solid black 1px;
