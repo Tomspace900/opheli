@@ -64,7 +64,7 @@
                 <?php
                 //A TRADUIRE EN REACT
                 $bdd = mysqli_connect("localhost", "root", "", "ordonnance", "3307");
-                if (isset($_SESSION["spe"]) && $_SESSION["spe"] == 4) {
+                //if (isset($_SESSION["spe"]) && $_SESSION["spe"] == 4) {
                     echo "<div class=\"form-floating\">
                         <select id=\"pharm\" name=\"pharm\" class=\"form-control\">";
                     $t = $bdd -> query("SELECT * FROM pharmacie, adresse WHERE pharmacie.IdAdresse = adresse.IdAdresse");
@@ -80,7 +80,7 @@
                              </div>
                         </div>
                     </div>";
-                }
+                //}
                 ?>
 
                 <div class="row my-2 g-2">

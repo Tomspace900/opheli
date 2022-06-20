@@ -1,0 +1,19 @@
+.page {
+    margin: 10px 0px;
+    padding: 20px;
+    display: flex;
+    height: 130px;
+    border-radius: 40px;
+    box-shadow: var(--shadow-blue);
+}
+
+table {
+    width: 100%;
+    border: 1pt solid #5ccdc4a9;
+}
+tr:hover {
+    background: #5ccdc4a9;
+}
+td {
+    padding: 10px;
+}
