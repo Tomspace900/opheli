@@ -1,8 +1,8 @@
 import React from 'react';
 
-const LoginMedecin = () => {
+const LoginPro = () => {
     return (
-        <form className="login-medecin">
+        <form className="login-pro">
             <form className="login-form">
                 <div className="login-label-id">
                     <label htmlFor="id">Numéro RPPS :</label>
@@ -24,4 +24,4 @@ const LoginMedecin = () => {
     );
 };
 
-export default LoginMedecin;
+export default LoginPro;
