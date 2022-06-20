@@ -2,7 +2,7 @@ import React from 'react';
 
 const RegisterClient = () => {
     return (
-        <form className="register-client">
+        <form className="register-form">
             <div className="register-label-id">
                 <label htmlFor="id">Numéro de sécurité sociale :</label>
             </div>

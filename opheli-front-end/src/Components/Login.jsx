@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import '../CSS/Login.css';
 import LoginCard from './Login-cards/LoginCard';
+import RegisterCard from './Login-cards/RegisterCard';
 
 const Login = () => {
     const [action, setAction] = useState(true);
@@ -33,7 +34,7 @@ const Login = () => {
             ) : (
                 <>
                     <span className="login-title">Enregistrez-vous</span>
-                    <LoginCard />
+                    <RegisterCard />
                     <span className="login-question">Vous avez deja un compte ?</span>
                     <button className="login-box" onClick={handleAction} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                         Connectez-vous ici

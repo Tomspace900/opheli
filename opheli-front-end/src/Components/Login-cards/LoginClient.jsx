@@ -2,7 +2,7 @@ import React from 'react';
 
 const LoginClient = () => {
     return (
-        <form className="login-client">
+        <form className="login-form">
             <div className="login-label-id">
                 <label htmlFor="id">Numéro de sécurité sociale :</label>
             </div>

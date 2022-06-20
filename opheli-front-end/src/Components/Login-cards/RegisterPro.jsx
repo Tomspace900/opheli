@@ -2,7 +2,7 @@ import React from 'react';
 
 const RegisterPro = () => {
     return (
-        <form className="register-pro">
+        <form className="register-form">
             <div className="register-label-id">
                 <label htmlFor="id">Numero RPPS :</label>
             </div>
