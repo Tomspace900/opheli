@@ -1,15 +1,8 @@
 import './../../CSS/Login-cards/LoginCard.css';
-import { useState } from 'react';
 import LoginClient from './LoginClient';
 import LoginPro from './LoginPro';
 
 const LoginCard = () => {
-    const [action, setAction] = useState(true);
-
-    const handleAction = (e) => {
-        setAction(actual);
-    };
-
     function mouseOver(e) {
         e.target.style.background = '#5ccdc4a9';
     }
@@ -20,10 +13,10 @@ const LoginCard = () => {
     return (
         <div className="login-card">
             <div className="login-card-menu">
-                <div className="login-client" onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={handleAction}>
+                <div className="login-client" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     <span>Client</span>
                 </div>
-                <div className="login-pro" onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={handleAction}>
+                <div className="login-pro" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     <span>Professionnel</span>
                 </div>
             </div>
