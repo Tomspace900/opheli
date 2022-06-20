@@ -1,9 +1,9 @@
+import React from 'react';
 import { useState } from 'react';
-import './../../CSS/Login-cards/LoginCard.css';
-import LoginClient from './LoginClient';
-import LoginPro from './LoginPro';
+import RegisterClient from './RegisterClient';
+import RegisterPro from './RegisterPro';
 
-const LoginCard = () => {
+const RegisterCard = () => {
     const [login, setLogin] = useState(true);
 
     const handleLogin = () => {
@@ -27,9 +27,9 @@ const LoginCard = () => {
                     <span>Professionnel</span>
                 </div>
             </div>
-            <>{login ? <LoginClient /> : <LoginPro />}</>
+            <>{login ? <RegisterClient /> : <RegisterPro />}</>
         </div>
     );
 };
 
-export default LoginCard;
+export default RegisterCard;

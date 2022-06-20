@@ -1,13 +1,13 @@
 import React from 'react';
 
-const LoginClient = () => {
+const RegisterClient = () => {
     return (
-        <form className="login-form">
-            <div className="login-label-id">
+        <form className="register-form">
+            <div className="register-label-id">
                 <label htmlFor="id">Numéro de sécurité sociale :</label>
             </div>
             <br />
-            <div className="login-input-id">
+            <div className="register-input-id">
                 <input type="text" id="id" placeholder="1234567890123" />
             </div>
             <br />
@@ -15,11 +15,11 @@ const LoginClient = () => {
                 <label htmlFor="pwd">Mot de passe :</label>
             </div>
             <br />
-            <div className="login-input-pwd">
+            <div className="register-input-pwd">
                 <input type="password" id="pwd" />
             </div>
         </form>
     );
 };
 
-export default LoginClient;
+export default RegisterClient;

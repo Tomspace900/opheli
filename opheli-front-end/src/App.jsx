@@ -6,7 +6,6 @@ import './CSS/Reset.css';
 import './CSS/App.css';
 import Login from './Components/Login';
 import Form_test from "./Components/Form_test";
-import List from "./Components/List";
 
 const App = () => {
     return (
@@ -18,9 +17,8 @@ const App = () => {
                     <Route path="*" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/test" element={<Form_test/>} />
-                    <Route path="/list" element={<List/>} />
                 </Routes>
-                <Footer/>
+                <Footer />
             </BrowserRouter>
         </div>
     );

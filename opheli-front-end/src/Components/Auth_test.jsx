@@ -36,9 +36,9 @@ function App() {
     };
     return (
         <div className="App">
-            <h1>Form test</h1>
+            <h1>Authentication test</h1>
             <form
-                action="http://opheli/opheli-back-end/PHP/login/backend_test.php"
+                action="http://opheli/opheli-back-end/PHP/login/auth_test.php"
                 method="post"
                 onSubmit={(event) => handleSumbit(event)}>
                 <label htmlFor="name">Name: </label>
