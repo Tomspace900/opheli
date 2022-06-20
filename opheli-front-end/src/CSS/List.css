@@ -9,11 +9,17 @@
 
 table {
     width: 100%;
-    border: 1pt solid #5ccdc4a9;
+    border-collapse: collapse;
+    border-radius: 30px;
+    overflow: hidden;
+}
+tr {
+    background: #c1e8e5;
 }
 tr:hover {
     background: #5ccdc4a9;
 }
 td {
     padding: 10px;
+    border-bottom: 2px solid white;
 }
