@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import '../CSS/List.css';
-import '../CSS/Login.css';
+import '../../CSS/List.css';
+import '../../CSS/Login.css';
 import $ from "jquery";
 
-function List() {
+function UserList() {
     const [result, setResult] = useState([]);
     if (result.length == 0) {
         $.ajax({
             type: 'POST',
-            url: "http://localhost/opheli/opheli-back-end/PHP/list_ordonnance.php",
+            url: "http://localhost/opheli/opheli-back-end/PHP/Admin/user_list.php",
             dataType: 'json',
             success: function (response) {
                 if (response!="") {
@@ -18,20 +18,21 @@ function List() {
         });
         console.log(result);
     }
+    console.log(result);
 
 
     return (
         <div>
             <div className="login">
-                <span className="login-title">Liste des ordonnances</span>
+                <span className="login-title">Liste des utilisateurs</span>
             </div>
             <div className="page">
                 <table>
                     <tbody>
-                    {result.map(ordonnance => {
+                    {result.map(user => {
                         return (
                             <tr>
-                                <td>{ordonnance.IdPrescripteur}</td>
+                                <td>{user.IdPrescripteur}</td>
                             </tr>
                         );
                     })}
@@ -42,4 +43,4 @@ function List() {
     );
 }
 
-export default List;
+export default UserList;

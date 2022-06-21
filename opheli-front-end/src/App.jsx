@@ -7,6 +7,7 @@ import './CSS/App.css';
 import Login from './Components/Login';
 import Form_test from "./Components/Form_test";
 import List from "./Components/List";
+import UserList from "./Components/Admin/UserList";
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/test" element={<Form_test/>} />
                     <Route path="/list" element={<List/>} />
+                    <Route path="/users" element={<UserList/>} />
                 </Routes>
                 <Footer />
             </BrowserRouter>

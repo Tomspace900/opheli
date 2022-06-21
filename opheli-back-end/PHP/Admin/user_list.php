@@ -1,9 +1,9 @@
 <?php
 session_start();
-include("utiles/connexion.php");
+include("../utiles/connexion.php");
 //if (isset($_SESSION['role'])) {
 //if ($_SESSION['role'] == 1) {
-$t = $bdd -> query("SELECT * FROM `prescripteur`");
+$t = $bdd -> query("SELECT IdPrescripteur, NomSpecialite FROM prescripteur, specialite, utilisateur WHERE utilisateur.IdUtilisateur = prescripteur.IdUtilisateur AND specialite.IdSpecialite = prescripteur.IdSpecialite");
 $rows = array();
 while($r = mysqli_fetch_assoc($t)) {
     $rows[] = $r;
