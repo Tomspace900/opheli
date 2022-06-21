@@ -4,19 +4,30 @@ import '../../CSS/Login.css';
 import $ from "jquery";
 
 function UserList() {
-    const [users, setResult] = useState([]);
-    if (users.length == 0) {
+    const [patients, setPat] = useState([]);
+    if (patients.length == 0) {
         $.ajax({
             type: 'POST',
-            url: "http://localhost/opheli/opheli-back-end/PHP/Admin/user_list.php",
+            url: "http://localhost/opheli/opheli-back-end/PHP/Admin/patients.php",
             dataType: 'json',
             success: function (response) {
-                setResult(response);
+                setPat(response);
             },
         });
-        console.log(users);
     }
-    console.log(users);
+
+    const [prescripteurs, setPre] = useState([]);
+    if (prescripteurs.length == 0) {
+        $.ajax({
+            type: 'POST',
+            url: "http://localhost/opheli/opheli-back-end/PHP/Admin/prescripteurs.php",
+            dataType: 'json',
+            success: function (response) {
+                setPre(response);
+            },
+        });
+    }
+    console.log(prescripteurs);
 
     return (
         <div>
@@ -24,17 +35,39 @@ function UserList() {
                 <span className="login-title">Liste des utilisateurs</span>
             </div>
             <div className="page">
-                <table>
-                    <tbody>
-                    {users.map(user => {
-                        return (
-                            <tr>
-                                <td>{user.IdPrescripteur}</td>
-                            </tr>
-                        );
-                    })}
-                    </tbody>
-                </table>
+                <div className="container">
+                    <table>
+                        <tbody>
+                        {prescripteurs.map(user => {
+                            return (
+                                <tr>
+                                    <td>{user.IdPrescripteur}</td>
+                                    <td>{user.NomSpecialite}</td>
+                                    <td>{user.Nom}</td>
+                                    <td>{user.Prenom}</td>
+                                    <td>{user.Mail}</td>
+                                </tr>
+                            );
+                        })}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="container">
+                    <table>
+                        <tbody>
+                        {patients.map(user => {
+                            return (
+                                <tr>
+                                    <td>{user.SecuriteSociale}</td>
+                                    <td>{user.Nom}</td>
+                                    <td>{user.Prenom}</td>
+                                    <td>{user.Mail}</td>
+                                </tr>
+                            );
+                        })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
