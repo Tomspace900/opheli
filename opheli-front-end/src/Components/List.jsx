@@ -1,43 +1,44 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import '../CSS/List.css';
 import '../CSS/Login.css';
+import $ from "jquery";
 
-const List = () => {
-    $.ajax({
-        type: "POST",
-        url: form.attr("action"),
-        data: form.serialize(),
-        success(data) {
-            setResult(data);
-            sessionStorage.setItem("info",data); //foutre la donnée en stockage du navigateur
-        },
+function App() {
+    const [result, setResult] = useState([]);
+    useEffect(() => {
+        $.ajax({
+            type: 'POST',
+            url: "http://localhost/opheli/opheli-back-end/PHP/list_ordonnance.php",
+            dataType: 'json',
+            success: function (response) {
+                if (response!="") {
+                    setResult(response);
+                }
+            },
+        });
     });
 
-    return (
-        <div>
-            <div className="login">
-                <span className="login-title">Liste des ordonnances</span>
-            </div>
-            <div className="page">
-                <table>
-                    <tr>
-                        <td>Ordonnance</td>
-                        <td>Date</td>
-                        <td>Description</td>
-                        <td>Modifier</td>
-                        <td>Supprimer</td>
-                    </tr>
-                    <tr>
-                        <td>Ordonnance</td>
-                        <td>Date</td>
-                        <td>Description</td>
-                        <td>Modifier</td>
-                        <td>Supprimer</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    );
-};
 
-export default List;
+    return (
+    <div>
+        <div className="login">
+            <span className="login-title">Liste des ordonnances</span>
+        </div>
+        <div className="page">
+            <table>
+                <tbody>
+                    {result.map(ordonnance => {
+                        return (
+                            <tr>
+                                <td>{ordonnance.IdPrescripteur}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    );
+}
+
+export default App;
