@@ -3,11 +3,13 @@ import form from "./Form";
 import $ from "jquery";
 
 function App() {
+    /*
     const [connected, setConnected] = useState(false);
     const [name, setName] = useState("");
     const [pass, setPass] = useState("");
+    */
     const [result, setResult] = useState("");
-
+/*
     useEffect(() => { //executé au lancement de la page
         setResult(sessionStorage.getItem("info")); //chercher la donnée en stockage
     })
@@ -19,17 +21,18 @@ function App() {
     const handlePassChange = (e) => {
         setPass(e.target.value);
     };
-
+*/
     const handleSumbit = (e) => {
         e.preventDefault();
         const form = $(e.target);
+        console.log(form);
         $.ajax({
             type: "POST",
             url: form.attr("action"),
             data: form.serialize(),
             success(data) {
                 setResult(data);
-                setConnected(data);
+                //setConnected(data);
                 console.log(data);
             },
         });
@@ -46,8 +49,8 @@ function App() {
                     type="text"
                     id="name"
                     name="name"
-                    value={name}
-                    onChange={(event) => handleNameChange(event)}
+                    //value={name}
+                    //onChange={(event) => handleNameChange(event)}
                 />
                 <br />
                 <label htmlFor="pass">Password: </label>
@@ -55,8 +58,8 @@ function App() {
                     type="text"
                     id="pass"
                     name="pass"
-                    value={pass}
-                    onChange={(event) => handlePassChange(event)}
+                    //value={pass}
+                    //onChange={(event) => handlePassChange(event)}
                 />
                 <br />
                 <button type="submit">Submit</button>

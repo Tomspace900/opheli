@@ -1,40 +1,29 @@
-import React, { Component, useEffect, useState } from 'react';
-import form from './Form';
-import $ from 'jquery';
+import React, {Component, useEffect, useState} from 'react';
+import form from "./Form";
+import $ from "jquery";
+import Categorie1 from "./CreateOrdoCards/Categorie1";
 
-function CreateOrdo() {
+function App() {
     const [connected, setConnected] = useState(false);
-    const [secu, setSecu] = useState('');
-    const [type, setType] = useState('');
-    const [date, setDate] = useState('');
-    const [nbRenouv, setNbRenouv] = useState('');
-    const [result, setResult] = useState('');
-
-    const handleDateChange = (e) => {
-        setDate(e.target.value);
-    };
-
-    const handleNbRenouvChange = (e) => {
-        setNbRenouv(e.target.value);
-    };
+    let [categorieDiv, setCategorieDiv] = useState(<div></div>);
+    const [type, setType] = useState(0);
 
     const handleTypeChange = (e) => {
+        if(type == 1){
+            categorieDiv = Categorie1;
+        }
         setType(e.target.value);
-    };
-
-    const handleSecuChange = (e) => {
-        setSecu(e.target.value);
-    };
+    }
 
     const handleSumbit = (e) => {
         e.preventDefault();
         const form = $(e.target);
         $.ajax({
-            type: 'POST',
-            url: form.attr('action'),
+            type: "POST",
+            url: form.attr("action"),
             data: form.serialize(),
             success(data) {
-                setResult(data);
+                //setResult(data);
             },
         });
     };
@@ -46,29 +35,34 @@ function CreateOrdo() {
                 method="post"
                 onSubmit={(event) => handleSumbit(event)}>
                 <label htmlFor="secu">Numéro de sécurité sociale: </label>
-                <input type="text" id="secu" name="secu" value={secu} onChange={(event) => handleSecuChange(event)} />
+                <input
+                    type="text"
+                    id="secu"
+                    name="secu"
+                />
                 <br />
                 <label htmlFor="date">Date de prescription: </label>
-                <input type="date" id="date" name="date" value={date} onChange={(event) => handleDateChange(event)} />
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                />
                 <br />
                 <label htmlFor="type">Type: </label>
-                <input type="select" id="type" name="type" value={type} onChange={(event) => handleTypeChange(event)} />
-                <br />
-                <br />
-                <label htmlFor="nbRenouv">Nombre de renouvellements: </label>
                 <input
-                    type="number"
-                    id="nbRenouv"
-                    name="nbRenouv"
+                    type="select"
+                    id="type"
+                    name="type"
                     value={type}
-                    onChange={(event) => handleNbRenouvChange(event)}
+                    onChange={(event) => handleTypeChange(event)}
                 />
+                {categorieDiv}
+                <Categorie1/>
                 <br />
                 <button type="submit">Submit</button>
             </form>
-            <h1>{result}</h1>
         </div>
     );
 }
 
-export default CreateOrdo;
+export default App;

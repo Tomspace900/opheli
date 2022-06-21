@@ -8,7 +8,7 @@ function UserList() {
     if (patients.length == 0) {
         $.ajax({
             type: 'POST',
-            url: "http://localhost/opheli/opheli-back-end/PHP/Admin/patients.php",
+            url: "http://opheli/opheli-back-end/PHP/Admin/patients.php",
             dataType: 'json',
             success: function (response) {
                 setPat(response);
@@ -20,7 +20,7 @@ function UserList() {
     if (prescripteurs.length == 0) {
         $.ajax({
             type: 'POST',
-            url: "http://localhost/opheli/opheli-back-end/PHP/Admin/prescripteurs.php",
+            url: "http://opheli/opheli-back-end/PHP/Admin/prescripteurs.php",
             dataType: 'json',
             success: function (response) {
                 setPre(response);
