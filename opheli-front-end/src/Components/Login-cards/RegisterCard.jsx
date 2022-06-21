@@ -4,10 +4,10 @@ import RegisterClient from './RegisterClient';
 import RegisterPro from './RegisterPro';
 
 const RegisterCard = () => {
-    const [login, setLogin] = useState(true);
+    const [register, setRegister] = useState('client');
 
-    const handleLogin = () => {
-        setLogin((actual) => !actual);
+    const handleRegister = (registerState) => {
+        setRegister(registerState);
     };
 
     function mouseOver(e) {
@@ -20,14 +20,21 @@ const RegisterCard = () => {
     return (
         <div className="card">
             <div className="card-menu">
-                <div className="client" onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={handleLogin}>
+                <div className="client" onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={() => handleRegister('client')}>
                     <span>Client</span>
                 </div>
-                <div className="pro" onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={handleLogin}>
+                <div className="pro" onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={() => handleRegister('pro')}>
                     <span>Professionnel</span>
                 </div>
             </div>
-            <>{login ? <RegisterClient /> : <RegisterPro />}</>
+            {(() => {
+                switch (register) {
+                    case 'pro':
+                        return <RegisterPro />;
+                    default:
+                        return <RegisterClient />;
+                }
+            })()}
         </div>
     );
 };

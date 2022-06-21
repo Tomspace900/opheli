@@ -1,22 +1,40 @@
 import React from 'react';
 
 const LoginClient = () => {
+    function mouseOver(e) {
+        e.target.style.color = '#5ccdc4a9';
+        e.target.style.border = 'solid #5ccdc4 1px';
+    }
+    function mouseOut(e) {
+        e.target.style.color = '#4a565a';
+        e.target.style.border = 'solid #4a565a 1px';
+    }
     return (
         <form className="login-form">
-            <div className="login-label-id">
-                <label htmlFor="id">Numéro de sécurité sociale :</label>
+            <div className="login-form-line">
+                <div className="login-form-blockline">
+                    <div className="login-label-id">
+                        <label>Numéro sécurité sociale :</label>
+                    </div>
+                    <div className="login-input-id">
+                        <input type="text" placeholder="1234567890123" />
+                    </div>
+                </div>
             </div>
-            <br />
-            <div className="login-input-id">
-                <input type="text" id="id" placeholder="1234567890123" />
+            <div className="login-form-line">
+                <div className="login-form-blockline">
+                    <div className="login-label-pwd">
+                        <label>Mot de passe :</label>
+                    </div>
+                    <div className="login-input-pwd">
+                        <input type="password" />
+                    </div>
+                </div>
             </div>
-            <br />
-            <div className="login-label-pwd">
-                <label htmlFor="pwd">Mot de passe :</label>
-            </div>
-            <br />
-            <div className="login-input-pwd">
-                <input type="password" id="pwd" />
+            <div className="login-submit">
+                <button type="submit" className="login-box-submit" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                    Se connecter
+                </button>
             </div>
         </form>
     );
