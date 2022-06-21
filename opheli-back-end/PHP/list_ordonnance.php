@@ -8,8 +8,5 @@ $rows = array();
 while($r = mysqli_fetch_assoc($t)) {
     $rows[] = $r;
 }
-//} SELECT * FROM `ordonnance` WHERE SecuriteSociale = \"".$_SESSION['secu']."\"
-
-//}
 echo json_encode($rows);
 ?>

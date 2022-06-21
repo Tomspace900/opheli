@@ -1,25 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect,setState} from 'react';
 import '../../CSS/List.css';
 import '../../CSS/Login.css';
 import $ from "jquery";
 
 function UserList() {
-    const [result, setResult] = useState([]);
-    if (result.length == 0) {
+    const [users, setResult] = useState([]);
+    if (users.length == 0) {
         $.ajax({
             type: 'POST',
             url: "http://localhost/opheli/opheli-back-end/PHP/Admin/user_list.php",
             dataType: 'json',
             success: function (response) {
-                if (response!="") {
-                    setResult(response);
-                }
+                setResult(response);
             },
         });
-        console.log(result);
+        console.log(users);
     }
-    console.log(result);
-
+    console.log(users);
 
     return (
         <div>
@@ -29,7 +26,7 @@ function UserList() {
             <div className="page">
                 <table>
                     <tbody>
-                    {result.map(user => {
+                    {users.map(user => {
                         return (
                             <tr>
                                 <td>{user.IdPrescripteur}</td>
