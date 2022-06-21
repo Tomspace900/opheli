@@ -1,5 +1,6 @@
 import React from 'react';
 import './../CSS/Home.css';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     function mouseOver(e) {
@@ -12,7 +13,7 @@ const Home = () => {
     return (
         <div className="home">
             <div className="home-cards">
-                <div className="home-div-left" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                <Link to={'/createordo'} className="home-div-left" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     <div className="home-left-title-div">
                         <span className="home-leftm-title">Ajouter une ordonnance</span>
                     </div>
@@ -35,8 +36,8 @@ const Home = () => {
                             <line x1="9" y1="14" x2="15" y2="14" />
                         </svg>
                     </div>
-                </div>
-                <div className="home-div-right" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                </Link>
+                <Link to={'/updateordo'} className="home-div-right" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     <div className="home-right-title-div">
                         <span className="home-right-title">Modifier une ordonnance</span>
                     </div>
@@ -60,7 +61,7 @@ const Home = () => {
                             <line x1="10" y1="17" x2="14" y2="17" />
                         </svg>
                     </div>
-                </div>
+                </Link>
             </div>
         </div>
     );
