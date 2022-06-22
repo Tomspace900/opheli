@@ -1,8 +1,6 @@
 .page {
     margin: 10px 0px;
     padding: 20px;
-    display: flex;
-    height: 130px;
     border-radius: 40px;
     box-shadow: var(--shadow-blue);
 }
