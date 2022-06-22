@@ -8,7 +8,7 @@ function UserList() {
     if (patients.length == 0) {
         $.ajax({
             type: 'POST',
-            url: "http://localhost/opheli/opheli-back-end/PHP/Admin/patients.php",
+            url: "http://opheli/opheli-back-end/PHP/Admin/patients.php",
             dataType: 'json',
             success: function (response) {
                 setPat(response);
@@ -20,7 +20,7 @@ function UserList() {
     if (prescripteurs.length == 0) {
         $.ajax({
             type: 'POST',
-            url: "http://localhost/opheli/opheli-back-end/PHP/Admin/prescripteurs.php",
+            url: "http://opheli/opheli-back-end/PHP/Admin/prescripteurs.php",
             dataType: 'json',
             success: function (response) {
                 setPre(response);
@@ -61,7 +61,7 @@ function UserList() {
                                     <td>{user.Prenom}</td>
                                     <td>{user.Mail}</td>
                                     <td>
-                                        <form action="http://localhost/opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSumbit(event)}>
+                                        <form action="http://opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSumbit(event)}>
                                             <input id="toDelete" name="toDelete" type="hidden" value={user.IdUtilisateur}/>
                                             <button type="submit">Supprimer</button>
                                         </form>
@@ -83,7 +83,7 @@ function UserList() {
                                     <td>{user.Prenom}</td>
                                     <td>{user.Mail}</td>
                                     <td>
-                                        <form action="http://localhost/opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSumbit(event)}>
+                                        <form action="http://opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSumbit(event)}>
                                             <input id="toDelete" name="toDelete" type="hidden" value={user.IdUtilisateur}/>
                                             <button type="submit">Supprimer</button>
                                         </form>

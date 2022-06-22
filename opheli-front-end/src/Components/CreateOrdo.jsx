@@ -1,18 +1,37 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useState, useReducer} from 'react';
 import form from "./Form";
 import $ from "jquery";
-import Categorie1 from "./CreateOrdoCards/Categorie1";
+import CategorieBizone from "./CreateOrdoCards/CategorieBizone";
+import CategorieSimple from "./CreateOrdoCards/CategorieSimple";
+import CategorieException from "./CreateOrdoCards/CategorieException";
 
 function App() {
+
+    const [, forceRerender] = useReducer(x => x + 1, 0);
+
     const [connected, setConnected] = useState(false);
     let [categorieDiv, setCategorieDiv] = useState(<div></div>);
-    const [type, setType] = useState(0);
+    const [simple, setSimple] = useState(true);
+    const [bizone, setBizone] = useState(false);
+    const [exception, setException] = useState(false);
 
     const handleTypeChange = (e) => {
-        if(type == 1){
-            categorieDiv = Categorie1;
+        if(e.target.value === "simple"){
+            setSimple(true);
+            setBizone(false);
+            setException(false);
         }
-        setType(e.target.value);
+        if(e.target.value === "bizone"){
+            setSimple(false);
+            setBizone(true);
+            setException(false);
+        }
+        if(e.target.value === "exception"){
+            setSimple(false);
+            setBizone(false);
+            setException(true);
+        }
+        forceRerender();
     }
 
     const handleSumbit = (e) => {
@@ -29,7 +48,7 @@ function App() {
     };
     return (
         <div className="App">
-            <h1>Form test</h1>
+            <h1>Créer une ordonnance</h1>
             <form
                 action="http://opheli/opheli-back-end/PHP/login/create_ordo.php"
                 method="post"
@@ -48,16 +67,15 @@ function App() {
                     name="date"
                 />
                 <br />
-                <label htmlFor="type">Type: </label>
-                <input
-                    type="select"
-                    id="type"
-                    name="type"
-                    value={type}
-                    onChange={(event) => handleTypeChange(event)}
-                />
-                {categorieDiv}
-                <Categorie1/>
+                <label htmlFor="type">Type de l'ordonannce: </label>
+                <select id="type" name="type" onChange={(event) => handleTypeChange(event)}>
+                    <option value="simple"> Simple </option>
+                    <option value="bizone"> Bi-zone </option>
+                    <option value="exception"> Médicaments d'exception </option>
+                </select>
+                {simple ? <CategorieSimple/> : null}
+                {bizone ? <CategorieBizone/> : null}
+                {exception ? <CategorieException/> : null}
                 <br />
                 <button type="submit">Submit</button>
             </form>

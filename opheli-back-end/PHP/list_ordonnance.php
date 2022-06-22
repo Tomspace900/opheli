@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Access-Control-Allow-Origin: http://localhost:3000');
 include("utiles/connexion.php");
 //if (isset($_SESSION['role'])) {
 //if ($_SESSION['role'] == 1) {

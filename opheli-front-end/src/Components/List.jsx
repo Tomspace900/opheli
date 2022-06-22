@@ -8,7 +8,7 @@ function List() {
     if (result.length == 0) {
         $.ajax({
             type: 'POST',
-            url: "http://localhost/opheli/opheli-back-end/PHP/list_ordonnance.php",
+            url: "http://opheli/opheli-back-end/PHP/list_ordonnance.php",
             dataType: 'json',
             success: function (response) {
                 if (response!="") {
