@@ -6,8 +6,11 @@
 }
 
 .opheli {
-    font-size: 6em;
+    font-size: 5em;
     width: 25%;
     margin-left: 5%;
     margin-top: 1%;
+    text-decoration: none;
+    color: var(--main-color);
+    cursor: pointer;
 }

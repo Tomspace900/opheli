@@ -76,7 +76,8 @@ const RegisterClient = () => {
                 </div>
             </div>
             <div className="register-submit">
-                <button type="submit" className="register-box-submit" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                <button type="button" className="register-box-submit" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                    {/* Integrer l'insertion a la base de donnée */}
                     S'inscrire
                 </button>
             </div>

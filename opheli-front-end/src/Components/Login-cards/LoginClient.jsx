@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginClient = () => {
     function mouseOver(e) {
@@ -32,7 +33,14 @@ const LoginClient = () => {
                 </div>
             </div>
             <div className="login-submit">
-                <button type="submit" className="login-box-submit" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                <button
+                    component={Link}
+                    to={'/Home.jsx'}
+                    type="submit"
+                    className="login-box-submit"
+                    onMouseEnter={mouseOver}
+                    onMouseLeave={mouseOut}>
+                    {/* Vérifier compte dans la base de donnée */}
                     Se connecter
                 </button>
             </div>

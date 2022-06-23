@@ -1,11 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../CSS/Header.css';
 import '../CSS/Index.css';
 
 const Header = () => {
     return (
+        // Ajouter un lien vers profil si connecté
         <div className="header">
-            <span className="opheli">Opheli</span>
+            <Link to={'/Home.jsx'} className="opheli">
+                Opheli
+            </Link>
         </div>
     );
 };

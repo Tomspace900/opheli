@@ -1,6 +1,23 @@
 import React from 'react';
+import { useState } from 'react';
 
 const RegisterPro = () => {
+    const [complet, setComplet] = useState(false);
+
+    function handleCompleted(e) {
+        if (e.target.value !== '') {
+            setComplet(true);
+            console.log(e.target.value, complet);
+        } else {
+            setComplet(false);
+            console.log(e.target.value, complet);
+        }
+    }
+
+    function isCompleted() {
+        complet ? alert("C'est bon ça marche") : alert('Tout les champs sont obligatoires');
+    }
+
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
         e.target.style.border = 'solid #5ccdc4 1px';
@@ -9,6 +26,7 @@ const RegisterPro = () => {
         e.target.style.color = '#4a565a';
         e.target.style.border = 'solid #4a565a 1px';
     }
+
     return (
         <form className="register-form">
             <div className="register-form-doubleline">
@@ -17,7 +35,7 @@ const RegisterPro = () => {
                         <label>Prénom :</label>
                     </div>
                     <div className="register-input-firstname">
-                        <input type="text" placeholder="Mehdi" />
+                        <input type="text" placeholder="Mehdi" onChange={handleCompleted} />
                     </div>
                 </div>
                 <div className="register-form-blockdoubleline">
@@ -25,7 +43,7 @@ const RegisterPro = () => {
                         <label>Nom :</label>
                     </div>
                     <div className="register-input-surname">
-                        <input type="text" placeholder="Demille" />
+                        <input type="text" placeholder="Demille" onChange={handleCompleted} />
                     </div>
                 </div>
             </div>
@@ -35,7 +53,7 @@ const RegisterPro = () => {
                         <label>Adresse mail :</label>
                     </div>
                     <div className="register-input-mail">
-                        <input type="mail" placeholder="mehdi.demille@exemple.fr" />
+                        <input type="mail" placeholder="mehdi.demille@exemple.fr" onChange={handleCompleted} />
                     </div>
                 </div>
                 <div className="register-form-blockdoubleline">
@@ -43,7 +61,7 @@ const RegisterPro = () => {
                         <label>Numero RPPS :</label>
                     </div>
                     <div className="register-input-id">
-                        <input type="text" placeholder="12345678901" />
+                        <input type="text" placeholder="12345678901" onChange={handleCompleted} />
                     </div>
                 </div>
             </div>
@@ -53,7 +71,7 @@ const RegisterPro = () => {
                         <label>Adresse de votre établissement :</label>
                     </div>
                     <div className="register-input-address">
-                        <input type="text" />
+                        <input type="text" onChange={handleCompleted} />
                     </div>
                 </div>
             </div>
@@ -63,7 +81,7 @@ const RegisterPro = () => {
                         <label>Mot de passe :</label>
                     </div>
                     <div className="register-input-pwd">
-                        <input type="password" />
+                        <input type="password" onChange={handleCompleted} />
                     </div>
                 </div>
                 <div className="register-form-blockdoubleline">
@@ -71,12 +89,18 @@ const RegisterPro = () => {
                         <label>Répéter mot de passe :</label>
                     </div>
                     <div className="register-input-rpwd">
-                        <input type="password" />
+                        <input type="password" onChange={handleCompleted} />
                     </div>
                 </div>
             </div>
             <div className="register-submit">
-                <button type="submit" className="register-box-submit" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                <button
+                    type="button"
+                    className="register-box-submit"
+                    onMouseEnter={mouseOver}
+                    onMouseLeave={mouseOut}
+                    onClick={isCompleted}>
+                    {/* Integrer l'insertion a la base de donnée */}
                     S'inscrire
                 </button>
             </div>

@@ -5,21 +5,23 @@ import LoginPro from './LoginPro';
 
 function LoginCard() {
     const [login, setLogin] = useState('client');
-    const [tab, setTab] = useState('client');
+    // this.tabState = { tab: 'client', class: 'on' };
 
     const handleLogin = (loginState) => {
         setLogin(loginState);
     };
 
-    const handleTab = (e, tab) => {
-        switch (tab) {
-            case 'pro':
-                break;
-
-            default:
-                break;
-        }
-    };
+    // const handleTab = (state) => {
+    //     this.tabState.tab = state;
+    //     if (this.tabState.tab === state) {
+    //         console.log('client on');
+    //         this.setState({ class: 'on' });
+    //     } else {
+    //         console.log('client off');
+    //         this.setState({ class: 'off' });
+    //     }
+    //     console.log('change state');
+    // };
 
     function mouseOver(e) {
         e.target.style.background = '#5ccdc4a9';
@@ -33,20 +35,22 @@ function LoginCard() {
             <div className="card-menu">
                 <div
                     className="client"
+                    // {this.tabState.class}
                     onMouseEnter={mouseOver}
                     onMouseLeave={mouseOut}
                     onClick={() => {
-                        handleTab;
+                        // handleTab('client');
                         handleLogin('client');
                     }}>
                     <span>Client</span>
                 </div>
                 <div
                     className="pro"
+                    // {this.tabState.class}
                     onMouseEnter={mouseOver}
                     onMouseLeave={mouseOut}
                     onClick={() => {
-                        handleTab;
+                        // handleTab('pro');
                         handleLogin('pro');
                     }}>
                     <span>Professionnel</span>
@@ -55,10 +59,8 @@ function LoginCard() {
             {(() => {
                 switch (login) {
                     case 'pro':
-                        setTab('pro');
                         return <LoginPro />;
                     default:
-                        setTab('client');
                         return <LoginClient />;
                 }
             })()}
