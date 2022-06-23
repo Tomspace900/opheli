@@ -3,7 +3,7 @@ import './../../CSS/Login-cards/LoginCard.css';
 import LoginClient from './LoginClient';
 import LoginPro from './LoginPro';
 
-function LoginCard({}) {
+function LoginCard() {
     const [login, setLogin] = useState('client');
 
     const handleLogin = (loginState) => {

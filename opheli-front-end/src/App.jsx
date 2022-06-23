@@ -4,6 +4,7 @@ import Header from './Components/Header';
 import Home from './Components/Home';
 import './CSS/Reset.css';
 import './CSS/App.css';
+import './CSS/Index.css';
 import Login from './Components/Login';
 import Form_test from './Components/Form_test';
 import List from './Components/List';

@@ -47,3 +47,10 @@
     justify-self: flex-start;
     margin-bottom: 20%;
 }
+
+.home svg {
+    width: 33%;
+    stroke-width: 1.5;
+    stroke: var(--color-main);
+    fill: none;
+}

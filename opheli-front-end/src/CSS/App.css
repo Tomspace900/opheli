@@ -3,4 +3,5 @@
     font-family: var(--font-main);
     color: #4a565a;
     text-decoration: none;
+    min-height: 100%;
 }
