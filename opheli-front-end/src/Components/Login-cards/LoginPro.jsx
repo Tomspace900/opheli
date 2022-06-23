@@ -45,7 +45,7 @@ const LoginPro = () => {
             <div className="login-submit">
                 <button
                     component={Link}
-                    to={'/Home.jsx'}
+                    to={'/'}
                     type="submit"
                     className="login-box-submit"
                     onMouseEnter={(e) => {

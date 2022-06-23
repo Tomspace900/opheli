@@ -12,6 +12,7 @@ import UserList from './Components/Admin/UserList';
 import CreateOrdo from './Components/CreateOrdo';
 import UpdateOrdo from './Components/UpdateOrdo';
 import Parameters from './Components/Parameters';
+import Profile from './Components/Profile';
 
 const App = () => {
     return (
@@ -25,6 +26,7 @@ const App = () => {
                     <Route path="/test" element={<Form_test />} />
                     <Route path="/list" element={<List />} />
                     <Route path="/users" element={<UserList />} />
+                    <Route path="/profil" element={<Profile />} />
                     <Route path="/createordo" element={<CreateOrdo />} />
                     <Route path="/updateordo" element={<UpdateOrdo />} />
                     <Route path="/parametres" element={<Parameters />} />
