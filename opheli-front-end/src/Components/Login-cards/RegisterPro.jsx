@@ -2,21 +2,76 @@ import React from 'react';
 import { useState } from 'react';
 
 const RegisterPro = () => {
-    const [complet, setComplet] = useState(false);
+    const [firstname, setFirstname] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [id, setId] = useState('');
+    const [address, setAddress] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
 
-    function handleCompleted(e) {
-        if (e.target.value !== '') {
-            setComplet(true);
-            console.log(e.target.value, complet);
+    // Constante booleenne a utiliser pour envoyer les donnees
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleFirstname = (e) => {
+        setFirstname(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handleSurname = (e) => {
+        setSurname(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handleEmail = (e) => {
+        setEmail(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handleId = (e) => {
+        setId(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handleAddress = (e) => {
+        setAddress(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handlePassword = (e) => {
+        setPassword(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handleRepeatPassword = (e) => {
+        setRepeatPassword(e.target.value);
+        console.log(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (
+            firstname === '' ||
+            surname === '' ||
+            email === '' ||
+            id === '' ||
+            address === '' ||
+            password === '' ||
+            repeatPassword === ''
+        ) {
+            alert('Tout les champs sont obligatoires');
+        } else if (password !== repeatPassword) {
+            alert('Les mots de passes ne sont pas identiques');
+        } else if (password.length < 8) {
+            alert('Votre mot de passe doit contenir au moins 8 caractères');
+        } else if (id.length !== 11) {
+            alert('Le numéro RPPS est incorrect');
         } else {
-            setComplet(false);
-            console.log(e.target.value, complet);
+            setSubmitted(true);
+            alert('Ça marche');
         }
-    }
-
-    function isCompleted() {
-        complet ? alert("C'est bon ça marche") : alert('Tout les champs sont obligatoires');
-    }
+    };
 
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
@@ -35,7 +90,7 @@ const RegisterPro = () => {
                         <label>Prénom :</label>
                     </div>
                     <div className="register-input-firstname">
-                        <input type="text" placeholder="Mehdi" onChange={handleCompleted} />
+                        <input type="text" placeholder="Mehdi" onChange={handleFirstname} />
                     </div>
                 </div>
                 <div className="register-form-blockdoubleline">
@@ -43,7 +98,7 @@ const RegisterPro = () => {
                         <label>Nom :</label>
                     </div>
                     <div className="register-input-surname">
-                        <input type="text" placeholder="Demille" onChange={handleCompleted} />
+                        <input type="text" placeholder="Demille" onChange={handleSurname} />
                     </div>
                 </div>
             </div>
@@ -53,7 +108,7 @@ const RegisterPro = () => {
                         <label>Adresse mail :</label>
                     </div>
                     <div className="register-input-mail">
-                        <input type="mail" placeholder="mehdi.demille@exemple.fr" onChange={handleCompleted} />
+                        <input type="mail" placeholder="mehdi.demille@exemple.fr" onChange={handleEmail} />
                     </div>
                 </div>
                 <div className="register-form-blockdoubleline">
@@ -61,7 +116,7 @@ const RegisterPro = () => {
                         <label>Numero RPPS :</label>
                     </div>
                     <div className="register-input-id">
-                        <input type="text" placeholder="12345678901" onChange={handleCompleted} />
+                        <input type="text" placeholder="12345678901" onChange={handleId} />
                     </div>
                 </div>
             </div>
@@ -71,7 +126,7 @@ const RegisterPro = () => {
                         <label>Adresse de votre établissement :</label>
                     </div>
                     <div className="register-input-address">
-                        <input type="text" onChange={handleCompleted} />
+                        <input type="text" onChange={handleAddress} />
                     </div>
                 </div>
             </div>
@@ -81,7 +136,7 @@ const RegisterPro = () => {
                         <label>Mot de passe :</label>
                     </div>
                     <div className="register-input-pwd">
-                        <input type="password" onChange={handleCompleted} />
+                        <input type="password" onChange={handlePassword} />
                     </div>
                 </div>
                 <div className="register-form-blockdoubleline">
@@ -89,7 +144,7 @@ const RegisterPro = () => {
                         <label>Répéter mot de passe :</label>
                     </div>
                     <div className="register-input-rpwd">
-                        <input type="password" onChange={handleCompleted} />
+                        <input type="password" onChange={handleRepeatPassword} />
                     </div>
                 </div>
             </div>
@@ -99,7 +154,7 @@ const RegisterPro = () => {
                     className="register-box-submit"
                     onMouseEnter={mouseOver}
                     onMouseLeave={mouseOut}
-                    onClick={isCompleted}>
+                    onClick={handleSubmit}>
                     {/* Integrer l'insertion a la base de donnée */}
                     S'inscrire
                 </button>
