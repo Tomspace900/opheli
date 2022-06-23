@@ -26,7 +26,7 @@ function List() {
                 <span className="login-title">Liste des ordonnances</span>
             </div>
             <div className="page">
-                <table>
+                <table className="liste">
                     <tbody>
                     {result.map(ordonnance => {
                         return (

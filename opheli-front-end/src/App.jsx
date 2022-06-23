@@ -10,6 +10,7 @@ import List from './Components/List';
 import UserList from './Components/Admin/UserList';
 import CreateOrdo from './Components/CreateOrdo';
 import UpdateOrdo from './Components/UpdateOrdo';
+import Parameters from './Components/Parameters';
 
 const App = () => {
     return (
@@ -25,6 +26,7 @@ const App = () => {
                     <Route path="/users" element={<UserList />} />
                     <Route path="/createordo" element={<CreateOrdo />} />
                     <Route path="/updateordo" element={<UpdateOrdo />} />
+                    <Route path="/parametres" element={<Parameters />} />
                 </Routes>
                 <Footer />
             </BrowserRouter>
