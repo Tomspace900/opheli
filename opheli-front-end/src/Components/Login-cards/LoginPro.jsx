@@ -20,14 +20,6 @@ const LoginPro = () => {
         e.preventDefault();
     };
 
-    function mouseOver(e) {
-        e.target.style.color = '#5ccdc4a9';
-        e.target.style.border = 'solid #5ccdc4 1px';
-    }
-    function mouseOut(e) {
-        e.target.style.color = '#4a565a';
-        e.target.style.border = 'solid #4a565a 1px';
-    }
     return (
         <form className="login-form">
             <div className="login-form-line">
@@ -36,7 +28,7 @@ const LoginPro = () => {
                         <label>Numéro RPPS :</label>
                     </div>
                     <div className="login-input-id">
-                        <input type="text" placeholder="12345678901" />
+                        <input type="text" placeholder="12345678901" onChange={handleId} />
                     </div>
                 </div>
             </div>
@@ -46,7 +38,7 @@ const LoginPro = () => {
                         <label>Mot de passe :</label>
                     </div>
                     <div className="login-input-pwd">
-                        <input type="password" />
+                        <input type="password" onChange={handlePassword} />
                     </div>
                 </div>
             </div>
@@ -56,8 +48,14 @@ const LoginPro = () => {
                     to={'/Home.jsx'}
                     type="submit"
                     className="login-box-submit"
-                    onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}
+                    onMouseEnter={(e) => {
+                        e.target.style.color = '#5ccdc4a9';
+                        e.target.style.border = 'solid #5ccdc4 1px';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.color = '#4a565a';
+                        e.target.style.border = 'solid #4a565a 1px';
+                    }}
                     onClick={handleSubmit}>
                     {/* Vérifier compte dans la base de donnée */}
                     Se connecter

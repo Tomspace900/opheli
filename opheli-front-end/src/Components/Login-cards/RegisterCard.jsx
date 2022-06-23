@@ -10,20 +10,21 @@ const RegisterCard = () => {
         setRegister(registerState);
     };
 
-    function mouseOver(e) {
-        e.target.style.background = '#5ccdc4a9';
-    }
-    function mouseOut(e) {
-        e.target.style.background = '';
-    }
-
     return (
         <div className="card">
             <div className="card-menu">
-                <div className="client" onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={() => handleRegister('client')}>
+                <div
+                    className="client"
+                    onMouseEnter={(e) => (e.target.style.background = '#5ccdc4a9')}
+                    onMouseLeave={(e) => (e.target.style.background = '')}
+                    onClick={() => handleRegister('client')}>
                     <span>Client</span>
                 </div>
-                <div className="pro" onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={() => handleRegister('pro')}>
+                <div
+                    className="pro"
+                    onMouseEnter={(e) => (e.target.style.background = '#5ccdc4a9')}
+                    onMouseLeave={(e) => (e.target.style.background = '')}
+                    onClick={() => handleRegister('pro')}>
                     <span>Professionnel</span>
                 </div>
             </div>

@@ -82,14 +82,6 @@ const RegisterClient = () => {
         }
     };
 
-    function mouseOver(e) {
-        e.target.style.color = '#5ccdc4a9';
-        e.target.style.border = 'solid #5ccdc4 1px';
-    }
-    function mouseOut(e) {
-        e.target.style.color = '#4a565a';
-        e.target.style.border = 'solid #4a565a 1px';
-    }
     return (
         <form className="register-form">
             <div className="register-form-doubleline">
@@ -160,8 +152,14 @@ const RegisterClient = () => {
                 <button
                     type="button"
                     className="register-box-submit"
-                    onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}
+                    onMouseEnter={(e) => {
+                        e.target.style.color = '#5ccdc4a9';
+                        e.target.style.border = 'solid #5ccdc4 1px';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.color = '#4a565a';
+                        e.target.style.border = 'solid #4a565a 1px';
+                    }}
                     onClick={handleSubmit}>
                     {/* Integrer l'insertion a la base de donnée */}
                     S'inscrire
