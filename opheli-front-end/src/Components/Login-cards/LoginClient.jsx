@@ -1,7 +1,25 @@
 import React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const LoginClient = () => {
+    // Donnees a envoyer à la BDD
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleId = (e) => {
+        setId(e.target.value);
+    };
+
+    const handlePassword = (e) => {
+        setPassword(e.target.value);
+    };
+
+    // C'est cette fonction qui va verifier si le boug existe dans la BDD
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
         e.target.style.border = 'solid #5ccdc4 1px';
@@ -18,7 +36,7 @@ const LoginClient = () => {
                         <label>Numéro sécurité sociale :</label>
                     </div>
                     <div className="login-input-id">
-                        <input type="text" placeholder="1234567890123" />
+                        <input type="text" placeholder="1234567890123" onChange={handlePassword} />
                     </div>
                 </div>
             </div>
@@ -28,7 +46,7 @@ const LoginClient = () => {
                         <label>Mot de passe :</label>
                     </div>
                     <div className="login-input-pwd">
-                        <input type="password" />
+                        <input type="password" onChange={handlePassword} />
                     </div>
                 </div>
             </div>
@@ -39,7 +57,8 @@ const LoginClient = () => {
                     type="submit"
                     className="login-box-submit"
                     onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}>
+                    onMouseLeave={mouseOut}
+                    onClick={handleSubmit}>
                     {/* Vérifier compte dans la base de donnée */}
                     Se connecter
                 </button>

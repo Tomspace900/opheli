@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 
 const RegisterPro = () => {
+    // Donnees a envoyer à la BDD
     const [firstname, setFirstname] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
@@ -61,12 +62,14 @@ const RegisterPro = () => {
             repeatPassword === ''
         ) {
             alert('Tout les champs sont obligatoires');
+        } else if (!email.includes('@')) {
+            alert('Email incorrect');
+        } else if (id.length !== 11 || /[a-zA-Z]/.test(id)) {
+            alert('Le numéro RPPS est incorrect');
         } else if (password !== repeatPassword) {
             alert('Les mots de passes ne sont pas identiques');
         } else if (password.length < 8) {
             alert('Votre mot de passe doit contenir au moins 8 caractères');
-        } else if (id.length !== 11) {
-            alert('Le numéro RPPS est incorrect');
         } else {
             setSubmitted(true);
             alert('Ça marche');

@@ -1,7 +1,25 @@
 import React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const LoginPro = () => {
+    // Donnees a envoyer à la BDD
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleId = (e) => {
+        setId(e.target.value);
+    };
+
+    const handlePassword = (e) => {
+        setPassword(e.target.value);
+    };
+
+    // C'est cette fonction qui va verifier si le boug existe dans la BDD
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
         e.target.style.border = 'solid #5ccdc4 1px';
@@ -39,7 +57,8 @@ const LoginPro = () => {
                     type="submit"
                     className="login-box-submit"
                     onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}>
+                    onMouseLeave={mouseOut}
+                    onClick={handleSubmit}>
                     {/* Vérifier compte dans la base de donnée */}
                     Se connecter
                 </button>
