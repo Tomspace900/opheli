@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import '../CSS/Login.css';
-import LoginCard from './Login-cards/LoginCard';
-import RegisterCard from './Login-cards/RegisterCard';
-import $ from "jquery";
+import '../CSS/Login-cards/LoginForms.css';
+import $ from 'jquery';
+import LoginForm from './Login-cards/LoginForm';
+import RegisterMedecin from './Login-cards/RegisterMedecin';
+import RegisterClient from './Login-cards/RegisterClient';
+import RegisterPharma from './Login-cards/RegisterPharma';
+import RegisterMutuelle from './Login-cards/RegisterMutuelle';
 
 const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = $(e.target);
         $.ajax({
-            type: "POST",
-            url: form.attr("action"),
+            type: 'POST',
+            url: form.attr('action'),
             data: form.serialize(),
-            dataType: "text",
+            dataType: 'text',
             success(data) {
                 console.log(data);
             },
@@ -20,10 +24,22 @@ const Login = () => {
     };
 
     const [action, setAction] = useState(true);
+    const [login, setLogin] = useState('client');
 
     const handleAction = () => {
         setAction((actual) => !actual);
     };
+
+    const handleLogin = (loginState) => {
+        setLogin(loginState);
+    };
+
+    function tabOver(e) {
+        e.target.style.background = '#5ccdc4a9';
+    }
+    function tabOut(e) {
+        e.target.style.background = '';
+    }
 
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
@@ -36,25 +52,76 @@ const Login = () => {
 
     return (
         <div className="login">
-            {action ? (
-                <>
-                    <span className="login-title">Connexion à votre compte</span>
-                    <LoginCard />
-                    <span className="login-question">Vous n'avez pas encore de compte ?</span>
-                    <button className="login-box" onClick={handleAction} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
-                        Enregistrez-vous ici
-                    </button>
-                </>
-            ) : (
-                <>
-                    <span className="login-title">Enregistrez-vous</span>
-                    <RegisterCard />
-                    <span className="login-question">Vous avez deja un compte ?</span>
-                    <button className="login-box" onClick={handleAction} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
-                        Connectez-vous ici
-                    </button>
-                </>
-            )}
+            <span className="login-title">{action ? 'Connexion a votre compte' : 'Enregistrez-vous'}</span>
+            <div className="card">
+                <div className="card-menu">
+                    <div
+                        className="client"
+                        onMouseEnter={tabOver}
+                        onMouseLeave={tabOut}
+                        onClick={() => {
+                            handleLogin('client');
+                        }}>
+                        <span>Client</span>
+                    </div>
+                    <div
+                        className="medecin"
+                        onMouseEnter={tabOver}
+                        onMouseLeave={tabOut}
+                        onClick={() => {
+                            handleLogin('medecin');
+                        }}>
+                        <span>Medecin</span>
+                    </div>
+                    <div
+                        className="pharma"
+                        onMouseEnter={tabOver}
+                        onMouseLeave={tabOut}
+                        onClick={() => {
+                            handleLogin('pharma');
+                        }}>
+                        <span>Pharmacien</span>
+                    </div>
+                    <div
+                        className="mutuelle"
+                        onMouseEnter={tabOver}
+                        onMouseLeave={tabOut}
+                        onClick={() => {
+                            handleLogin('mutuelle');
+                        }}>
+                        <span>Mutuelle</span>
+                    </div>
+                </div>
+                {action
+                    ? (() => {
+                          switch (login) {
+                              case 'medecin':
+                                  return <LoginForm account="medecin" />;
+                              case 'pharma':
+                                  return <LoginForm account="pharma" />;
+                              case 'mutuelle':
+                                  return <LoginForm account="mutuelle" />;
+                              default:
+                                  return <LoginForm account="client" />;
+                          }
+                      })()
+                    : (() => {
+                          switch (login) {
+                              case 'medecin':
+                                  return <RegisterMedecin />;
+                              case 'pharma':
+                                  return <RegisterPharma />;
+                              case 'mutuelle':
+                                  return <RegisterMutuelle />;
+                              default:
+                                  return <RegisterClient />;
+                          }
+                      })()}
+            </div>
+            <span className="login-question">{action ? "Vous n'avez pas encore de compte ?" : 'Vous avez deja un compte ?'}</span>
+            <button className="login-box" onClick={handleAction} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                {action ? 'Enregistrez-vous ici' : 'Connectez-vous ici'}
+            </button>
         </div>
     );
 };

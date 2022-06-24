@@ -1,13 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
 
-const RegisterPro = () => {
+const RegisterMutuelle = ({ account }) => {
     // Donnees a envoyer à la BDD
     const [firstname, setFirstname] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [id, setId] = useState('');
-    const [address, setAddress] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
 
@@ -34,11 +33,6 @@ const RegisterPro = () => {
         setSubmitted(false);
     };
 
-    const handleAddress = (e) => {
-        setAddress(e.target.value);
-        setSubmitted(false);
-    };
-
     const handlePassword = (e) => {
         setPassword(e.target.value);
         setSubmitted(false);
@@ -52,15 +46,7 @@ const RegisterPro = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (
-            firstname === '' ||
-            surname === '' ||
-            email === '' ||
-            id === '' ||
-            address === '' ||
-            password === '' ||
-            repeatPassword === ''
-        ) {
+        if (firstname === '' || surname === '' || email === '' || id === '' || password === '' || repeatPassword === '') {
             alert('Tout les champs sont obligatoires');
         } else if (!email.includes('@')) {
             alert('Email incorrect');
@@ -72,7 +58,7 @@ const RegisterPro = () => {
             alert('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
             setSubmitted(true);
-            alert('Ça marche');
+            alert('Ça envoie');
         }
     };
 
@@ -114,16 +100,6 @@ const RegisterPro = () => {
                     </div>
                 </div>
             </div>
-            <div className="register-form-line">
-                <div className="register-form-blockline">
-                    <div className="register-label-address">
-                        <label>Adresse de votre établissement :</label>
-                    </div>
-                    <div className="register-input-address">
-                        <input type="text" onChange={handleAddress} />
-                    </div>
-                </div>
-            </div>
             <div className="register-form-doubleline">
                 <div className="register-form-blockdoubleline">
                     <div className="login-label-pwd">
@@ -161,4 +137,4 @@ const RegisterPro = () => {
     );
 };
 
-export default RegisterPro;
+export default RegisterMutuelle;
