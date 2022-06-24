@@ -1,9 +1,7 @@
-import React, {Component, useEffect, useState, useReducer} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import form from "./Form";
 import $ from "jquery";
-import CategorieBizone from "./CreateOrdoCards/CategorieBizone";
-import CategorieSimple from "./CreateOrdoCards/CategorieSimple";
-import CategorieException from "./CreateOrdoCards/CategorieException";
+import Categorie1 from "./CreateOrdoCards/Categorie1";
 
 function App() {
 
