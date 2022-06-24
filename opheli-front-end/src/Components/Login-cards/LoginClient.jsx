@@ -18,10 +18,19 @@ const LoginClient = () => {
     // C'est cette fonction qui va verifier si le boug existe dans la BDD
     const handleSubmit = (e) => {
         e.preventDefault();
+        const form = $(e.target);
+        $.ajax({
+            type: "POST",
+            url: form.attr("action"),
+            data: form.serialize(),
+            success(data) {
+                console.log(data);
+            },
+        });
     };
 
     return (
-        <form className="login-form">
+        <form className="login-form" action="http://localhost/opheli/opheli-back-end/PHP/login/login.php" method="post" onSubmit={(event) => handleSumbit(event)}>
             <div className="login-form-line">
                 <div className="login-form-blockline">
                     <div className="login-label-id">

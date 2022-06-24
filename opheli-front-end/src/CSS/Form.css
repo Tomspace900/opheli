@@ -10,6 +10,13 @@ button {
     background: aliceblue;
 }
 
+.supp {
+    border: 2px solid darkred;
+    background: #edbebe;
+    color: black;
+}
+
 label {
     margin: 0 20px 0 0;
 }
+
