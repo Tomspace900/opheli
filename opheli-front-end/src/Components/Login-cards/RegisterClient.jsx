@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 
 const RegisterClient = () => {
+    /*
     // Donnees a envoyer à la BDD
     const [firstname, setFirstname] = useState('');
     const [surname, setSurname] = useState('');
@@ -80,7 +81,7 @@ const RegisterClient = () => {
             setSubmitted(true);
             alert('Ça marche');
         }
-    };
+    };*/
 
     return (
         <form className="register-form">
@@ -159,9 +160,7 @@ const RegisterClient = () => {
                     onMouseLeave={(e) => {
                         e.target.style.color = '#4a565a';
                         e.target.style.border = 'solid #4a565a 1px';
-                    }}
-                    onClick={handleSubmit}>
-                    {/* Integrer l'insertion a la base de donnée */}
+                    }}>
                     S'inscrire
                 </button>
             </div>

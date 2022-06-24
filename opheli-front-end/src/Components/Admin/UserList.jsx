@@ -31,7 +31,6 @@ function UserList() {
     const handleSumbit = (e) => {
         e.preventDefault();
         const form = $(e.target);
-        console.log(form);
         $.ajax({
             type: "POST",
             url: form.attr("action"),

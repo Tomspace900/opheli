@@ -2,19 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 
 const LoginClient = () => {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const form = $(e.target);
-        $.ajax({
-            type: "POST",
-            url: form.attr("action"),
-            data: form.serialize(),
-            dataType: "text",
-            success(data) {
-                console.log(data);
-            },
-        });
-    };
 
     return (
         <form className="login-form" action="http://localhost/opheli/opheli-back-end/PHP/login/login_client.php" method="post" onSubmit={(event) => handleSumbit(event)}>

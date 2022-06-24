@@ -4,6 +4,20 @@ import LoginCard from './Login-cards/LoginCard';
 import RegisterCard from './Login-cards/RegisterCard';
 
 const Login = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const form = $(e.target);
+        $.ajax({
+            type: "POST",
+            url: form.attr("action"),
+            data: form.serialize(),
+            dataType: "text",
+            success(data) {
+                console.log(data);
+            },
+        });
+    };
+
     const [action, setAction] = useState(true);
 
     const handleAction = () => {
