@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import $ from "jquery";
 
 const LoginPro = () => {
     const handleSubmit = (e) => {
