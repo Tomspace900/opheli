@@ -24,7 +24,7 @@ function CategorieSimple() {
 
     return (
         <div className="ordoCategorie">
-            <h1>Soins remboursables</h1>
+            <h1>Soins classiques</h1>
             <label htmlFor="nbRenouv">Nombre de renouvellements: </label>
             <input type="number" id="nbRenouv" name="nbRenouv"/>
             <br />

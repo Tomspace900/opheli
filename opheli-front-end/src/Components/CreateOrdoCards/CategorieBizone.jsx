@@ -64,6 +64,7 @@ function CategorieBizone() {
                     )}
                 </div>
             </div>
+            <br/>
             <div>
                 <h1>Soins classiques</h1>
                 <label htmlFor="nbUtilisation">Nombre d'utilisations: </label>

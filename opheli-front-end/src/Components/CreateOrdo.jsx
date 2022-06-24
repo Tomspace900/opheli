@@ -1,14 +1,14 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useReducer, useState} from 'react';
 import form from "./Form";
 import $ from "jquery";
-import Categorie1 from "./CreateOrdoCards/Categorie1";
+import CategorieSimple from "./CreateOrdoCards/CategorieSimple";
+import CategorieBizone from "./CreateOrdoCards/CategorieBizone";
+import CategorieException from "./CreateOrdoCards/CategorieException";
 
 function App() {
 
     const [, forceRerender] = useReducer(x => x + 1, 0);
 
-    const [connected, setConnected] = useState(false);
-    let [categorieDiv, setCategorieDiv] = useState(<div></div>);
     const [simple, setSimple] = useState(true);
     const [bizone, setBizone] = useState(false);
     const [exception, setException] = useState(false);
