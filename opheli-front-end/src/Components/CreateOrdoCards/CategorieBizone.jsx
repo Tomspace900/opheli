@@ -25,7 +25,7 @@ function CategorieBizone() {
     }
 
     const addSoinALD = (e) => {
-        SoinsALD.push("Soin" + indexALD);
+        SoinsALD.push("SoinALD" + indexALD);
         setIndexALD(indexALD + 1);
         //forceRerender();
     }

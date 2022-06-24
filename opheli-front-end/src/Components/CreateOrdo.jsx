@@ -69,7 +69,7 @@ function App() {
                 <select id="type" name="type" onChange={(event) => handleTypeChange(event)}>
                     <option value="simple"> Simple </option>
                     <option value="bizone"> Bi-zone </option>
-                    <option value="exception"> Médicaments d'exception </option>
+                    {/*<option value="exception"> Médicaments d'exception </option>*/}
                 </select>
                 {simple ? <CategorieSimple/> : null}
                 {bizone ? <CategorieBizone/> : null}
