@@ -3,7 +3,7 @@ import React, {Component, useReducer, useState} from 'react';
 //pour Ordonnance Simple
 function CategorieSimple() {
 
-    const [, forceRerender] = useReducer(x => x + 1, 0);
+    //const [, forceRerender] = useReducer(x => x + 1, 0);
 
     const [index, setIndex] = useState(1);
     const [Soins, setSoins] = useState([]);
@@ -11,14 +11,14 @@ function CategorieSimple() {
     const addSoin = (e) => {
         Soins.push("Soin" + index);
         setIndex(index + 1);
-        forceRerender();
+        //forceRerender();
     }
 
     const delSoin = (e) => {
         if(Soins.length > 0){
             Soins.pop();
             setIndex(index - 1);
-            forceRerender();
+            //forceRerender();
         }
     }
 

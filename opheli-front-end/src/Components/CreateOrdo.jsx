@@ -7,7 +7,7 @@ import CategorieException from "./CreateOrdoCards/CategorieException";
 
 function App() {
 
-    const [, forceRerender] = useReducer(x => x + 1, 0);
+    //const [, forceRerender] = useReducer(x => x + 1, 0);
 
     const [simple, setSimple] = useState(true);
     const [bizone, setBizone] = useState(false);
@@ -29,7 +29,7 @@ function App() {
             setBizone(false);
             setException(true);
         }
-        forceRerender();
+        //forceRerender();
     }
 
     const handleSumbit = (e) => {

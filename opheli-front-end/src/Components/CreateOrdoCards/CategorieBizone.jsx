@@ -3,7 +3,7 @@ import React, {Component, useReducer, useState} from 'react';
 //pour Ordonnance bizone
 function CategorieBizone() {
 
-    const [, forceRerender] = useReducer(x => x + 1, 0);
+    //const [, forceRerender] = useReducer(x => x + 1, 0);
 
     const [indexALD, setIndexALD] = useState(1);
     const [index, setIndex] = useState(1);
@@ -13,28 +13,28 @@ function CategorieBizone() {
     const addSoin = (e) => {
         Soins.push("Soin" + index);
         setIndex(index + 1);
-        forceRerender();
+        //forceRerender();
     }
 
     const delSoin = (e) => {
         if(Soins.length > 0) {
             Soins.pop();
             setIndex(index - 1);
-            forceRerender();
+            //forceRerender();
         }
     }
 
     const addSoinALD = (e) => {
         SoinsALD.push("Soin" + indexALD);
         setIndexALD(indexALD + 1);
-        forceRerender();
+        //forceRerender();
     }
 
     const delSoinALD = (e) => {
         if(SoinsALD.length > 0) {
             SoinsALD.pop();
             setIndexALD(indexALD - 1);
-            forceRerender();
+            //forceRerender();
         }
     }
 
