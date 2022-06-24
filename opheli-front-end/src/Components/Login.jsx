@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../CSS/Login.css';
 import LoginCard from './Login-cards/LoginCard';
 import RegisterCard from './Login-cards/RegisterCard';
+import $ from "jquery";
 
 const Login = () => {
     const handleSubmit = (e) => {
