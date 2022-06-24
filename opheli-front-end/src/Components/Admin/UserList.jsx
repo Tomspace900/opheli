@@ -27,7 +27,6 @@ function UserList() {
             },
         });
     }
-    console.log(prescripteurs);
 
     const handleSumbit = (e) => {
         e.preventDefault();

@@ -1,5 +1,5 @@
 <?php
-function isUser($bdd, $mail, $pwd) {
+/*function isUser($bdd, $mail, $pwd) {
     $t = $bdd -> query("SELECT * FROM utilisateur WHERE Mail = \"".$mail."\";");
     if ($t == false) {
         return 0; //si ce n'est pas un utilisateur
@@ -24,7 +24,7 @@ function isUser($bdd, $mail, $pwd) {
         }
         return 0; //si ce n'est pas un utilisateur
     }
-}
+}*/
 
 function isPatient($bdd, $secu, $pwd) {
     $t = $bdd -> query("SELECT IdUtilisateur FROM patient WHERE SecuriteSociale = \"".$secu."\";");
@@ -35,20 +35,6 @@ function isPatient($bdd, $secu, $pwd) {
         $t = $bdd -> query("SELECT MotDePasse FROM utilisateur WHERE IdUtilisateur = \"".$test[0]."\";");
         $test = mysqli_fetch_row($t);
         if (password_verify($pwd, $test[0])) {
-            $medecin = $bdd -> query("SELECT * FROM medecin WHERE IdUtilisateur = \"".$test[0]."\";");
-            if ($medecin == true) {
-                return 4; //utilisateur medecin
-            } else {
-                $pharmacien = $bdd -> query("SELECT * FROM pharmacien WHERE IdUtilisateur = \"".$test[0]."\";");
-                if ($pharmacien == true) {
-                    return 3; //utilisateur pharmacien
-                } else {
-                    $admin = $bdd -> query("SELECT * FROM admin WHERE IdUtilisateur = \"".$test[0]."\";");
-                    if ($admin == true) {
-                        return 2; //utilisateur admin
-                    }
-                }
-            }
             return 1;
         }
         return 0; //si ce n'est pas un utilisateur

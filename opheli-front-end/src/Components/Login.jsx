@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import '../CSS/Login.css';
 import LoginCard from './Login-cards/LoginCard';
 import RegisterCard from './Login-cards/RegisterCard';
