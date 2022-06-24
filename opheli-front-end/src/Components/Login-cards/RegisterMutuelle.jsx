@@ -78,7 +78,7 @@ const RegisterMutuelle = ({ account }) => {
                         <label>Nom :</label>
                     </div>
                     <div className="register-input-surname">
-                        <input type="text" placeholder="Demille" onChange={handleSurname} />
+                        <input type="text" placeholder="Demile" onChange={handleSurname} />
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@ const RegisterMutuelle = ({ account }) => {
                         <label>Adresse mail :</label>
                     </div>
                     <div className="register-input-mail">
-                        <input type="mail" placeholder="mehdi.demille@exemple.fr" onChange={handleEmail} />
+                        <input type="mail" placeholder="mehdi.demile@exemple.fr" onChange={handleEmail} />
                     </div>
                 </div>
                 <div className="register-form-blockdoubleline">
