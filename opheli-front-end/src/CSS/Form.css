@@ -1,0 +1,22 @@
+input, button {
+    margin: 5px;
+    border: 2px solid #5ccdc4a9;
+    border-radius: 4px;
+    padding: 5px;
+    font-family: var(--font-main);
+    color: #4a565a;
+}
+button {
+    background: aliceblue;
+}
+
+.supp {
+    border: 2px solid darkred;
+    background: #edbebe;
+    color: black;
+}
+
+label {
+    margin: 0 20px 0 0;
+}
+

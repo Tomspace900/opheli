@@ -31,7 +31,6 @@ const App = () => {
                     <Route path="/createordo" element={<CreateOrdo />} />
                     <Route path="/updateordo" element={<UpdateOrdo />} />
                     <Route path="/parametres" element={<Parameters />} />
-                    <Route path="/qrtest" element={<Qrtest text = 'https://pornhub.com'/>} />
                 </Routes>
                 <Footer />
             </BrowserRouter>
