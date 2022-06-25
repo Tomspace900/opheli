@@ -1,12 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Axios from "axios";
+import Axios from 'axios';
 
 const LoginForm = ({ account }) => {
     // Donnees a envoyer à la BDD
     const [id, setId] = useState('');
-    const [password, setPassword] = useState('')
+    const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
 
     const handleId = (e) => {
@@ -22,17 +22,22 @@ const LoginForm = ({ account }) => {
     };
 
     const submitLogin = () => {
-        Axios.post('http://localhost:8080/login',{
+        Axios.post('http://localhost:8080/login', {
             id: id,
             password: password,
             role: role,
         }).then(() => {
             alert('success');
-        })
+        });
     };
 
     return (
-        <form className="login-form">
+        <form
+            className="login-form"
+            // action="http://localhost/opheli/opheli-back-end/PHP/login/login_client.php" //ici faut corriger et envoyer au bon endroit en fonction de 'account'
+            // method="post"
+            // onSubmit={(event) => handleSumbit(event)}
+        >
             <div className="login-form-line">
                 {(() => {
                     switch (account) {
