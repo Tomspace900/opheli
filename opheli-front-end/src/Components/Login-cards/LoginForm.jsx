@@ -26,8 +26,6 @@ const LoginForm = ({ account }) => {
             id: id,
             password: password,
             role: role,
-        }).then(() => {
-            alert('success');
         })
     };
 

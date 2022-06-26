@@ -1,14 +1,17 @@
 const express = require('express');
-//var router = express.Router();
 const app = express();
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
+var bcrypt = require('bcrypt');
+const {PORT, USER, PASSWORD} = require("./const");
+const saltRounds = 10;
+//variables
 
 const db = mysql.createPool({
   host: "localhost",
-  port:3306,
-  user: "root",
-  password: "Bqyagooc45",
+  port:PORT,
+  user: USER,
+  password: PASSWORD,
   database: "opheli"
 })
 
@@ -17,24 +20,34 @@ app.use(express.json())
 
 app.post('/login',(req,res) => {
   const id = req.body.id;
-  const password = req.body.password;
+  let password = req.body.password;
   const role = req.body.role;
-  console.log(role);
   let request ="";
   switch (role) {
     case 'medecin':
-      request = "SELECT IdUtilisateur from prescripteur WHERE IdPrescripteur = '?';";
+      request = "SELECT IdUtilisateur from prescripteur WHERE IdPrescripteur = ?;";
       break;
     case 'pharma':
-      request = "SELECT IdUtilisateur from pharmacien WHERE IdPharmacien = '?';";
+      request = "SELECT IdUtilisateur from pharmacien WHERE IdPharmacien = ?;";
       break;
     default:
-      request = "SELECT IdUtilisateur from patient WHERE SecuriteSociale = '?';";
+      request = "SELECT IdUtilisateur from patient WHERE SecuriteSociale = ?;";
       break;
   }
-  db.query(request, (err, result)=> {
+  db.query(request, [id], (err, result)=> {
     console.log(result)
+    request = "SELECT MotDePasse from utilisateur WHERE IdUtilisateur = ?;";
+    db.query(request, [result[0].IdUtilisateur], (err, result)=> {
+      bcrypt.compare(password, result[0].MotDePasse, function(err, result) {
+        if (result == true) {
+          return("juste");
+        } else {
+          return("faux");
+        }
+      });
+    });
   });
+
   /*
   db.query(request, (err, result)=> {
     console.log(result)
