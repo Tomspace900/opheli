@@ -4,7 +4,7 @@
     align-items: center;
     height: 130px;
     border-radius: 0 0 40px 40px;
-    box-shadow: var(--shadow-blue);
+    box-shadow: var(--shadow-grey);
 }
 
 .opheli {

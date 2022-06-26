@@ -93,7 +93,7 @@ const RegisterMutuelle = ({ account }) => {
                 </div>
                 <div className="register-form-blockdoubleline">
                     <div className="register-label-id">
-                        <label>Numero RPPS :</label>
+                        <label>Numero de mutuelle :</label>
                     </div>
                     <div className="register-input-id">
                         <input type="text" placeholder="12345678901" onChange={handleId} />
