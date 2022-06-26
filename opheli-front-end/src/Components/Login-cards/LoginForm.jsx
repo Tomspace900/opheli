@@ -7,6 +7,7 @@ const LoginForm = ({ account }) => {
     // Donnees a envoyer à la BDD
     const [id, setId] = useState('');
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
     const handleId = (e) => {
         setId(e.target.value);
@@ -16,10 +17,6 @@ const LoginForm = ({ account }) => {
         setPassword(e.target.value);
     };
 
-    const handleRole = (e) => {
-        setRole(e);
-    };
-
     const submitLogin = () => {
         Axios.post('http://localhost:8080/login',{
             id: id,
@@ -27,7 +24,7 @@ const LoginForm = ({ account }) => {
             role: account,
         }, function(data){
             if (data == "error") {
-
+                setError("Votre role, votre numéro ou votre mot de passe ne correspond pas.")
             }
         })
     };

@@ -39,7 +39,7 @@ app.post('/login',(req,res) => {
     db.query(request, [result[0].IdUtilisateur], (err, result)=> {
       bcrypt.compare(password, result[0].MotDePasse, function(err, result) {
         if (result != true) {
-          result.end("error")
+          result.end()
         }
       });
     });

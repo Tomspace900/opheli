@@ -13,8 +13,6 @@ import CreateOrdo from './Components/CreateOrdo';
 import UpdateOrdo from './Components/UpdateOrdo';
 import Parameters from './Components/Parameters';
 import Profile from './Components/Profile';
-import Qrtest from './Components/Qrtest';
-import Ordonnance from './Components/Ordonnance';
 
 const App = () => {
     return (
@@ -32,8 +30,6 @@ const App = () => {
                     <Route path="/createordo" element={<CreateOrdo />} />
                     <Route path="/updateordo" element={<UpdateOrdo />} />
                     <Route path="/parametres" element={<Parameters />} />
-                    <Route path="/qrtest" element={<Qrtest text="https://pornhub.com" />} />
-                    <Route path="/ordonnance" element={<Ordonnance />} />
                 </Routes>
                 <Footer />
             </BrowserRouter>
