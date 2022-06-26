@@ -4,7 +4,6 @@ const mysql = require('mysql');
 const bodyParser = require("body-parser");
 var bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
-const saltRounds = 10;
 //variables
 
 const db = mysql.createPool({
@@ -39,36 +38,13 @@ app.post('/login',(req,res) => {
     request = "SELECT MotDePasse from utilisateur WHERE IdUtilisateur = ?;";
     db.query(request, [result[0].IdUtilisateur], (err, result)=> {
       bcrypt.compare(password, result[0].MotDePasse, function(err, result) {
-        if (result == true) {
-          return("juste");
-        } else {
-          return("faux");
+        if (result != true) {
+          result.end("error")
         }
       });
     });
   });
-
-  /*
-  db.query(request, (err, result)=> {
-    console.log(result)
-    console.log(err)
-  });*/
 })
-
-app.post('/api/insert', (req,res) => {
-  const id = req.body.id;
-  console.log(id);
-});
-
-app.get("/",(req,res) => {
-  const sqlInsert = "SELECT * FROM utilisateur"
-  //const sqlInsert = "INSERT INTO `utilisateur` (`IdUtilisateur`, `Nom`, `Prenom`, `Mail`, `MotDePasse`) VALUES (NULL, 'Test', 'test', 'mail', 'a');"
-  db.query(sqlInsert, (err, result)=> {
-    res.send("hello pedro");
-    console.log(result)
-    console.log(err)
-  });
-});
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

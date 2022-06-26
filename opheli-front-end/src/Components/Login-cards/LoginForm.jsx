@@ -7,7 +7,6 @@ const LoginForm = ({ account }) => {
     // Donnees a envoyer à la BDD
     const [id, setId] = useState('');
     const [password, setPassword] = useState('')
-    const [role, setRole] = useState('');
 
     const handleId = (e) => {
         setId(e.target.value);
@@ -25,7 +24,11 @@ const LoginForm = ({ account }) => {
         Axios.post('http://localhost:8080/login',{
             id: id,
             password: password,
-            role: role,
+            role: account,
+        }, function(data){
+            if (data == "error") {
+
+            }
         })
     };
 
@@ -35,9 +38,6 @@ const LoginForm = ({ account }) => {
                 {(() => {
                     switch (account) {
                         case 'medecin':
-                            if (role != 'medecin') {
-                                handleRole('medecin');
-                            }
                             return (
                                 <div className="login-form-blockline">
                                     <div className="login-label-id">
@@ -55,9 +55,6 @@ const LoginForm = ({ account }) => {
                                 </div>
                             );
                         case 'pharma':
-                            if (role != 'pharma') {
-                                handleRole('pharma');
-                            }
                             return (
                                 <div className="login-form-blockline">
                                     <div className="login-label-id">
@@ -75,9 +72,6 @@ const LoginForm = ({ account }) => {
                                 </div>
                             );
                         case 'mutuelle':
-                            if (role != 'mutuelle') {
-                                handleRole('mutuelle');
-                            }
                             return (
                                 <div className="login-form-blockline">
                                     <div className="login-label-id">
@@ -95,9 +89,6 @@ const LoginForm = ({ account }) => {
                                 </div>
                             );
                         default:
-                            if (role != 'patient') {
-                                handleRole('patient');
-                            }
                             return (
                                 <div className="login-form-blockline">
                                     <div className="login-label-id">
