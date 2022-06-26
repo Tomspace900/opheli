@@ -61,7 +61,7 @@ CREATE TABLE Pharmacie(
 CREATE TABLE Mutuelle(
    IdMutuelle CHAR(11) NOT NULL,
    IdUtilisateur INT NOT NULL,
-   PRIMARY KEY(IdUtilisateur,IdMutuelle),
+   PRIMARY KEY(IdMutuelle, IdUtilisateur),
    UNIQUE(IdUtilisateur),
    FOREIGN KEY(IdUtilisateur) REFERENCES Utilisateur(IdUtilisateur)
 )ENGINE=InnoDB;
