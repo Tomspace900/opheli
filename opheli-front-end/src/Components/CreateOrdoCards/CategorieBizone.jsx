@@ -1,11 +1,9 @@
-import React, { Component, useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import SoinCard from './SoinCard';
 
 //pour Ordonnance bizone
 function CategorieBizone() {
     //const [, forceRerender] = useReducer(x => x + 1, 0);
-
-    const [categorie, setCategorie] = useState('simple');
 
     const [indexALD, setIndexALD] = useState(1);
     const [index, setIndex] = useState(1);

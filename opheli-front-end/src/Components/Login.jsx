@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import '../CSS/Login.css';
-import $ from 'jquery';
 import LoginForm from './Login-cards/LoginForm';
 import RegisterMedecin from './Login-cards/RegisterMedecin';
 import RegisterClient from './Login-cards/RegisterClient';
