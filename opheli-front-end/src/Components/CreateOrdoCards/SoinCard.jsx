@@ -1,17 +1,15 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-//Soin pour append dans Catégorie
-export default class SoinCard extends Component {
+const SoinCard = ({ soin }) => {
+    return (
+        <div id={soin}>
+            <label htmlFor={'nom' + soin}>Nom du soin: </label>
+            <input type="text" id={'nom' + soin} name={'nom' + soin}></input>
+            <label htmlFor={'desc' + soin}>Description du soin: </label>
+            <input type="text" id={'desc' + soin} name={'desc' + soin}></input>
+            <br />
+        </div>
+    );
+};
 
-    render(){
-        return(
-            <div>
-                <label htmlFor="nomSoin">Nom du soin</label>
-                <input type="text" id="nomSoin" name="nomSoin"></input>
-                <label htmlFor="descSoin">Description du soin</label>
-                <input type="text" id="descSoin" name="descSoin"></input>
-                {/*<button onClick="delSoin">Supprimer</button>*/}
-            </div>
-        )
-    }
-}
+export default SoinCard;

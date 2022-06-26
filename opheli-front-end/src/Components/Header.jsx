@@ -26,7 +26,7 @@ const Header = () => {
             {connected ? (
                 <div className="header-profile">
                     <Link to={'/profil'} className="header-user-link">
-                        <svg class="header-user-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <svg className="header-user-svg" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <circle cx="12" cy="7" r="4" />
                             <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
@@ -40,10 +40,10 @@ const Header = () => {
                     <div className="header-logout-link">
                         <svg
                             onClick={handleConnect}
-                            class="header-logout-svg"
+                            className="header-logout-svg"
                             viewBox="0 0 24 24"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
+                            strokeLinecap="round"
+                            strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
                             <path d="M7 12h14l-3 -3m0 6l3 -3" />

@@ -97,8 +97,10 @@ const RegisterMedecin = ({ account }) => {
     return (
         <form
             className="register-form"
-            action="http://localhost/opheli/opheli-back-end/PHP/login/login_pro.php"
-            method="post">
+            // action="http://localhost/opheli/opheli-back-end/PHP/login/login_pro.php"
+            // method="post"
+            // onSubmit={(event) => handleSumbit(event)}
+        >
             <div className="register-form-doubleline">
                 <div className="register-form-blockdoubleline">
                     <div className="register-label-firstname">
