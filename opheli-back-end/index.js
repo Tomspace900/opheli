@@ -3,12 +3,13 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
+const { PORT, USER, PASSWORD } = require('./const');
 
 const db = mysql.createPool({
   host: "localhost",
-  port:3306,
-  user: "root",
-  password: "Bqyagooc45",
+  port: PORT,
+  user: USER,
+  password: PASSWORD,
   database: "opheli"
 })
 
