@@ -1,0 +1,165 @@
+.ordo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 5% auto;
+    border: #5ccdc4a9 solid 2px;
+    box-shadow: var(--shadow-grey-small);
+    padding: 3% 5%;
+    border-radius: 30px;
+    min-width: 400px;
+    max-width: 500px;
+}
+
+.ordo button {
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #4a565a;
+    border: solid #4a565a 1px;
+    background: none;
+}
+
+.ordo input {
+    color: #4a565a;
+    border: solid #4a565a 1px;
+    background: none;
+}
+
+.ordo-title {
+    font-size: 1.6em;
+}
+
+.ordo-medecin {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 95%;
+    padding: 10px 5%;
+    margin-top: 20px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+}
+
+.ordo-docteur {
+    text-align: start;
+}
+
+.ordo-cabinet {
+    text-align: end;
+}
+
+.ordo-date {
+    width: 95%;
+    padding: 10px 5%;
+    text-align: end;
+    margin-top: 10px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+}
+
+#ordo-medecin-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#medecin-prolonger {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+#medecin-prolonger input {
+    width: 30px;
+}
+
+.ordo-patient {
+    width: 95%;
+    padding: 10px 5%;
+    text-align: start;
+    margin-top: 10px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+}
+
+.ordo-soins {
+    width: 100%;
+}
+
+.soin-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+    padding: 3%;
+}
+
+#medecin-soin-name {
+    text-align: justify;
+    max-width: 100%;
+}
+#medecin-soin-desc,
+#client-soin-desc {
+    font-size: 0.9em;
+}
+
+#mutuelle-soin-name {
+    width: 50%;
+    text-align: start;
+}
+#mutuelle-soin-price {
+    width: 50%;
+    text-align: end;
+    margin-right: 5%;
+}
+
+#client-soin-name {
+    width: 70%;
+    text-align: start;
+}
+#client-soin-use {
+    width: 30%;
+}
+
+#pharma-soin-name {
+    max-width: 30%;
+    min-width: 20%;
+    text-align: start;
+}
+#pharma-soin-generique {
+    min-width: 30%;
+    text-align: center;
+}
+#pharma-soin-use {
+    max-width: 20%;
+    min-width: 10%;
+}
+#pharma-soin-price {
+    max-width: 20%;
+    min-width: 10%;
+}
+#pharma-soin-input-price {
+    width: 40px;
+}
+
+.ordo-notes {
+    width: 95%;
+    padding: 10px 5%;
+    text-align: justify;
+    text-indent: 5%;
+    margin-top: 10px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+}
+
+.ordo-qrcode {
+    width: 95%;
+    padding: 10px 5%;
+    text-align: center;
+    text-indent: 5%;
+    margin-top: 10px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+}
