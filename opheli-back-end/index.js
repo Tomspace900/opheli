@@ -8,7 +8,7 @@ const {PORT, USER, PASSWORD} = require("./const");
 
 const db = mysql.createPool({
   host: "localhost",
-  port:PORT,
+  port: PORT,
   user: USER,
   password: PASSWORD,
   database: "opheli"
