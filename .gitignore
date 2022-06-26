@@ -29,3 +29,5 @@ opheli-front-end/package-lock.json
 opheli-front-end/package.json
 opheli-back-end/PHP/utiles/connexion.php
 opheli-back-end/package.json
+opheli-back-end/package-lock.json
+opheli-back-end/node_modules
