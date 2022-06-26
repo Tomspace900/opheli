@@ -1,0 +1,102 @@
+.create-ordo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 5% auto;
+    border: #5ccdc4a9 solid 2px;
+    box-shadow: var(--shadow-grey-small);
+    padding: 3% 5%;
+    border-radius: 30px;
+    min-width: 400px;
+    max-width: 500px;
+}
+
+.create-ordo-title {
+    font-size: 1.6em;
+}
+
+.create-ordo-secu,
+.create-ordo-categorie-select,
+.create-ordo-categorie,
+.create-ordo-notes {
+    width: 95%;
+    padding: 10px 5%;
+    margin-top: 10px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+}
+
+.create-ordo-secu {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-ordo-categorie-select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-ordo-categorie {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-ordo-categorie-title {
+    font-size: 1.2em;
+    margin: 2% 0;
+}
+
+.create-ordo-categorie-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-ordo-categorie-use input {
+    width: 40px;
+}
+
+.create-ordo-soin-card {
+    width: 100%;
+    margin-top: 2%;
+    padding-top: 2%;
+    border-top: #5ccdc4a9 solid 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-ordo-soin-card-name {
+    width: 40%;
+}
+
+.create-ordo-soin-card-name input {
+    width: 80%;
+}
+
+.create-ordo-soin-card-desc textarea {
+    width: 90%;
+    height: 50px;
+}
+
+.create-ordo-soin-card-desc {
+    width: 60%;
+}
+
+.create-ordo-notes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-ordo-notes textarea {
+    width: 95%;
+    height: 80px;
+}

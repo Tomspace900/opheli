@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
-import SoinCard from './CreateOrdoCards/SoinCard';
 
 const Ordonnance = () => {
-    const [login, setLogin] = useState('medecin');
+    const [login, setLogin] = useState('pharma');
     const [src, setSrc] = useState('');
 
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
@@ -13,6 +12,15 @@ const Ordonnance = () => {
         QRCode.toDataURL(link).then(setSrc);
         console.log('src : ' + src);
     }, []);
+
+    function mouseOver(e) {
+        e.target.style.color = '#5ccdc4a9';
+        e.target.style.border = 'solid #5ccdc4a9 1px';
+    }
+    function mouseOut(e) {
+        e.target.style.color = '#4a565a';
+        e.target.style.border = 'solid #4a565a 1px';
+    }
 
     const OrdoMedecin = () => {
         return (
@@ -32,15 +40,6 @@ const Ordonnance = () => {
             </div>
         );
     };
-
-    function mouseOver(e) {
-        e.target.style.color = '#5ccdc4a9';
-        e.target.style.border = 'solid #5ccdc4a9 1px';
-    }
-    function mouseOut(e) {
-        e.target.style.color = '#4a565a';
-        e.target.style.border = 'solid #4a565a 1px';
-    }
 
     const OrdoDate = () => {
         const [displayProlonger, setDisplayProlonger] = useState(false);
@@ -200,6 +199,12 @@ const Ordonnance = () => {
 
         const [displayGenerique, setDisplayGenerique] = useState(false);
 
+        // verifier que tout les champs sont remplis si modif
+        // Si generique : nom + delivré
+        // Si delivré : prix
+        // doit renvoyer une variable true
+        function submitGenerique() {}
+
         switch (login) {
             case 'medecin':
                 return (
@@ -349,6 +354,36 @@ const Ordonnance = () => {
         setQrCode((n) => !n);
     }
 
+    const ValiderOrdo = () => {
+        switch (login) {
+            case 'medecin':
+                return (
+                    <button className="ordo-submit" onClick={submitOrdo} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                        Valider
+                    </button>
+                );
+            case 'pharma':
+                return (
+                    <button className="ordo-submit" onClick={submitOrdo} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                        Valider
+                    </button>
+                );
+            default:
+                return null;
+        }
+    };
+
+    function submitOrdo() {
+        switch (login) {
+            case 'medecin':
+                break;
+            case 'pharma':
+                break;
+            default:
+                return null;
+        }
+    }
+
     return (
         <div className="ordo">
             <h1 className="ordo-title">Ordonnance N 123456</h1>
@@ -358,6 +393,7 @@ const Ordonnance = () => {
             <OrdoSoins />
             <OrdoNotes />
             <OrdoQR />
+            <ValiderOrdo />
         </div>
     );
 };

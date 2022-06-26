@@ -1,13 +1,23 @@
-input, button {
-    margin: 5px;
-    border: 2px solid #5ccdc4a9;
+input,
+textarea {
     border-radius: 4px;
-    padding: 5px;
     font-family: var(--font-main);
     color: #4a565a;
+    border: solid #4a565a 1px;
+    background: none;
+    margin: 5px;
+    padding: 5px;
 }
 button {
-    background: aliceblue;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-family: var(--font-main);
+    color: #4a565a;
+    background: none;
+    border: solid #4a565a 1px;
+    border-radius: 4px;
+    margin: 5px;
+    padding: 5px;
 }
 
 .supp {
@@ -15,8 +25,3 @@ button {
     background: #edbebe;
     color: black;
 }
-
-label {
-    margin: 0 20px 0 0;
-}
-

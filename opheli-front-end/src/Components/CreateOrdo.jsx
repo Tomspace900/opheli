@@ -1,8 +1,7 @@
-import React, { Component, useEffect, useReducer, useState } from 'react';
-import form from './Form';
-import $ from 'jquery';
+import React, { useState } from 'react';
+import '../CSS/OrdoCards/CreateOrdo.css';
 import CategorieSimple from './CreateOrdoCards/CategorieSimple';
-import CategorieBizone from './CreateOrdoCards/CategorieBizone';
+import CategorieALD from './CreateOrdoCards/CategorieALD';
 import CategorieException from './CreateOrdoCards/CategorieException';
 
 function App() {
@@ -15,54 +14,59 @@ function App() {
         console.log(e.target.value);
     };
 
-    const handleSumbit = (e) => {
-        e.preventDefault();
-        const form = $(e.target);
-        $.ajax({
-            type: 'POST',
-            url: form.attr('action'),
-            data: form.serialize(),
-            success(data) {
-                //setResult(data);
-            },
-        });
-    };
+    function mouseOver(e) {
+        e.target.style.color = '#5ccdc4a9';
+        e.target.style.border = 'solid #5ccdc4a9 1px';
+    }
+    function mouseOut(e) {
+        e.target.style.color = '#4a565a';
+        e.target.style.border = 'solid #4a565a 1px';
+    }
+
     return (
-        <div className="App">
-            <h1>Créer une ordonnance</h1>
-            <form
-                action="http://opheli/opheli-back-end/PHP/login/create_ordo.php"
-                method="post"
-                onSubmit={(event) => handleSumbit(event)}>
-                <label htmlFor="secu">Numéro de sécurité sociale du patient: </label>
-                <input type="text" id="secu" name="secu" />
-                <br />
-                {/* Je pense que la date de prescription est par defaut la date du jour, c'est pas au medecin de la remplir
-                 <label htmlFor="date">Date de prescription: </label>
-                <input type="date" id="date" name="date" />
-                <br /> */}
-                <label htmlFor="type">Type de l'ordonannce: </label>
-                <select id="type" name="type" onChange={(event) => handleChangeCategorie(event)}>
-                    <option value="simple"> Simple </option>
-                    <option value="bizone"> Bi-zone </option>
-                    <option value="exception"> Médicaments d'exception </option>
-                </select>
-                {(() => {
-                    switch (categorie) {
-                        case 'bizone':
-                            return <CategorieBizone />;
-                        case 'exception':
-                            return <CategorieException />;
-                        default:
-                            return <CategorieSimple />;
-                    }
-                })()}
-                <br />
-                <label htmlFor="notes">Notes: </label>
-                <input type="text" id="notes" name="notes" />
-                <br />
-                <button type="submit">Valider</button>
-            </form>
+        <div className="create-ordo">
+            <h1 className="create-ordo-title">Délivrer une ordonnance</h1>
+            <div className="create-ordo-secu">
+                <div>
+                    <label>Numéro de sécurité sociale du patient</label>
+                </div>
+                <div>
+                    <input type="text" placeholder="1234567890123" />
+                </div>
+            </div>
+            <div className="create-ordo-categorie-select">
+                <div className="create-ordo-categorie-select-title">
+                    <label>Type de l'ordonannce</label>
+                </div>
+                <div className="create-ordo-categorie-select-input">
+                    <select onChange={(event) => handleChangeCategorie(event)}>
+                        <option value="simple"> Simple </option>
+                        <option value="bizone"> Bi-zone </option>
+                        <option value="exception"> Médicaments d'exception </option>
+                    </select>
+                </div>
+            </div>
+            {(() => {
+                switch (categorie) {
+                    case 'bizone':
+                        return (
+                            <>
+                                <CategorieALD />
+                                <CategorieSimple />
+                            </>
+                        );
+                    case 'exception':
+                        return <CategorieException />;
+                    default:
+                        return <CategorieSimple />;
+                }
+            })()}
+            <div className="create-ordo-notes">
+                <textarea type="text" placeholder="Notes" />
+            </div>
+            <button className="" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                Valider
+            </button>
         </div>
     );
 }

@@ -12,20 +12,6 @@
     max-width: 500px;
 }
 
-.ordo button {
-    cursor: pointer;
-    font-size: 0.9em;
-    color: #4a565a;
-    border: solid #4a565a 1px;
-    background: none;
-}
-
-.ordo input {
-    color: #4a565a;
-    border: solid #4a565a 1px;
-    background: none;
-}
-
 .ordo-title {
     font-size: 1.6em;
 }
@@ -162,4 +148,10 @@
     margin-top: 10px;
     box-shadow: var(--shadow-grey-small);
     border-radius: 10px;
+}
+
+.ordo-submit {
+    font-size: 1em;
+    margin-top: 20px;
+    width: 100px;
 }

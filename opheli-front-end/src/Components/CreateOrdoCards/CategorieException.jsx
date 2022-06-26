@@ -22,19 +22,33 @@ function CategorieException() {
         }
     };
 
+    function mouseOver(e) {
+        e.target.style.color = '#5ccdc4a9';
+        e.target.style.border = 'solid #5ccdc4a9 1px';
+    }
+    function mouseOut(e) {
+        e.target.style.color = '#4a565a';
+        e.target.style.border = 'solid #4a565a 1px';
+    }
+
     return (
-        <div className="ordoCategorie">
-            <h1>Soins remboursables</h1>
-            <label htmlFor="nbRenouv">Nombre de renouvellements: </label>
-            <input type="number" id="nbRenouv" name="nbRenouv" />
-            <br />
-            <button onClick={addSoin}> Ajouter soin</button>
-            <button onClick={delSoin}>Supprimer soin</button>
-            <div id="Soins">
-                {Soins.map((soin) => {
-                    return <SoinCard soin={soin} />;
-                })}
+        <div className="create-ordo-categorie">
+            <h1 className="create-ordo-categorie-title">Soins exceptionnels</h1>
+            <div className="create-ordo-categorie-use">
+                <label>Nombre d'utilisations</label>
+                <input type="number" placeholder="0" />
             </div>
+            <div className="create-ordo-catgeorie-buttons">
+                <button onClick={addSoin} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                    Ajouter
+                </button>
+                <button onClick={delSoin} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                    Supprimer
+                </button>
+            </div>
+            {Soins.map((soin) => {
+                return <SoinCard soin={soin} />;
+            })}
         </div>
     );
 }

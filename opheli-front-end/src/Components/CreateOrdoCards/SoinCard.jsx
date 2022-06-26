@@ -2,12 +2,13 @@ import React from 'react';
 
 const SoinCard = ({ soin }) => {
     return (
-        <div id={soin}>
-            <label>Nom du soin: </label>
-            <input type="text"></input>
-            <label>Description du soin: </label>
-            <input type="text"></input>
-            <br />
+        <div id={soin} className="create-ordo-soin-card">
+            <div className="create-ordo-soin-card-name">
+                <input type="text" placeholder="Nom du soin" />
+            </div>
+            <div className="create-ordo-soin-card-desc">
+                <textarea type="text" placeholder="Description" />
+            </div>
         </div>
     );
 };

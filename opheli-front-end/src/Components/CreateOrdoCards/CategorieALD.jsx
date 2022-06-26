@@ -1,23 +1,23 @@
-import React, { Component, useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import SoinCard from './SoinCard';
 
-//pour Ordonnance Simple
-function CategorieSimple() {
+//pour Ordonnance bizone
+function CategorieBizone() {
     //const [, forceRerender] = useReducer(x => x + 1, 0);
 
-    const [index, setIndex] = useState(1);
-    const [Soins, setSoins] = useState([]);
+    const [indexALD, setIndexALD] = useState(1);
+    const [SoinsALD, setSoinsALD] = useState([]);
 
-    const addSoin = (e) => {
-        Soins.push('Soin' + index);
-        setIndex(index + 1);
+    const addSoinALD = (e) => {
+        SoinsALD.push('SoinALD' + indexALD);
+        setIndexALD(indexALD + 1);
         //forceRerender();
     };
 
-    const delSoin = (e) => {
-        if (Soins.length > 0) {
-            Soins.pop();
-            setIndex(index - 1);
+    const delSoinALD = (e) => {
+        if (SoinsALD.length > 0) {
+            SoinsALD.pop();
+            setIndexALD(indexALD - 1);
             //forceRerender();
         }
     };
@@ -33,24 +33,24 @@ function CategorieSimple() {
 
     return (
         <div className="create-ordo-categorie">
-            <h1 className="create-ordo-categorie-title">Soins classiques</h1>
+            <h1 className="create-ordo-categorie-title">Soins ALD</h1>
             <div className="create-ordo-categorie-use">
                 <label>Nombre d'utilisations</label>
                 <input type="number" placeholder="0" />
             </div>
             <div className="create-ordo-catgeorie-buttons">
-                <button onClick={addSoin} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                <button onClick={addSoinALD} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     Ajouter
                 </button>
-                <button onClick={delSoin} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                <button onClick={delSoinALD} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     Supprimer
                 </button>
             </div>
-            {Soins.map((soin) => {
+            {SoinsALD.map((soin) => {
                 return <SoinCard soin={soin} />;
             })}
         </div>
     );
 }
 
-export default CategorieSimple;
+export default CategorieBizone;
