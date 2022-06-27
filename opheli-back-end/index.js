@@ -1,10 +1,16 @@
+const {Utilisateur, Patient, Prescripteur} =  require("./createAccounts");
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
 var bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
+var cors = require('cors')
 //variables
+var code = "";
+var id = "";
+
+app.use(cors());
 
 const db = mysql.createPool({
   host: "localhost",
@@ -18,7 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
 
 app.post('/login',(req,res) => {
-  const id = req.body.id;
+  const secu = req.body.id;
   let password = req.body.password;
   const role = req.body.role;
   let request ="";
@@ -33,13 +39,20 @@ app.post('/login',(req,res) => {
       request = "SELECT IdUtilisateur from patient WHERE SecuriteSociale = ?;";
       break;
   }
-  db.query(request, [id], (err, result)=> {
-    console.log(result)
+  db.query(request, [secu], (err, iduser)=> {
+    if (iduser == null || iduser.length == 0) {
+      return res.end("Les données entrées ne correspondent pas à celles d'un compte.")
+    }
+    console.log(iduser)
     request = "SELECT MotDePasse from utilisateur WHERE IdUtilisateur = ?;";
-    db.query(request, [result[0].IdUtilisateur], (err, result)=> {
-      bcrypt.compare(password, result[0].MotDePasse, function(err, result) {
-        if (result != true) {
-          result.end()
+    db.query(request, [iduser[0].IdUtilisateur], (err, mdp)=> {
+      bcrypt.compare(password, mdp[0].MotDePasse, function(err, bonmdp) {
+        if (bonmdp == true) {
+          code = iduser[0].IdUtilisateur;
+          id = secu;
+          return res.redirect('http://localhost:3000/list');
+        } else {
+          return res.end("Les données entrées ne correspondent pas à celles d'un compte.")
         }
       });
     });
@@ -54,11 +67,7 @@ app.post('/getOrdo',(req, res) => {
   })
 })
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.post('')
 
 app.listen(8080, () => {
   console.log("Le serveur est bien lancé");
