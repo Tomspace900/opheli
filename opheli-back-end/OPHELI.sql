@@ -1,13 +1,14 @@
-DROP TABLE IF EXISTS Code;
-CREATE TABLE IF NOT EXISTS Code(
+DROP DATABASE IF EXISTS opheli;
+CREATE DATABASE IF NOT EXISTS opheli;
+USE opheli;
+
+CREATE TABLE Code(
    IdCode VARCHAR(50) NOT NULL,
    Code INT NOT NULL,
    PRIMARY KEY(IdCode)
 )ENGINE=InnoDB;
 
-
-DROP TABLE IF EXISTS Utilisateur;
-CREATE TABLE IF NOT EXISTS Utilisateur(
+CREATE TABLE Utilisateur(
    IdUtilisateur INT AUTO_INCREMENT NOT NULL,
    Nom VARCHAR(50) NOT NULL,
    Prenom VARCHAR(50),
@@ -19,8 +20,7 @@ CREATE TABLE IF NOT EXISTS Utilisateur(
    FOREIGN KEY(IdCode) REFERENCES Code(IdCode)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Patient;
-CREATE TABLE IF NOT EXISTS Patient(
+CREATE TABLE Patient(
    IdPatient CHAR(13) NOT NULL,
    DateNaissance DATE NOT NULL,
    Sexe BOOL NOT NULL,
@@ -32,8 +32,7 @@ CREATE TABLE IF NOT EXISTS Patient(
    FOREIGN KEY(IdUtilisateur) REFERENCES Utilisateur(IdUtilisateur)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Pharmacien;
-CREATE TABLE IF NOT EXISTS Pharmacien(
+CREATE TABLE Pharmacien(
    IdPharmacien CHAR(11) NOT NULL,
    IdUtilisateur INT NOT NULL,
    PRIMARY KEY(IdPharmacien, IdUtilisateur),
@@ -41,15 +40,13 @@ CREATE TABLE IF NOT EXISTS Pharmacien(
    FOREIGN KEY(IdUtilisateur) REFERENCES Utilisateur(IdUtilisateur)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Specialite;
-CREATE TABLE IF NOT EXISTS Specialite(
+CREATE TABLE Specialite(
    IdSpecialite INT AUTO_INCREMENT NOT NULL,
    NomSpecialite VARCHAR(50) NOT NULL,
    PRIMARY KEY(IdSpecialite)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Categorie;
-CREATE TABLE IF NOT EXISTS Categorie(
+CREATE TABLE Categorie(
    IdCategorie INT AUTO_INCREMENT NOT NULL,
    Type VARCHAR(50) NOT NULL,
    NbRenouvTotal INT NOT NULL,
@@ -57,8 +54,7 @@ CREATE TABLE IF NOT EXISTS Categorie(
    PRIMARY KEY(IdCategorie)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Adresse;
-CREATE TABLE IF NOT EXISTS Adresse(
+CREATE TABLE Adresse(
    IdAdresse INT AUTO_INCREMENT NOT NULL,
    Rue VARCHAR(50) NOT NULL,
    CodePostal VARCHAR(5) NOT NULL,
@@ -66,8 +62,7 @@ CREATE TABLE IF NOT EXISTS Adresse(
    PRIMARY KEY(IdAdresse)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Pharmacie;
-CREATE TABLE IF NOT EXISTS Pharmacie(
+CREATE TABLE Pharmacie(
    IdPharmacie INT AUTO_INCREMENT NOT NULL,
    NomPharmacie VARCHAR(50) NOT NULL,
    IdAdresse INT NOT NULL,
@@ -76,8 +71,7 @@ CREATE TABLE IF NOT EXISTS Pharmacie(
    FOREIGN KEY(IdAdresse) REFERENCES Adresse(IdAdresse)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Mutuelle;
-CREATE TABLE IF NOT EXISTS Mutuelle(
+CREATE TABLE Mutuelle(
    IdMutuelle CHAR(11) NOT NULL,
    IdUtilisateur INT NOT NULL,
    PRIMARY KEY(IdUtilisateur,IdMutuelle),
@@ -85,15 +79,13 @@ CREATE TABLE IF NOT EXISTS Mutuelle(
    FOREIGN KEY(IdUtilisateur) REFERENCES Utilisateur(IdUtilisateur)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Admin;
-CREATE TABLE IF NOT EXISTS Admin(
+CREATE TABLE Admin(
    IdUtilisateur INT NOT NULL,
    PRIMARY KEY(IdUtilisateur),
    FOREIGN KEY(IdUtilisateur) REFERENCES Utilisateur(IdUtilisateur)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Prescripteur;
-CREATE TABLE IF NOT EXISTS Prescripteur(
+CREATE TABLE Prescripteur(
    IdPrescripteur CHAR(11) NOT NULL,
    IdAdresse INT NOT NULL,
    IdSpecialite INT NOT NULL,
@@ -101,12 +93,11 @@ CREATE TABLE IF NOT EXISTS Prescripteur(
    PRIMARY KEY(IdPrescripteur),
    UNIQUE(IdUtilisateur),
    FOREIGN KEY(IdAdresse) REFERENCES Adresse(IdAdresse),
-   FOREIGN KEY(IdSpecialite) REFERENCES Spécialité(IdSpecialite),
+   FOREIGN KEY(IdSpecialite) REFERENCES Specialite(IdSpecialite),
    FOREIGN KEY(IdUtilisateur) REFERENCES Utilisateur(IdUtilisateur)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Ordonnance;
-CREATE TABLE IF NOT EXISTS Ordonnance(
+CREATE TABLE Ordonnance(
    IdOrdonnance INT AUTO_INCREMENT NOT NULL,
    Type VARCHAR(50) NOT NULL,
    DateCreation DATE NOT NULL,
@@ -119,8 +110,7 @@ CREATE TABLE IF NOT EXISTS Ordonnance(
    FOREIGN KEY(IdPatient) REFERENCES Patient(IdPatient)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Soin;
-CREATE TABLE IF NOT EXISTS Soin(
+CREATE TABLE Soin(
    IdSoin INT AUTO_INCREMENT NOT NULL,
    Nom VARCHAR(50) NOT NULL,
    Description TEXT NOT NULL,
@@ -133,8 +123,7 @@ CREATE TABLE IF NOT EXISTS Soin(
    FOREIGN KEY(IdOrdonnance) REFERENCES Ordonnance(IdOrdonnance)
 )ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS Travaille;
-CREATE TABLE IF NOT EXISTS Travaille(
+CREATE TABLE Travaille(
    IdPharmacien CHAR(11) NOT NULL,
    IdPharmacie INT NOT NULL,
    PRIMARY KEY(IdPharmacien, IdPharmacie),
