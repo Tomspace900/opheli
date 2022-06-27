@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS Code;
 CREATE TABLE IF NOT EXISTS Code(
-   IdCode VARCHAR(50),
-   Code INT,
+   IdCode VARCHAR(50) NOT NULL,
+   Code INT NOT NULL,
    PRIMARY KEY(IdCode)
 )ENGINE=InnoDB;
 
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS Ordonnance(
    Type VARCHAR(50) NOT NULL,
    DateCreation DATE NOT NULL,
    DateExpiration DATE NOT NULL,
-   Notes TEXT NOT NULL,
+   Notes TEXT,
    IdPrescripteur CHAR(11) NOT NULL,
    IdPatient CHAR(13) NOT NULL,
    PRIMARY KEY(IdOrdonnance),
@@ -124,8 +124,8 @@ CREATE TABLE IF NOT EXISTS Soin(
    IdSoin INT AUTO_INCREMENT NOT NULL,
    Nom VARCHAR(50) NOT NULL,
    Description TEXT NOT NULL,
-   Prix DECIMAL(5,2) NOT NULL,
-   Alternative VARCHAR(50) NOT NULL,
+   Prix DECIMAL(5,2),
+   Alternative VARCHAR(50),
    IdCategorie INT NOT NULL,
    IdOrdonnance INT NOT NULL,
    PRIMARY KEY(IdSoin),
