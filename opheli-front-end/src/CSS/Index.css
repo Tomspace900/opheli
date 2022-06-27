@@ -9,5 +9,7 @@
     --shadow-blue: 0px 0px 10px 0px #5ccdc4a9;
     --shadow-grey: 0px 0px 5px 5px #63636333;
     --shadow-grey-small: 0px 0px 10px 2px #6363631e;
-    --color-main: #4a565a;
+    --main--grey: #4a565a;
+    --main-blue: #5ccdc4a9;
+    --main-purple: #970063;
 }

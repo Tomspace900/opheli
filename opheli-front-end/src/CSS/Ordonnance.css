@@ -10,6 +10,7 @@
     border-radius: 30px;
     min-width: 400px;
     max-width: 500px;
+    background-color: #ffffff;
 }
 
 .ordo-title {
@@ -69,7 +70,7 @@
 }
 
 .ordo-soins {
-    width: 100%;
+    width: 90%;
 }
 
 .soin-card {
