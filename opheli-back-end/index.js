@@ -61,7 +61,7 @@ app.use(function(req, res, next) {
 });
 
 app.listen(8080, () => {
-  console.log("work");
+  console.log("Le serveur est bien lancé");
 });
 
 /* GET home page. */
