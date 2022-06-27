@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 
 const Ordonnance = () => {
     const [login, setLogin] = useState('client');
@@ -15,11 +15,13 @@ const Ordonnance = () => {
     }, []);
 
     useEffect(() => {
-        Axios.post('http://localhost:8080/getOrdonnance', {
-            idOrdo: idOrdo,
-        }).then((response) => {
-            console.log(response.data);
-        });
+        axios
+            .post('http://localhost:8080/getOrdonnance', {
+                idOrdo: idOrdo,
+            })
+            .then((response) => {
+                console.log(response.data);
+            });
     }, []);
 
     function mouseOver(e) {
