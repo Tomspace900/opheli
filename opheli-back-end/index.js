@@ -63,3 +63,13 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;*/
+
+app.post('/getOrdonnance', (req, res) => {
+  const idOrdo = req.body.idOrdo;
+  //const request = "INSERT INTO ordonnance(IdOrdonnance, DatePrescription, Type, SecuriteSociale, IdPrescripteur) VALUES (12345, '2020-12-23', 'simple', 12345, 12345)";
+  const request = "SELECT * FROM ordonnance WHERE IdOrdonnance = ?";
+  db.query(request, [idOrdo], (err, result) => {
+    res.send(result);
+    //res.send("success");
+  })
+})
