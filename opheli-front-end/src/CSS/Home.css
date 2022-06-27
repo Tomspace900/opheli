@@ -16,7 +16,8 @@
     justify-content: center;
     text-align: center;
     text-decoration: none;
-    color: var(--color-main);
+    color: var(--main-grey);
+    background-color: #ffffff;
     border: #5ccdc4a9 solid 2px;
     padding: 0 20px 20px 20px;
     border-radius: 30px;
@@ -51,6 +52,6 @@
 .home svg {
     width: 33%;
     stroke-width: 1.5;
-    stroke: var(--color-main);
+    stroke: #4a565a;
     fill: none;
 }

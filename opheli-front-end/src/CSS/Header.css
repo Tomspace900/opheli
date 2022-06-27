@@ -5,6 +5,7 @@
     height: 130px;
     border-radius: 0 0 40px 40px;
     box-shadow: var(--shadow-grey);
+    background-color: #ffffff;
 }
 
 .opheli {

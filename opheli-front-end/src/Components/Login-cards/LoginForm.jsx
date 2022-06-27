@@ -1,13 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Axios from "axios";
+import Axios from 'axios';
 
 const LoginForm = ({ account }) => {
     // Donnees a envoyer à la BDD
     const [id, setId] = useState('');
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleId = (e) => {
         setId(e.target.value);
@@ -18,15 +18,19 @@ const LoginForm = ({ account }) => {
     };
 
     const submitLogin = () => {
-        Axios.post('http://localhost:8080/login',{
-            id: id,
-            password: password,
-            role: account,
-        }, function(data){
-            if (data == "error") {
-                setError("Votre role, votre numéro ou votre mot de passe ne correspond pas.")
+        Axios.post(
+            'http://localhost:8080/login',
+            {
+                id: id,
+                password: password,
+                role: account,
+            },
+            function (data) {
+                if (data == 'error') {
+                    setError('Votre role, votre numéro ou votre mot de passe ne correspond pas.');
+                }
             }
-        })
+        );
     };
 
     return (

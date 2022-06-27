@@ -46,6 +46,14 @@ app.post('/login',(req,res) => {
   });
 })
 
+app.post('/getOrdo',(req, res) => {
+  const idOrdo = req.body.idOrdo;
+  const sqlRequest = 'SELECT * FROM ordonnance WHERE IdOrdonnance = ?';
+  db.query(sqlRequest, [idOrdo], (err, result) => {
+    res.send(result);
+  })
+})
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -53,7 +61,7 @@ app.use(function(req, res, next) {
 });
 
 app.listen(PORT, () => {
-  console.log("work");
+  console.log("Le serveur est bien lancé");
 });
 
 /* GET home page. */
