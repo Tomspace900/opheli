@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import Axios from "axios";
 
 const RegisterMedecin = ({ account }) => {
     // Donnees a envoyer à la BDD
@@ -13,6 +14,7 @@ const RegisterMedecin = ({ account }) => {
     const [city, setCity] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const [error, setError] = useState('');
 
     // Constante booleenne a utiliser pour envoyer les donnees
     const [submitted, setSubmitted] = useState(false);
@@ -90,7 +92,23 @@ const RegisterMedecin = ({ account }) => {
             alert('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
             setSubmitted(true);
-            alert('Ça envoie');
+            Axios.post(
+                'http://localhost:8080/prescripteur',
+                {
+                    nom: surname,
+                    prenom: firstname,
+                    mail: email,
+                    rpps : id,
+                    rue :street,
+                    code : zipcode,
+                    ville : city,
+                    mdp : password
+                }, function (data) {
+                    if (data != null) {
+                        setError(data);
+                    }
+                }
+            );
         }
     };
 
@@ -155,19 +173,6 @@ const RegisterMedecin = ({ account }) => {
                     </div>
                 </div>
             </div>
-            <div className="register-form-line">
-                <div className="register-form-blockline">
-                    <div className="register-label-address">
-                        <label>Adresse de votre cabinet :</label>
-                    </div>
-                    <div className="register-input-address">
-                        <input type="text" onChange={handleAddress} />
-                    </div>
-                </div>
-            </div>
-            <br />
-            <span>OU</span>
-            <br />
             <div className="register-form-tripleline">
                 <div className="register-form-blocktripleline">
                     <div className="register-label-street">
@@ -205,7 +210,8 @@ const RegisterMedecin = ({ account }) => {
                     onMouseLeave={(e) => {
                         e.target.style.color = '#4a565a';
                         e.target.style.border = 'solid #4a565a 1px';
-                    }}>
+                    }}
+                onClick={handleSubmit}>
                     S'inscrire
                 </button>
             </div>

@@ -1,4 +1,4 @@
-const {Utilisateur, Patient, Prescripteur} =  require("./createAccounts");
+const {Utilisateur, Patient, Prescripteur, Pharmacien, Mutuelle} =  require("./createAccounts");
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
@@ -23,6 +23,71 @@ const db = mysql.createPool({
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
 
+app.post('/patient', (req,res) => {
+  console.log(req.body)
+  //Vérification secu
+  request = "SELECT IdPatient from patient WHERE IdPatient = ?;";
+  db.query(request, [req.body.secu], (err, verif)=> {
+    if (verif != null) {
+      return res.end("Un compte avec ces identifiants existe déjà.")
+    }
+  });
+  //Création compte
+  bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+    const patient = new Patient(req.body.secu,req.body.nom,req.body.prenom,req.body.mail,hash)
+    patient.addToDatabase(db)
+  });
+  //Redirection
+});
+
+app.post('/prescripteur', (req,res) => {
+  //Vérification rpps
+  request = "SELECT IdPrescripteur from prescripteur WHERE IdPrescripteur = ?;";
+  db.query(request, [req.body.secu], (err, verif)=> {
+    if (verif != null) {
+      return res.end("Un compte avec ces identifiants existe déjà.")
+    }
+  });
+  //Création compte
+  bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+    const prescripteur = new Prescripteur(req.body.rpps, req.body.specialite, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
+    prescripteur.addtoDatabase(db)
+  });
+  //Redirection
+});
+
+app.post('/pharmacien', (req,res) => {
+  //Vérification rpps
+  request = "SELECT IdPharmacien from pharmacien WHERE IdPharmacien = ?;";
+  db.query(request, [req.body.secu], (err, verif)=> {
+    if (verif != null) {
+      return res.end("Un compte avec ces identifiants existe déjà.")
+    }
+  });
+  //Création compte
+  bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+    const pharmacien = new Pharmacien(req.body.rpps, req.body.idp, req.body.nomp, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
+    pharmacien.addToDatabase(db)
+  });
+  //Redirection
+});
+
+app.post('/mutuelle', (req,res) => {
+  //Vérification mutelle
+  request = "SELECT IdMutuelle from pharmacien WHERE IdMutuelle = ?;";
+  db.query(request, [req.body.id], (err, verif)=> {
+    if (verif != null) {
+      return res.end("Un compte avec ces identifiants existe déjà.")
+    }
+  });
+  //Création compte
+  bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+    const mutuelle = new Mutuelle(req.body.identifiant, req.body.mail, req.body.nom, hash)
+    mutuelle.addToDatabase(db)
+  });
+  //Redirection
+});
+
 app.post('/login',(req,res) => {
   const secu = req.body.id;
   let password = req.body.password;
@@ -43,7 +108,6 @@ app.post('/login',(req,res) => {
     if (iduser == null || iduser.length == 0) {
       return res.end("Les données entrées ne correspondent pas à celles d'un compte.")
     }
-    console.log(iduser)
     request = "SELECT MotDePasse from utilisateur WHERE IdUtilisateur = ?;";
     db.query(request, [iduser[0].IdUtilisateur], (err, mdp)=> {
       bcrypt.compare(password, mdp[0].MotDePasse, function(err, bonmdp) {

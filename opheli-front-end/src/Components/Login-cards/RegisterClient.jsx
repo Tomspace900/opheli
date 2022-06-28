@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import Axios from "axios";
 
 const RegisterClient = () => {
     // Donnees a envoyer à la BDD
@@ -10,6 +11,7 @@ const RegisterClient = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const [error, setError] = useState('');
 
     // Constante booleenne a utiliser pour envoyer les donnees
     const [submitted, setSubmitted] = useState(false);
@@ -78,7 +80,21 @@ const RegisterClient = () => {
             alert('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
             setSubmitted(true);
-            alert('Ça envoie');
+            Axios.post(
+                'http://localhost:8080/patient',
+                {
+                    nom: surname,
+                    prenom: firstname,
+                    date: birthdate,
+                    mail: email,
+                    secu : id,
+                    mdp : password
+                }, function (data) {
+                    if (data != null) {
+                        setError(data);
+                    }
+                }
+            );
         }
     };
 
@@ -159,7 +175,8 @@ const RegisterClient = () => {
                     onMouseLeave={(e) => {
                         e.target.style.color = '#4a565a';
                         e.target.style.border = 'solid #4a565a 1px';
-                    }}>
+                    }}
+                    onClick={handleSubmit}>
                     S'inscrire
                 </button>
             </div>
