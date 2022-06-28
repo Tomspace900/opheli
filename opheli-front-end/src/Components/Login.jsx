@@ -16,33 +16,15 @@ const Login = () => {
     };
 
     const handleLogin = (loginState) => {
+        
         setLogin(loginState);
     };
 
-    // function changeStyle() {
-    //     switch (login) {
-    //         case 'client':
-    //             document.getElementById('client').style.background = '#5ccdc4a9';
-    //             document.getElementById('medecin').style.background = '#ffffff';
-    //             document.getElementById('pharma').style.background = '#ffffff';
-    //             document.getElementById('mutuelle').style.background = '#ffffff';
-    //             break;
-    //         case 'medecin':
-    //             document.getElementById('client').style.background = '#ffffff';
-    //             document.getElementById('medecin').style.background = '#5ccdc4a9';
-    //             document.getElementById('pharma').style.background = '#ffffff';
-    //             document.getElementById('mutuelle').style.background = '#ffffff';
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
     function tabOver(e) {
-        e.target.style.background = '#5ccdc4a9';
+        // e.target.style.background = '#5ccdc4a9';
     }
     function tabOut(e) {
-        e.target.style.background = '#ffffff';
+        // e.target.style.background = '#ffffff';
     }
 
     function mouseOver(e) {
@@ -62,10 +44,14 @@ const Login = () => {
                     <div
                         className="client"
                         id="client"
-                        onMouseEnter={tabOver}
+                        onMouseOver={tabOver}
                         onMouseLeave={tabOut}
                         onClick={() => {
                             handleLogin('client');
+                            document.getElementById('client').style.background = '#5ccdc4a9';
+                            document.getElementById('medecin').style.background = '#ffffff';
+                            document.getElementById('pharma').style.background = '#ffffff';
+                            document.getElementById('mutuelle').style.background = '#ffffff';
                         }}>
                         <span>Client</span>
                     </div>
@@ -76,6 +62,10 @@ const Login = () => {
                         onMouseLeave={tabOut}
                         onClick={() => {
                             handleLogin('medecin');
+                            document.getElementById('client').style.background = '#ffffff';
+                            document.getElementById('medecin').style.background = '#5ccdc4a9';
+                            document.getElementById('pharma').style.background = '#ffffff';
+                            document.getElementById('mutuelle').style.background = '#ffffff';    
                         }}>
                         <span>Medecin</span>
                     </div>
@@ -86,6 +76,10 @@ const Login = () => {
                         onMouseLeave={tabOut}
                         onClick={() => {
                             handleLogin('pharma');
+                            document.getElementById('client').style.background = '#ffffff';
+                            document.getElementById('medecin').style.background = '#ffffff';
+                            document.getElementById('pharma').style.background = '#5ccdc4a9';
+                            document.getElementById('mutuelle').style.background = '#ffffff';
                         }}>
                         <span>Pharmacien</span>
                     </div>
@@ -96,6 +90,10 @@ const Login = () => {
                         onMouseLeave={tabOut}
                         onClick={() => {
                             handleLogin('mutuelle');
+                            document.getElementById('client').style.background = '#ffffff';
+                            document.getElementById('medecin').style.background = '#ffffff';
+                            document.getElementById('pharma').style.background = '#ffffff';
+                            document.getElementById('mutuelle').style.background = '#5ccdc4a9';
                         }}>
                         <span>Mutuelle</span>
                     </div>
