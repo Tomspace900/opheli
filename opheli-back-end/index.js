@@ -123,14 +123,6 @@ app.post('/login',(req,res) => {
   });
 })
 
-app.post('/getOrdo',(req, res) => {
-  const idOrdo = req.body.idOrdo;
-  const sqlRequest = 'SELECT * FROM ordonnance WHERE IdOrdonnance = ?';
-  db.query(sqlRequest, [idOrdo], (err, result) => {
-    res.send(result);
-  })
-})
-
 app.post('')
 
 app.listen(8080, () => {
