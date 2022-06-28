@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mar. 28 juin 2022 à 11:45
+-- Généré le : mar. 28 juin 2022 à 12:07
 -- Version du serveur :  10.4.13-MariaDB
 -- Version de PHP : 7.3.21
 
@@ -78,11 +78,19 @@ CREATE TABLE IF NOT EXISTS `categorie` (
   `IdCategorie` int(11) NOT NULL AUTO_INCREMENT,
   `Type` varchar(50) NOT NULL,
   `NbRenouvTotal` int(11) NOT NULL,
-  `NbRenouvRestants` int(11) NOT NULL,
   `IdOrdonnance` int(11) NOT NULL,
   PRIMARY KEY (`IdCategorie`),
   KEY `IdOrdonnance` (`IdOrdonnance`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `categorie`
+--
+
+INSERT INTO `categorie` (`IdCategorie`, `Type`, `NbRenouvTotal`, `IdOrdonnance`) VALUES
+(1, 'simple', 3, 1),
+(2, 'ALD', 2, 2),
+(3, 'simple', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -138,7 +146,15 @@ CREATE TABLE IF NOT EXISTS `ordonnance` (
   PRIMARY KEY (`IdOrdonnance`),
   KEY `IdPrescripteur` (`IdPrescripteur`),
   KEY `IdPatient` (`IdPatient`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `ordonnance`
+--
+
+INSERT INTO `ordonnance` (`IdOrdonnance`, `Type`, `DateCreation`, `DateExpiration`, `Notes`, `IdPrescripteur`, `IdPatient`) VALUES
+(1, 'simple', '2022-06-28', '2022-08-30', NULL, '12354698351', '1111111111111'),
+(2, 'bizone', '2022-03-13', '2022-04-20', 'Otite externe', '22222222222', '1111111111111');
 
 -- --------------------------------------------------------
 
@@ -251,10 +267,23 @@ CREATE TABLE IF NOT EXISTS `soin` (
   `Description` text NOT NULL,
   `Prix` decimal(5,2) DEFAULT NULL,
   `Alternative` varchar(50) DEFAULT NULL,
+  `NbRestants` int(11) NOT NULL,
   `IdCategorie` int(11) NOT NULL,
   PRIMARY KEY (`IdSoin`),
   KEY `IdCategorie` (`IdCategorie`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `soin`
+--
+
+INSERT INTO `soin` (`IdSoin`, `Nom`, `Description`, `Prix`, `Alternative`, `NbRestants`, `IdCategorie`) VALUES
+(3, 'Doliprane', 'Boite de doliprane (1000mg)', NULL, NULL, 0, 1),
+(4, 'Efferalgan', 'Boite d\'Efferalgan (1000 mg)', NULL, NULL, 0, 1),
+(5, 'Panotile Sol Auric 8ml', '4 gouttes matin, midi et soir en bain d\'oereille dans l\'oreille douloureuse', NULL, NULL, 0, 3),
+(6, 'Efferalgan 1g CPR EFF 8 (paracétamol)', '1 comprimé effervescent le matin, le midi et le soir si douleur', NULL, NULL, 0, 3),
+(7, 'Solupred 20mg CPR EFF SEC 20 ', '2 comprimés le matin à dissoudre', NULL, NULL, 0, 2),
+(8, 'Dafalgan codeine 500mg/30mg CPR 16', 'Jusqu\'à 2 comprimés au coucher selon besoin, en espacant les prises de 4h minimum en cas de forte douleur', NULL, NULL, 0, 2);
 
 -- --------------------------------------------------------
 
