@@ -1,4 +1,4 @@
-const {Utilisateur, Patient, Prescripteur, Pharmacien, Mutuelle} =  require("./createAccounts");
+const {Patient, Prescripteur, Pharmacien, Mutuelle} =  require("./createAccounts");
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
@@ -9,6 +9,9 @@ var cors = require('cors')
 //variables
 var code = "";
 var id = "";
+var role = "";
+var nom = "";
+
 
 app.use(cors());
 
@@ -22,6 +25,24 @@ const db = mysql.createPool({
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
+
+app.get('/infos', (req,res) => {
+  const array = {
+    code: code,
+    id: id,
+    role: role,
+    nom: nom
+  }
+  res.send(array);
+})
+
+app.get('/deconnexion', (req,res) => {
+  console.log("deco")
+  code = "";
+  id = "";
+  role = "";
+  nom = "";
+});
 
 app.post('/patient', (req,res) => {
   console.log(req.body)
@@ -91,51 +112,67 @@ app.post('/mutuelle', (req,res) => {
 app.post('/login',(req,res) => {
   const secu = req.body.id;
   let password = req.body.password;
-  const role = req.body.role;
+  const roleUser = req.body.role;
   let request ="";
-  switch (role) {
+  switch (roleUser) {
     case 'medecin':
       request = "SELECT IdUtilisateur from prescripteur WHERE IdPrescripteur = ?;";
       break;
     case 'pharma':
       request = "SELECT IdUtilisateur from pharmacien WHERE IdPharmacien = ?;";
       break;
+    case 'mutuelle':
+      request = "SELECT IdMutuelle, Nom from pharmacien WHERE IdMutuelle = ?;";
     default:
-      request = "SELECT IdUtilisateur from patient WHERE SecuriteSociale = ?;";
+      request = "SELECT IdUtilisateur from patient WHERE IdPatient = ?;";
       break;
   }
   db.query(request, [secu], (err, iduser)=> {
+    console.log(err)
     if (iduser == null || iduser.length == 0) {
-      return res.end("Les données entrées ne correspondent pas à celles d'un compte.")
+      return res.end('error')
     }
-    request = "SELECT MotDePasse from utilisateur WHERE IdUtilisateur = ?;";
-    db.query(request, [iduser[0].IdUtilisateur], (err, mdp)=> {
+    let idGlobal = ""
+    let nomGlobal = ""
+    if (roleUser == 'mutuelle') {
+      request = "SELECT MotDePasse, Nom from mutuelle WHERE IdMutuelle = ?;";
+      idGlobal = iduser[0].IdMutuelle
+    } else {
+      request = "SELECT MotDePasse, Nom, Prenom from utilisateur WHERE IdUtilisateur = ?;";
+      idGlobal = iduser[0].IdUtilisateur
+    }
+    db.query(request, [idGlobal], (err, mdp)=> {
       bcrypt.compare(password, mdp[0].MotDePasse, function(err, bonmdp) {
         if (bonmdp == true) {
-          code = iduser[0].IdUtilisateur;
-          id = secu;
-          return res.redirect('http://localhost:3000/list');
+          if (roleUser == 'mutuelle') {
+            nomGlobal = mdp[0].Nom
+          } else {
+            nomGlobal = mdp[0].Prenom+" "+mdp[0].Nom
+          }
+          code = idGlobal
+          id = secu
+          role = roleUser
+          nom = nomGlobal
+          return res.end('success');
         } else {
-          return res.end("Les données entrées ne correspondent pas à celles d'un compte.")
+          return res.end('error')
         }
       });
     });
   });
 })
 
-app.post('')
+app.post('/getOrdo',(req, res) => {
+  const idOrdo = req.body.idOrdo;
+  const sqlRequest = 'SELECT * FROM ordonnance WHERE IdOrdonnance = ?';
+  db.query(sqlRequest, [idOrdo], (err, result) => {
+    res.send(result);
+  })
+})
 
 app.listen(8080, () => {
   console.log("Le serveur est bien lancé");
 });
-
-/* GET home page. */
-/*
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;*/
 
 app.post('/getOrdonnance', (req, res) => {
   const idOrdo = req.body.idOrdo;

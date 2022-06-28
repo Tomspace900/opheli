@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import Axios from 'axios';
 
 const LoginForm = ({ account }) => {
@@ -8,6 +8,7 @@ const LoginForm = ({ account }) => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleId = (e) => {
         setId(e.target.value);
@@ -24,14 +25,21 @@ const LoginForm = ({ account }) => {
                 id: id,
                 password: password,
                 role: account,
-            },
-            function (data) {
-                if (data == 'error') {
-                    setError('Votre role, votre numéro ou votre mot de passe ne correspond pas.');
-                }
+            }).then(response => {
+            console.log(response.data)
+            if (response.data == 'error') {
+                setError('Les données entrées ne correspondent pas à celles d\'un compte existant.');
+            } else if (response.data == 'success') {
+                navigate('/List')
             }
-        );
+        });
     };
+    /*
+    useEffect(() => {
+        if (redirect == true) {
+            navigation.navigate('/List');
+        }
+    }, [redirect]);*/
 
     return (
         <form className="login-form">
@@ -134,6 +142,9 @@ const LoginForm = ({ account }) => {
                     onClick={submitLogin}>
                     Se connecter
                 </button>
+            </div>
+            <div>
+                {error}
             </div>
         </form>
     );

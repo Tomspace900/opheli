@@ -1,17 +1,30 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../CSS/Header.css';
+import Axios from "axios";
+import connected from "./Connexion";
 
 const Header = () => {
-    const [connected, setConnected] = useState(true);
+    const [nom, setNom] = useState("");
+    const [role, setRole] = useState("");
+
 
     function handleConnect() {
-        setConnected(false);
+        console.log("fired")
+        Axios.get('http://localhost:8080/infos').then(response => {
+            setNom(response.data.nom)
+            setRole(response.data.role)
+        });
+    }
+
+    function handleDisconnect() {
+        connected = false
+        Axios.get('http://localhost:8080/deconnexion')
     }
 
     return (
-        <div className="header">
+        <div className="header" onFocus={handleConnect}>
             <Link
                 to={'/'}
                 className="opheli"
@@ -33,13 +46,11 @@ const Header = () => {
                         </svg>
                     </Link>
                     <div className="header-profile-name">
-                        <span>Prenom</span>
-                        <br />
-                        <span>NOM</span>
+                        {nom}
                     </div>
                     <div className="header-logout-link">
                         <svg
-                            onClick={handleConnect}
+                            onClick={handleDisconnect}
                             className="header-logout-svg"
                             viewBox="0 0 24 24"
                             strokeLinecap="round"
