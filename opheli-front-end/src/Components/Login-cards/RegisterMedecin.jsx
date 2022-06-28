@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import Axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const RegisterMedecin = ({ account }) => {
     // Donnees a envoyer à la BDD
@@ -15,59 +16,46 @@ const RegisterMedecin = ({ account }) => {
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const [error, setError] = useState('');
-
-    // Constante booleenne a utiliser pour envoyer les donnees
-    const [submitted, setSubmitted] = useState(false);
+    const navigate = useNavigate();
 
     const handleFirstname = (e) => {
         setFirstname(e.target.value);
-        setSubmitted(false);
     };
 
     const handleSurname = (e) => {
         setSurname(e.target.value);
-        setSubmitted(false);
     };
 
     const handleEmail = (e) => {
         setEmail(e.target.value);
-        setSubmitted(false);
     };
 
     const handleId = (e) => {
         setId(e.target.value);
-        setSubmitted(false);
     };
 
     const handleAddress = (e) => {
         setAddress(e.target.value);
-        setSubmitted(false);
     };
 
     const handleStreet = (e) => {
         setStreet(e.target.value);
-        setSubmitted(false);
     };
 
     const handleZipCode = (e) => {
         setZipcode(e.target.value);
-        setSubmitted(false);
     };
 
     const handleCity = (e) => {
         setCity(e.target.value);
-        setSubmitted(false);
     };
 
     const handlePassword = (e) => {
         setPassword(e.target.value);
-        setSubmitted(false);
     };
 
     const handleRepeatPassword = (e) => {
         setRepeatPassword(e.target.value);
-        console.log(e.target.value);
-        setSubmitted(false);
     };
 
     const handleSubmit = (e) => {
@@ -81,17 +69,16 @@ const RegisterMedecin = ({ account }) => {
             password === '' ||
             repeatPassword === ''
         ) {
-            alert('Tout les champs sont obligatoires');
+            setError('Tout les champs sont obligatoires');
         } else if (!email.includes('@')) {
-            alert('Email incorrect');
+            setError('Email incorrect');
         } else if (id.length !== 11 || /[a-zA-Z]/.test(id)) {
-            alert('Le numéro RPPS est incorrect');
+            setError('Le numéro RPPS est incorrect');
         } else if (password !== repeatPassword) {
-            alert('Les mots de passes ne sont pas identiques');
+            setError('Les mots de passes ne sont pas identiques');
         } else if (password.length < 8) {
-            alert('Votre mot de passe doit contenir au moins 8 caractères');
+            setError('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
-            setSubmitted(true);
             Axios.post(
                 'http://localhost:8080/prescripteur',
                 {
@@ -103,12 +90,13 @@ const RegisterMedecin = ({ account }) => {
                     code : zipcode,
                     ville : city,
                     mdp : password
-                }, function (data) {
-                    if (data != null) {
-                        setError(data);
+                }).then(response => {
+                    if (response.data == 'success') {
+                        navigate('/List')
+                    } else {
+                        setError(response.data)
                     }
-                }
-            );
+                });
         }
     };
 
@@ -214,6 +202,9 @@ const RegisterMedecin = ({ account }) => {
                 onClick={handleSubmit}>
                     S'inscrire
                 </button>
+            </div>
+            <div>
+                {error}
             </div>
         </form>
     );

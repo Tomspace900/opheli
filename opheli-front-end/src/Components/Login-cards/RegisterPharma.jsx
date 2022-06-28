@@ -1,5 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
+import Axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const RegisterPharma = ({ account }) => {
     // Donnees a envoyer à la BDD
@@ -7,71 +9,67 @@ const RegisterPharma = ({ account }) => {
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [id, setId] = useState('');
-    const [address, setAddress] = useState('');
     const [nomPharma, setNomPharma] = useState('');
+    const [idPharma, setIdPharma] = useState('');
     const [street, setStreet] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [city, setCity] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const [liste, setListe] = useState([]);
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    // Constante booleenne a utiliser pour envoyer les donnees
-    const [submitted, setSubmitted] = useState(false);
+    if (liste.length == 0) {
+        Axios.get('http://localhost:8080/liste_pharmacies').then(response => {
+            setListe(response.data)
+        });
+    }
+
 
     const handleFirstname = (e) => {
         setFirstname(e.target.value);
-        setSubmitted(false);
     };
 
     const handleSurname = (e) => {
         setSurname(e.target.value);
-        setSubmitted(false);
     };
 
     const handleEmail = (e) => {
         setEmail(e.target.value);
-        setSubmitted(false);
     };
 
     const handleId = (e) => {
         setId(e.target.value);
-        setSubmitted(false);
     };
 
-    const handleAddress = (e) => {
-        setAddress(e.target.value);
-        setSubmitted(false);
+    const handleIdPharma = (e) => {
+        setIdPharma(e.target.value);
+        console.log(idPharma)
     };
 
     const handleNomPharma = (e) => {
         setNomPharma(e.target.value);
-        setSubmitted(false);
     };
 
     const handleStreet = (e) => {
         setStreet(e.target.value);
-        setSubmitted(false);
     };
 
     const handleZipCode = (e) => {
         setZipcode(e.target.value);
-        setSubmitted(false);
     };
 
     const handleCity = (e) => {
         setCity(e.target.value);
-        setSubmitted(false);
     };
 
     const handlePassword = (e) => {
         setPassword(e.target.value);
-        setSubmitted(false);
     };
 
     const handleRepeatPassword = (e) => {
         setRepeatPassword(e.target.value);
-        console.log(e.target.value);
-        setSubmitted(false);
     };
 
     const handleSubmit = (e) => {
@@ -81,22 +79,40 @@ const RegisterPharma = ({ account }) => {
             surname === '' ||
             email === '' ||
             id === '' ||
-            (address === '' && (street === '' || zipcode === '' || city === '')) ||
+            (idPharma === '' && (nomPharma === '' || street === '' || zipcode === '' || city === '')) ||
             password === '' ||
             repeatPassword === ''
         ) {
-            alert('Tout les champs sont obligatoires');
+            setError('Tout les champs sont obligatoires');
         } else if (!email.includes('@')) {
-            alert('Email incorrect');
+            setError('Email incorrect');
         } else if (id.length !== 11 || /[a-zA-Z]/.test(id)) {
-            alert('Le numéro RPPS est incorrect');
+            setError('Le numéro RPPS est incorrect');
         } else if (password !== repeatPassword) {
-            alert('Les mots de passes ne sont pas identiques');
+            setError('Les mots de passes ne sont pas identiques');
         } else if (password.length < 8) {
-            alert('Votre mot de passe doit contenir au moins 8 caractères');
+            setError('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
-            setSubmitted(true);
-            alert('Ça envoie');
+            Axios.post(
+                'http://localhost:8080/pharmacien',
+                {
+                    nom: surname,
+                    prenom: firstname,
+                    mail: email,
+                    rpps : id,
+                    nomp : nomPharma,
+                    idp : idPharma,
+                    rue :street,
+                    code : zipcode,
+                    ville : city,
+                    mdp : password
+                }).then(response => {
+                if (response.data == 'success') {
+                    navigate('/List')
+                } else {
+                    setError(response.data)
+                }
+            });
         }
     };
 
@@ -159,16 +175,34 @@ const RegisterPharma = ({ account }) => {
             <div className="register-form-line">
                 <div className="register-form-blockline">
                     <div className="register-label-nompharma">
-                        <label>Adresse de votre pharmacie :</label>
+                        <label>Selectionnez votre pharmacie :</label>
                     </div>
                     <div className="register-input-nompharma">
-                        <input type="text" onChange={handleNomPharma} />
+                        <select onChange={handleIdPharma}>
+                            {liste.map(item => {
+                                return (
+                                    <option value={item.IdPharmacie}>
+                                        {item.NomPharmacie} ({item.Rue} {item.CodePostal} {item.Ville})
+                                    </option>
+                                );
+                            })}
+                        </select>
                     </div>
                 </div>
             </div>
             <br />
             <span>OU</span>
             <br />
+            <div className="register-form-line">
+                <div className="register-form-blockline">
+                    <div className="register-label-nompharma">
+                        <label>Nom de votre pharmacie :</label>
+                    </div>
+                    <div className="register-input-nompharma">
+                        <input type="text" onChange={handleNomPharma} />
+                    </div>
+                </div>
+            </div>
             <div className="register-form-tripleline">
                 <div className="register-form-blocktripleline">
                     <div className="register-label-street">
@@ -212,6 +246,7 @@ const RegisterPharma = ({ account }) => {
                     S'inscrire
                 </button>
             </div>
+            <div>{error}</div>
         </form>
     );
 };

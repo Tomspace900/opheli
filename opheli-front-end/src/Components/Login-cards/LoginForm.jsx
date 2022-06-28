@@ -18,20 +18,23 @@ const LoginForm = ({ account }) => {
     };
 
     const submitLogin = () => {
-        Axios.post(
-            'http://localhost:8080/login',
-            {
-                id: id,
-                password: password,
-                role: account,
-            }).then(response => {
-            console.log(response.data)
-            if (response.data == 'error') {
-                setError('Les données entrées ne correspondent pas à celles d\'un compte existant.');
-            } else if (response.data == 'success') {
-                navigate('/List')
-            }
-        });
+        if (password == "" || id == "") {
+            setError("Veuillez complétez tous les champs.")
+        } else {
+            Axios.post(
+                'http://localhost:8080/login',
+                {
+                    id: id,
+                    password: password,
+                    role: account,
+                }).then(response => {
+                if (response.data == 'error') {
+                    setError('Les données entrées ne correspondent pas à celles d\'un compte existant.');
+                } else if (response.data == 'success') {
+                    navigate('/List')
+                }
+            });
+        }
     };
 
     return (

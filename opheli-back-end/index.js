@@ -37,15 +37,21 @@ app.get('/infos', (req,res) => {
 })
 
 app.get('/deconnexion', (req,res) => {
-  console.log("deco")
   code = "";
   id = "";
   role = "";
   nom = "";
 });
 
+app.get('/liste_pharmacies', (req,res) => {
+  request = "SELECT * from opheli.pharmacie NATURAL JOIN opheli.adresse";
+  db.query(request, (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array)
+  });
+});
+
 app.post('/patient', (req,res) => {
-  console.log(req.body)
   //Vérification secu
   request = "SELECT IdPatient from patient WHERE IdPatient = ?;";
   db.query(request, [req.body.secu], (err, verif)=> {
@@ -56,31 +62,47 @@ app.post('/patient', (req,res) => {
   //Création compte
   bcrypt.hash(req.body.mdp, 8, (err, hash) => {
     const patient = new Patient(req.body.secu,req.body.nom,req.body.prenom,req.body.mail,hash)
-    patient.addToDatabase(db)
+    const message = patient.addToDatabase(db)
+    if (message != 'error') {
+      code = req.body.secu
+      id = message
+      role = 'patient'
+      nom = req.body.prenom+" "+req.body.nom
+      return res.end('success')
+    } else {
+      return res.end("Une erreur est survenue durant la création de votre profil.")
+    }
   });
-  //Redirection
 });
 
 app.post('/prescripteur', (req,res) => {
   //Vérification rpps
   request = "SELECT IdPrescripteur from prescripteur WHERE IdPrescripteur = ?;";
-  db.query(request, [req.body.secu], (err, verif)=> {
-    if (verif != null) {
+  db.query(request, [req.body.rpps], (err, verif)=> {
+    if (verif.length != 0) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
   });
   //Création compte
   bcrypt.hash(req.body.mdp, 8, (err, hash) => {
     const prescripteur = new Prescripteur(req.body.rpps, req.body.specialite, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
-    prescripteur.addtoDatabase(db)
+    const message = prescripteur.addToDatabase(db,req.body.rpps)
+    if (message != 'error') {
+      code = req.body.rpps
+      id = message
+      role = 'prescripteur'
+      nom = req.body.prenom+" "+req.body.nom
+      return res.end('success')
+    } else {
+      return res.end("Une erreur est survenue durant la création de votre profil.")
+    }
   });
-  //Redirection
 });
 
 app.post('/pharmacien', (req,res) => {
   //Vérification rpps
   request = "SELECT IdPharmacien from pharmacien WHERE IdPharmacien = ?;";
-  db.query(request, [req.body.secu], (err, verif)=> {
+  db.query(request, [req.body.rpps], (err, verif)=> {
     if (verif != null) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
@@ -88,9 +110,17 @@ app.post('/pharmacien', (req,res) => {
   //Création compte
   bcrypt.hash(req.body.mdp, 8, (err, hash) => {
     const pharmacien = new Pharmacien(req.body.rpps, req.body.idp, req.body.nomp, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
-    pharmacien.addToDatabase(db)
+    const message = pharmacien.addToDatabase(db)
+    if (message != 'error') {
+      code = req.body.rpps
+      id = message
+      role = 'pharmacien'
+      nom = req.body.prenom+" "+req.body.nom
+      return res.end('success')
+    } else {
+      return res.end("Une erreur est survenue durant la création de votre profil.")
+    }
   });
-  //Redirection
 });
 
 app.post('/mutuelle', (req,res) => {
@@ -128,7 +158,6 @@ app.post('/login',(req,res) => {
       break;
   }
   db.query(request, [secu], (err, iduser)=> {
-    console.log(err)
     if (iduser == null || iduser.length == 0) {
       return res.end('error')
     }

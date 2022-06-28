@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import Axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const RegisterClient = () => {
     // Donnees a envoyer à la BDD
@@ -12,49 +13,43 @@ const RegisterClient = () => {
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     // Constante booleenne a utiliser pour envoyer les donnees
     const [submitted, setSubmitted] = useState(false);
 
     const handleFirstname = (e) => {
         setFirstname(e.target.value);
-        console.log(e.target.value);
         setSubmitted(false);
     };
 
     const handleSurname = (e) => {
         setSurname(e.target.value);
-        console.log(e.target.value);
         setSubmitted(false);
     };
 
     const handleBirthdate = (e) => {
         setBirthdate(e.target.value);
-        console.log(e.target.value);
         setSubmitted(false);
     };
 
     const handleEmail = (e) => {
         setEmail(e.target.value);
-        console.log(e.target.value);
         setSubmitted(false);
     };
 
     const handleId = (e) => {
         setId(e.target.value);
-        console.log(e.target.value);
         setSubmitted(false);
     };
 
     const handlePassword = (e) => {
         setPassword(e.target.value);
-        console.log(e.target.value);
         setSubmitted(false);
     };
 
     const handleRepeatPassword = (e) => {
         setRepeatPassword(e.target.value);
-        console.log(e.target.value);
         setSubmitted(false);
     };
 
@@ -89,12 +84,15 @@ const RegisterClient = () => {
                     mail: email,
                     secu : id,
                     mdp : password
-                }, function (data) {
-                    if (data != null) {
-                        setError(data);
-                    }
                 }
-            );
+            ).then(response => {
+                console.log(response.data)
+                if (response.data == 'success') {
+                    navigate('/List')
+                } else {
+                    setError(response.data)
+                }
+            });
         }
     };
 
@@ -157,7 +155,7 @@ const RegisterClient = () => {
             <div className="register-form-line">
                 <div className="register-form-blockline">
                     <div className="register-label-id">
-                        <label>Numero sécurité sociale :</label>
+                        <label>Numéro de sécurité sociale :</label>
                     </div>
                     <div className="register-input-id">
                         <input type="text" placeholder="1234567890123" onChange={handleId} />
@@ -179,6 +177,9 @@ const RegisterClient = () => {
                     onClick={handleSubmit}>
                     S'inscrire
                 </button>
+            </div>
+            <div>
+                {error}
             </div>
         </form>
     );
