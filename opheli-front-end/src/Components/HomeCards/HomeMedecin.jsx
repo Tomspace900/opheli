@@ -25,7 +25,7 @@ const HomeMedecin = () => {
                     </svg>
                 </div>
             </Link>
-            <Link to={'/updateordo'} className="home-div-right" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+            <Link to={'/ordonnance'} className="home-div-right" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                 <div className="home-right-title-div">
                     <span className="home-right-title">Modifier une ordonnance</span>
                 </div>
