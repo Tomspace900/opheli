@@ -15,17 +15,20 @@ class Ordonnance {
     addToDatabase(db){
         const addOrdo = "INSERT INTO ordonnance(Type, DateCreation, Notes, IdPrescripteur, IdPatient) VALUES (?, ?, ?, ?, ?);";
         db.query(addOrdo, [this.type, this.dateCreation, this.notes, this.idPrescripteur, this.idPatient]);
+        const idQuery = "SELECT idOrdonnance FROM ordonnance WHERE idOrdonnance = (SELECT MAX(idOrdonnance) FROM ordonnance WHERE idPatient = ?);";
+        db.query(idQuery, [this.idPatient], (err, result) => {
+            this.idOrdonnance = result;
+        })
         this.categorie.forEach((categorie) => {
-            categorie.addToDatabase(db);
+            categorie.addToDatabase(db, this.idOrdonnance);
         })
     }
 }
 
 class Categorie {
-    constructor(type, nbRenouvTotal, idOrdonnance){
+    constructor(type, nbRenouvTotal){
         this.type = type;
         this.nbRenouvTotal = nbRenouvTotal;
-        this.idOrdonnance = idOrdonnance;
         this.soins = [];
     }
 
@@ -33,30 +36,36 @@ class Categorie {
         this.soins.push(soin);
     }
 
-    addToDatabase(db){
+    addToDatabase(db, idOrdonnance){
+        this.idOrdonnance = idOrdonnance;
         const addCategorie = "INSERT INTO categorie(Type, NbRenouvTotal, IdOrdonnance) VALUES (?, ?, ?);";
         db.query(addCategorie, [this.type, this.nbRenouvTotal, this.idOrdonnance]);
+        const idQuery = "SELECT idCategorie FROM categorie WHERE idCategorie = (SELECT MAX(idCategorie) FROM categorie WHERE idOrdonnance = ?);"
+        db.query(idQuery, [this.idOrdonnance], (err, result) => {
+            this.idCategorie = result;
+        })
         this.soins.forEach((soin) => {
-            soin.addToDatabase(db);
+            soin.addToDatabase(db, this.idCategorie);
         })
     }
 }
 
 class Soin {
-    constructor(nom, description, nbRenouvRestant, idCategorie){
+    constructor(nom, description, nbRenouvRestant){
         this.nom = nom;
         this.description = description;
         this.nbRenouvRestant = nbRenouvRestant;
-        this.idCategorie = idCategorie;
     }
 
-    addToDatabase(db){
+    addToDatabase(db, idCategorie){
+        this.idCategorie = idCategorie;
         const addSoin = "INSERT INTO soin(Nom, Description, IdCategorie) VALUES (?, ?, ?);";
         db.query(addSoin, [this.nom, this.description, this.idCategorie]);
     }
 }
 
-function createOrdo(){
+function createOrdo(ordonnance){
 
 }
-module.exports = {Ordonnance, Categorie, Soin, createOrdo}
+
+module.exports = {createOrdo}
