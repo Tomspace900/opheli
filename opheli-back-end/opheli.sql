@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mar. 28 juin 2022 à 11:32
+-- Généré le : mar. 28 juin 2022 à 11:37
 -- Version du serveur :  10.4.13-MariaDB
 -- Version de PHP : 7.3.21
 
@@ -252,10 +252,8 @@ CREATE TABLE IF NOT EXISTS `soin` (
   `Prix` decimal(5,2) DEFAULT NULL,
   `Alternative` varchar(50) DEFAULT NULL,
   `IdCategorie` int(11) NOT NULL,
-  `IdOrdonnance` int(11) NOT NULL,
   PRIMARY KEY (`IdSoin`),
-  KEY `IdCategorie` (`IdCategorie`),
-  KEY `IdOrdonnance` (`IdOrdonnance`)
+  KEY `IdCategorie` (`IdCategorie`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -387,8 +385,7 @@ ALTER TABLE `prescripteur`
 -- Contraintes pour la table `soin`
 --
 ALTER TABLE `soin`
-  ADD CONSTRAINT `soin_ibfk_1` FOREIGN KEY (`IdCategorie`) REFERENCES `categorie` (`IdCategorie`),
-  ADD CONSTRAINT `soin_ibfk_2` FOREIGN KEY (`IdOrdonnance`) REFERENCES `ordonnance` (`IdOrdonnance`);
+  ADD CONSTRAINT `soin_ibfk_1` FOREIGN KEY (`IdCategorie`) REFERENCES `categorie` (`IdCategorie`);
 
 --
 -- Contraintes pour la table `souscrir`
