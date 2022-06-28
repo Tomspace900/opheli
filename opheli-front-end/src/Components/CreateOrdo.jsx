@@ -5,13 +5,18 @@ import CategorieALD from './CreateOrdoCards/CategorieALD';
 import CategorieException from './CreateOrdoCards/CategorieException';
 
 function App() {
-    //const [, forceRerender] = useReducer(x => x + 1, 0);
-
+    const [idPatient, setIdPatient] = useState('');
     const [categorie, setCategorie] = useState('simple');
+    const [notes, setNotes] = useState('');
+    const [nbUse, setNbUse] = useState(1);
 
     const handleChangeCategorie = (e) => {
         setCategorie(e.target.value);
         console.log(e.target.value);
+    };
+
+    const handleNbUse = (e) => {
+        setNbUse(e.target.value);
     };
 
     function mouseOver(e) {

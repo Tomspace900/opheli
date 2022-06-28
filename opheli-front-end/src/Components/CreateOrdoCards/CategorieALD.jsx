@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SoinCard from './SoinCard';
 
 //pour Ordonnance bizone
-function CategorieBizone() {
+function CategorieBizone({ handleNbUse }) {
     //const [, forceRerender] = useReducer(x => x + 1, 0);
 
     const [indexALD, setIndexALD] = useState(1);
@@ -36,7 +36,7 @@ function CategorieBizone() {
             <h1 className="create-ordo-categorie-title">Soins ALD</h1>
             <div className="create-ordo-categorie-use">
                 <label>Nombre d'utilisations</label>
-                <input type="number" placeholder="0" />
+                <input type="number" placeholder="1" onChange={handleNbUse} />
             </div>
             <div className="create-ordo-catgeorie-buttons">
                 <button onClick={addSoinALD} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
