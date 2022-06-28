@@ -4,7 +4,6 @@ import {Link, useNavigate} from 'react-router-dom';
 import Axios from 'axios';
 
 const LoginForm = ({ account }) => {
-    // Donnees a envoyer à la BDD
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -34,12 +33,6 @@ const LoginForm = ({ account }) => {
             }
         });
     };
-    /*
-    useEffect(() => {
-        if (redirect == true) {
-            navigation.navigate('/List');
-        }
-    }, [redirect]);*/
 
     return (
         <form className="login-form">

@@ -1,42 +1,49 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../CSS/Header.css';
 import Axios from "axios";
-import connected from "./Connexion";
 
 const Header = () => {
     const [nom, setNom] = useState("");
     const [role, setRole] = useState("");
+    const [connected, setConnected] = useState(false);
 
 
     function handleConnect() {
-        console.log("fired")
-        Axios.get('http://localhost:8080/infos').then(response => {
-            setNom(response.data.nom)
-            setRole(response.data.role)
-        });
+        if (!connected) {
+            Axios.get('http://localhost:8080/infos').then(response => {
+                setNom(response.data.nom)
+                setRole(response.data.role)
+                if (nom != null) {
+                    setConnected(true)
+                }
+            });
+        }
     }
 
+    setInterval(handleConnect, 1000);
+
+
     function handleDisconnect() {
-        connected = false
+        setConnected(false)
         Axios.get('http://localhost:8080/deconnexion')
     }
 
-    return (
-        <div className="header" onFocus={handleConnect}>
-            <Link
-                to={'/'}
-                className="opheli"
-                onMouseEnter={(e) => {
-                    e.target.style.color = '#5ccdc4';
-                }}
-                onMouseLeave={(e) => {
-                    e.target.style.color = '#4a565a';
-                }}>
-                Opheli
-            </Link>
-            {connected ? (
+    if (connected) {
+        return (
+            <div className="header">
+                <Link
+                    to={'/'}
+                    className="opheli"
+                    onMouseEnter={(e) => {
+                        e.target.style.color = '#5ccdc4';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.color = '#4a565a';
+                    }}>
+                    Opheli
+                </Link>
                 <div className="header-profile">
                     <Link to={'/profil'} className="header-user-link">
                         <svg className="header-user-svg" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -61,11 +68,25 @@ const Header = () => {
                         </svg>
                     </div>
                 </div>
-            ) : (
-                <></>
-            )}
-        </div>
-    );
+            </div>
+        );
+    } else {
+        return (
+            <div className="header">
+                <Link
+                    to={'/'}
+                    className="opheli"
+                    onMouseEnter={(e) => {
+                        e.target.style.color = '#5ccdc4';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.color = '#4a565a';
+                    }}>
+                    Opheli
+                </Link>
+            </div>
+        );
+    }
 };
 
 export default Header;
