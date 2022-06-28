@@ -23,6 +23,7 @@
     text-align: center;
     width: 50%;
     cursor: pointer;
+    background-color: #ffffff;
 }
 
 .card-menu div * {

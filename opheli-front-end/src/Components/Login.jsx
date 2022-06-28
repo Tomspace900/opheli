@@ -19,11 +19,30 @@ const Login = () => {
         setLogin(loginState);
     };
 
+    // function changeStyle() {
+    //     switch (login) {
+    //         case 'client':
+    //             document.getElementById('client').style.background = '#5ccdc4a9';
+    //             document.getElementById('medecin').style.background = '#ffffff';
+    //             document.getElementById('pharma').style.background = '#ffffff';
+    //             document.getElementById('mutuelle').style.background = '#ffffff';
+    //             break;
+    //         case 'medecin':
+    //             document.getElementById('client').style.background = '#ffffff';
+    //             document.getElementById('medecin').style.background = '#5ccdc4a9';
+    //             document.getElementById('pharma').style.background = '#ffffff';
+    //             document.getElementById('mutuelle').style.background = '#ffffff';
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
+
     function tabOver(e) {
         e.target.style.background = '#5ccdc4a9';
     }
     function tabOut(e) {
-        e.target.style.background = '';
+        e.target.style.background = '#ffffff';
     }
 
     function mouseOver(e) {
@@ -42,6 +61,7 @@ const Login = () => {
                 <div className="card-menu">
                     <div
                         className="client"
+                        id="client"
                         onMouseEnter={tabOver}
                         onMouseLeave={tabOut}
                         onClick={() => {
@@ -51,6 +71,7 @@ const Login = () => {
                     </div>
                     <div
                         className="medecin"
+                        id="medecin"
                         onMouseEnter={tabOver}
                         onMouseLeave={tabOut}
                         onClick={() => {
@@ -60,6 +81,7 @@ const Login = () => {
                     </div>
                     <div
                         className="pharma"
+                        id="pharma"
                         onMouseEnter={tabOver}
                         onMouseLeave={tabOut}
                         onClick={() => {
@@ -69,6 +91,7 @@ const Login = () => {
                     </div>
                     <div
                         className="mutuelle"
+                        id="mutuelle"
                         onMouseEnter={tabOver}
                         onMouseLeave={tabOut}
                         onClick={() => {
