@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mar. 28 juin 2022 à 11:37
+-- Généré le : mar. 28 juin 2022 à 11:45
 -- Version du serveur :  10.4.13-MariaDB
 -- Version de PHP : 7.3.21
 
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `mutuelle` (
   `IdMutuelle` varchar(50) NOT NULL,
   `Mail` varchar(50) NOT NULL,
   `Nom` varchar(50) NOT NULL,
-  `Mdp` varchar(200) NOT NULL,
+  `MotDePasse` varchar(200) NOT NULL,
   PRIMARY KEY (`IdMutuelle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `mutuelle` (
 -- Déchargement des données de la table `mutuelle`
 --
 
-INSERT INTO `mutuelle` (`IdMutuelle`, `Mail`, `Nom`, `Mdp`) VALUES
+INSERT INTO `mutuelle` (`IdMutuelle`, `Mail`, `Nom`, `MotDePasse`) VALUES
 ('mutuelletest', 'mutuelle@hotmail.com', 'Mutuelle des oiseaux', '$2y$10$4gjgKSvH5dfofs3K1JR1YOB.DvcPiOsgZ/BHOImOSPX1JOn5g3V.q');
 
 -- --------------------------------------------------------
