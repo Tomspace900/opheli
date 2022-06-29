@@ -83,10 +83,10 @@ function selectOrdo(db, role, idOrdo){
         case 'client':
             select = "SELECT * FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
             break;
-        case 'prescripteur':
+        case 'medecin':
             select = "SELECT c.*, o.*, p.*, pr.*, s.nom, s.description, s.IdSoin FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
             break;
-        case 'pharmacien':
+        case 'pharma':
                 select = "SELECT c.*, o.IdOrdonnance, o.Type, o.DateCreation, o.DateExpiration, o.IdPatient, o.IdPrescripteur, p.*, pr.*, s.nom, s.description, s.IdSoin FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
             break;
         case 'mutuelle':

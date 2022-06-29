@@ -47,10 +47,10 @@ app.post('/check', (req,res) => {
       access = (role != "")
       break;
     case 'modifier': //page modifier ordonnance
-      access = (role == "prescripteur")
+      access = (role == "medecin")
       break;
     case 'valider': //page valider ordonnance
-      access = (role == "pharmacien")
+      access = (role == "pharma")
       break;
 
   }
@@ -109,7 +109,7 @@ app.post('/client', (req,res) => {
   });
 });
 
-app.post('/prescripteur', (req,res) => {
+app.post('/medecin', (req,res) => {
   //Vérification rpps
   request = "SELECT IdPrescripteur from prescripteur WHERE IdPrescripteur = ?;";
   db.query(request, [req.body.rpps], (err, verif)=> {
@@ -124,7 +124,7 @@ app.post('/prescripteur', (req,res) => {
     if (message != 'error') {
       code = req.body.rpps
       id = message
-      role = 'prescripteur'
+      role = 'medecin'
       nom = req.body.prenom+" "+req.body.nom
       return res.end('success')
     } else {
@@ -133,7 +133,7 @@ app.post('/prescripteur', (req,res) => {
   });
 });
 
-app.post('/pharmacien', (req,res) => {
+app.post('/pharma', (req,res) => {
   //Vérification rpps
   request = "SELECT IdPharmacien from pharmacien WHERE IdPharmacien = ?;";
   db.query(request, [req.body.rpps], (err, verif)=> {
@@ -148,7 +148,7 @@ app.post('/pharmacien', (req,res) => {
     if (message != 'error') {
       code = req.body.rpps
       id = message
-      role = 'pharmacien'
+      role = 'pharma'
       nom = req.body.prenom+" "+req.body.nom
       return res.end('success')
     } else {

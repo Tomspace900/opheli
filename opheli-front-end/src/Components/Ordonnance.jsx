@@ -4,9 +4,9 @@ import '../CSS/Ordonnance.css';
 import axios from 'axios';
 
 const Ordonnance = () => {
-    const [login, setLogin] = useState('client');
+    const [login, setLogin] = useState('pharma');
     const [src, setSrc] = useState('');
-    const [idOrdo, setIdOrdo] = useState(1);
+    const [idOrdo, setIdOrdo] = useState(2);
 
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
 
