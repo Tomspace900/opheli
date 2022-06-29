@@ -6,7 +6,7 @@ import axios from 'axios';
 const Ordonnance = () => {
     const [login, setLogin] = useState('client');
     const [src, setSrc] = useState('');
-    const [idOrdo, setIdOrdo] = useState(123);
+    const [idOrdo, setIdOrdo] = useState(1);
 
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
 
@@ -18,9 +18,10 @@ const Ordonnance = () => {
         axios
             .post('http://localhost:8080/getOrdonnance', {
                 idOrdo: idOrdo,
+                role : login,
             })
             .then((response) => {
-                console.log(response.data);
+                console.log(response);
             });
     }, []);
 

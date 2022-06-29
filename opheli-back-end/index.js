@@ -7,6 +7,7 @@ var bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
 var cors = require('cors')
 const {suppClient} = require("./fonctionsMutuelle");
+const {selectOrdo} = require("./fonctionsOrdonnance");
 //variables
 var code = ""; //Id en fonction du role
 var id = ""; //IdUtilisateur
@@ -249,21 +250,14 @@ app.post('/suppClient', (req, res) => {
 })
 
 //ORDONNANCES
-app.post('/getOrdo',(req, res) => {
-  const idOrdo = req.body.idOrdo;
-  const sqlRequest = 'SELECT * FROM ordonnance WHERE IdOrdonnance = ?';
-  db.query(sqlRequest, [idOrdo], (err, result) => {
-    res.send(result);
-  })
-})
-
+//get les infos de l'ordonnance selon le rôle
 app.post('/getOrdonnance', (req, res) => {
   const idOrdo = req.body.idOrdo;
-  //const request = "INSERT INTO ordonnance(IdOrdonnance, DatePrescription, Type, SecuriteSociale, IdPrescripteur) VALUES (12345, '2020-12-23', 'simple', 12345, 12345)";
-  const request = "SELECT * FROM ordonnance WHERE IdOrdonnance = ?";
-  db.query(request, [idOrdo], (err, result) => {
+  const role = req.body.role;
+  const select = selectOrdo(db, role, idOrdo);
+  db.query(select, [idOrdo], (err, result) => {
+    console.log(result);
     res.send(result);
-    //res.send("success");
   })
 })
 

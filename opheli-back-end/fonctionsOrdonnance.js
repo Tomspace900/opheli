@@ -14,14 +14,15 @@ class Ordonnance {
 
     addToDatabase(db){
         const addOrdo = "INSERT INTO ordonnance(Type, DateCreation, Notes, IdPrescripteur, IdPatient) VALUES (?, ?, ?, ?, ?);";
-        db.query(addOrdo, [this.type, this.dateCreation, this.notes, this.idPrescripteur, this.idPatient]);
-        const idQuery = "SELECT idOrdonnance FROM ordonnance WHERE idOrdonnance = (SELECT MAX(idOrdonnance) FROM ordonnance WHERE idPatient = ?);";
-        db.query(idQuery, [this.idPatient], (err, result) => {
-            this.idOrdonnance = result;
-        })
-        this.categorie.forEach((categorie) => {
-            categorie.addToDatabase(db, this.idOrdonnance);
-        })
+        db.query(addOrdo, [this.type, this.dateCreation, this.notes, this.idPrescripteur, this.idPatient], (error, resultat) => {
+            const idQuery = "SELECT idOrdonnance FROM ordonnance WHERE idOrdonnance = (SELECT MAX(idOrdonnance) FROM ordonnance WHERE idPatient = ?);";
+            db.query(idQuery, [this.idPatient], (err, result) => {
+                this.idOrdonnance = result;
+            })
+            this.categorie.forEach((categorie) => {
+                categorie.addToDatabase(db, this.idOrdonnance);
+            })
+        });
     }
 }
 
@@ -39,14 +40,15 @@ class Categorie {
     addToDatabase(db, idOrdonnance){
         this.idOrdonnance = idOrdonnance;
         const addCategorie = "INSERT INTO categorie(Type, NbRenouvTotal, IdOrdonnance) VALUES (?, ?, ?);";
-        db.query(addCategorie, [this.type, this.nbRenouvTotal, this.idOrdonnance]);
-        const idQuery = "SELECT idCategorie FROM categorie WHERE idCategorie = (SELECT MAX(idCategorie) FROM categorie WHERE idOrdonnance = ?);"
-        db.query(idQuery, [this.idOrdonnance], (err, result) => {
-            this.idCategorie = result;
-        })
-        this.soins.forEach((soin) => {
-            soin.addToDatabase(db, this.idCategorie);
-        })
+        db.query(addCategorie, [this.type, this.nbRenouvTotal, this.idOrdonnance], (error, resultat) => {
+            const idQuery = "SELECT idCategorie FROM categorie WHERE idCategorie = (SELECT MAX(idCategorie) FROM categorie WHERE idOrdonnance = ?);"
+            db.query(idQuery, [this.idOrdonnance], (err, result) => {
+                this.idCategorie = result;
+            })
+            this.soins.forEach((soin) => {
+                soin.addToDatabase(db, this.idCategorie);
+            })
+        });
     }
 }
 
@@ -64,8 +66,36 @@ class Soin {
     }
 }
 
-function createOrdo(ordonnance){
+function createOrdo(ordonnance){ //TODO à fini j'attends le front, à mettre nbRenouvRestants de Soin comme nbRenouvTotal à la création
+    const ordo = new Ordonnance(ordonnance.type, ordonnance.dateCreation, ordonnance.notes, ordonnance.idPrescripteur, ordonnance.idPatient);
+    if(ordonnance.type == 'simple'){
+        const categorie = new Categorie('simple', ordonnance.nbRenouvTotal);
+        ordonnance.soinsSimples.forEach((soin) => {
 
+        })
+    }
 }
 
-module.exports = {createOrdo}
+function selectOrdo(db, role, idOrdo){
+    let select = "";
+    switch(role){
+        case 'client':
+            select = "SELECT * FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
+            break;
+        case 'prescripteur':
+            select = "SELECT c.*, o.*, p.*, pr.*, s.nom, s.description, s.IdSoin FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
+            break;
+        case 'pharmacien':
+                select = "SELECT c.*, o.IdOrdonnance, o.Type, o.DateCreation, o.DateExpiration, o.IdPatient, o.IdPrescripteur, p.*, pr.*, s.nom, s.description, s.IdSoin FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
+            break;
+        case 'mutuelle':
+            select = "SELECT c.*, o.IdOrdonnance, o.Type, o.DateCreation, o.DateExpiration, o.IdPatient, o.IdPrescripteur, p.*, pr.*, s.nom, s.description, s.IdSoin, s.Prix FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = 2;";
+            break;
+        default:
+            return "error";
+            break;
+    }
+    return select;
+}
+
+module.exports = {createOrdo, selectOrdo}
