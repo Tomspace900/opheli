@@ -5,11 +5,9 @@ import axios from 'axios';
 import { data } from 'jquery';
 
 const Ordonnance = () => {
-    const [login, setLogin] = useState('client');
+    const [login, setLogin] = useState('medecin');
     const [src, setSrc] = useState('');
     const [idOrdo, setIdOrdo] = useState(1);
-
-    const [nbMois, setNbMois] = useState(0);
 
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
 
@@ -31,19 +29,6 @@ const Ordonnance = () => {
                 console.log(element);
             });
     }, []);
-
-    const handleNbMois = (e) => {
-        setNbMois(e.target.value);
-    };
-
-    const submitProlonger = () => {
-        if (nbMois > 0) {
-            axios.post('http://localhost:8080/prolongerOrdonnance', {
-                idOrdo: idOrdo,
-                nbMois: nbMois,
-            });
-        }
-    };
 
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
@@ -76,6 +61,23 @@ const Ordonnance = () => {
     const OrdoDate = () => {
         const [displayProlonger, setDisplayProlonger] = useState(false);
 
+        const [nbMois, setNbMois] = useState(0);
+
+        const handleNbMois = (e) => {
+            setNbMois(e.target.value);
+            console.log(nbMois);
+        };
+
+        const submitProlonger = (e) => {
+            console.log('nbmois au submit ' + nbMois);
+            if (nbMois > 0) {
+                axios.post('http://localhost:8080/prolongerOrdonnance', {
+                    idOrdo: idOrdo,
+                    nbMois: nbMois,
+                });
+            }
+        };
+
         if (login === 'medecin') {
             return (
                 <div className="ordo-date" id="ordo-medecin-date">
@@ -83,7 +85,7 @@ const Ordonnance = () => {
                         <div>
                             {displayProlonger ? (
                                 <>
-                                    <input type="number" placeholder="1" min={1} max={6} onChange={(e) => handleNbMois(e)} />
+                                    <input type="number" placeholder="1" min={1} max={6} onChange={handleNbMois} />
                                     <span> mois</span>
                                     <br />
                                     <button onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={submitProlonger}>
