@@ -2,21 +2,20 @@ import React, { useState } from 'react';
 import '../CSS/List.css';
 import '../CSS/Login.css';
 import $ from 'jquery';
+import Axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function List() {
-    const [result, setResult] = useState([]);
-    if (result.length === 0) {
-        $.ajax({
-            type: 'POST',
-            url: 'http://localhost/opheli/opheli-back-end/PHP/list_ordonnance.php',
-            dataType: 'json',
-            success: function (response) {
-                if (response !== '') {
-                    setResult(response);
-                }
-            },
+    const [access, setAccess] = useState('start');
+    const navigate = useNavigate();
+
+    if (access == 'start') {
+        Axios.post('http://localhost:8080/check',{code:'liste'}).then(response => {
+            setAccess(response.data)
         });
-        console.log(result);
+    }
+    if (access == false) {
+        navigate('/Error')
     }
 
     return (
@@ -27,13 +26,6 @@ function List() {
             <div className="page">
                 <table className="liste">
                     <tbody>
-                        {result.map((ordonnance) => {
-                            return (
-                                <tr>
-                                    <td>{ordonnance.IdPrescripteur}</td>
-                                </tr>
-                            );
-                        })}
                     </tbody>
                 </table>
             </div>

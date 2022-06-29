@@ -14,6 +14,7 @@ import UpdateOrdo from './Components/UpdateOrdo';
 import Parameters from './Components/Parameters';
 import Profile from './Components/Profile';
 import Ordonnance from './Components/Ordonnance';
+import Error from './Components/Error';
 
 const App = () => {
     return (
@@ -32,6 +33,7 @@ const App = () => {
                     <Route path="/updateordo" element={<UpdateOrdo />} />
                     <Route path="/parametres" element={<Parameters />} />
                     <Route path="/ordonnance" element={<Ordonnance />} />
+                    <Route path="/error" element={<Error />} />
                 </Routes>
                 <Footer />
             </BrowserRouter>
