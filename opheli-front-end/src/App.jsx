@@ -15,6 +15,7 @@ import Parameters from './Components/Parameters';
 import Profile from './Components/Profile';
 import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
+import ListeClients from "./Components/ListeClients";
 
 const App = () => {
     return (
@@ -34,6 +35,7 @@ const App = () => {
                     <Route path="/parametres" element={<Parameters />} />
                     <Route path="/ordonnance" element={<Ordonnance />} />
                     <Route path="/error" element={<Error />} />
+                    <Route path="/listeClients" element={<ListeClients />} />
                 </Routes>
                 <Footer />
             </BrowserRouter>

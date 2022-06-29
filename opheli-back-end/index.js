@@ -33,6 +33,9 @@ app.post('/check', (req,res) => {
     case 'liste': //liste des ordonnances
       access = (role != "")
       break;
+    case 'listeClients': //liste des ordonnances
+      access = (role == "mutuelle")
+      break;
     case 'profil': //page de profil
       access = (role != "")
       break;
@@ -232,6 +235,15 @@ app.post('/login',(req,res) => {
 })
 
 //MUTUELLE
+app.get('/listeClients',(req,res) => {
+  request = "SELECT Nom, Prenom, Mail, opheli.patient.IdPatient  from opheli.souscrire, opheli.patient NATURAL JOIN opheli.utilisateur WHERE opheli.souscrire.IdPatient = opheli.patient.IdPatient AND opheli.souscrire.IdMutuelle = ?";
+  db.query(request,[id], (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    console.log(array)
+    res.send(array)
+  });
+})
+
 app.post('/suppClient', (req, res) => {
   suppClient(db,id,req.body.idClient)
 })
