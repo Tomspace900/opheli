@@ -85,7 +85,7 @@ const Ordonnance = () => {
                         <div>
                             {displayProlonger ? (
                                 <>
-                                    <input type="number" placeholder="1" min={1} max={6} onChange={handleNbMois} />
+                                    <input type="number" placeholder="0" min={1} max={6} onChange={handleNbMois} />
                                     <span> mois</span>
                                     <br />
                                     <button onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={submitProlonger}>
