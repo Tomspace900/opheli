@@ -8,7 +8,7 @@ const {PORT, USER, PASSWORD} = require("./const");
 var cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
-const {selectOrdo, updateDate} = require("./fonctionsOrdonnance");
+const {selectOrdo, updateDate, useSoin} = require("./fonctionsOrdonnance");
 //variables
 var code = ""; //Id en fonction du role
 var id = ""; //IdUtilisateur
@@ -300,10 +300,19 @@ app.post('/getOrdonnance', (req, res) => {
   })
 })
 
+//prolonger l'ordonnance de nbMois mois
 app.post('/prolongerOrdonnance', (req, res) => {
   const idOrdo = req.body.idOrdo;
   const nbMois = req.body.nbMois;
   updateDate(db, idOrdo, nbMois);
+})
+
+//réduit le nombre d'utilisations restantes de tous les soins de la liste idSoins en entrée
+app.post('/useSoins', (req, res) => {
+  const idSoins = req.body.idSoins;
+  idSoins.forEach((idSoin) => {
+    useSoin(db, idSoin);
+  })
 })
 
 app.listen(8080, () => {

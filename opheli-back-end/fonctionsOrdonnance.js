@@ -61,8 +61,8 @@ class Soin {
 
     addToDatabase(db, idCategorie){
         this.idCategorie = idCategorie;
-        const addSoin = "INSERT INTO soin(Nom, Description, IdCategorie) VALUES (?, ?, ?);";
-        db.query(addSoin, [this.nom, this.description, this.idCategorie]);
+        const addSoin = "INSERT INTO soin(Nom, Description, IdCategorie, NbRestants) VALUES (?, ?, ?, ?);";
+        db.query(addSoin, [this.nom, this.description, this.idCategorie, this.nbRenouvRestant]);
     }
 }
 
@@ -113,4 +113,19 @@ function updateDate(db, idOrdo, nbMonthsToAdd){
     })
 }
 
-module.exports = {createOrdo, selectOrdo, updateDate}
+function useSoin(db, idSoin){
+    const selectNbRenouv = "SELECT NbRestants FROM soin WHERE IdSoin = ?;";
+    db.query(selectNbRenouv, [idSoin], (err, nb) => {
+        if(nb[0].NbRestants > 0){
+            const updateRenouv = "UPDATE soin SET NbRestants = ? - 1 WHERE IdSoin = ?;";
+            db.query(updateRenouv, [nb[0].NbRestants, idSoin], (error, result) => {
+                if(error){
+                    console.log("erreur lors de la réduction de nbRestants d'un soin");
+                    console.log(error);
+                }
+            })
+        }
+    })
+}
+
+module.exports = {createOrdo, selectOrdo, updateDate, useSoin}
