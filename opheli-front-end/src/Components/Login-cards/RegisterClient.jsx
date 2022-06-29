@@ -76,7 +76,7 @@ const RegisterClient = () => {
         } else {
             setSubmitted(true);
             Axios.post(
-                'http://localhost:8080/patient',
+                'http://localhost:8080/client',
                 {
                     nom: surname,
                     prenom: firstname,
