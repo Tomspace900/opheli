@@ -7,7 +7,7 @@ var bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
 var cors = require('cors')
 const {suppClient} = require("./fonctionsMutuelle");
-const {selectOrdo} = require("./fonctionsOrdonnance");
+const {selectOrdo, updateDate} = require("./fonctionsOrdonnance");
 //variables
 var code = ""; //Id en fonction du role
 var id = ""; //IdUtilisateur
@@ -258,6 +258,12 @@ app.post('/getOrdonnance', (req, res) => {
   db.query(select, [idOrdo], (err, result) => {
     res.send(result);
   })
+})
+
+app.post('/prolongerOrdonnance', (req, res) => {
+  const idOrdo = req.body.idOrdo;
+  const nbMois = req.body.nbMois;
+  updateDate(db, idOrdo, nbMois);
 })
 
 app.listen(8080, () => {

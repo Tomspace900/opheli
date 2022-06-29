@@ -77,7 +77,7 @@ function createOrdo(ordonnance){ //TODO à fini j'attends le front, à mettre nb
 }
 
 //return la query pour select l'ordonnance selon le rôle
-function selectOrdo(db, role, idOrdo){
+function selectOrdo(db, role){
     let select = "";
     switch(role){
         case 'client':
@@ -99,4 +99,18 @@ function selectOrdo(db, role, idOrdo){
     return select;
 }
 
-module.exports = {createOrdo, selectOrdo}
+//prolonge l'ordonnance idOrdo de nbMonthsToAdd
+function updateDate(db, idOrdo, nbMonthsToAdd){
+    const selectDate = "SELECT DateExpiration FROM ordonnance WHERE IdOrdonnance = ?";
+    db.query(selectDate, [idOrdo], (err, date) => {
+        const updateDate = "UPDATE ordonnance SET DateExpiration = (DATE_ADD(?, interval ? month)) WHERE IdOrdonnance =  ?;";
+        db.query(updateDate, [date[0].DateExpiration, nbMonthsToAdd, idOrdo], (error, result) => {
+            if(error){
+                console.log("erreur lors de la mise à jour de la date");
+                console.log(error);
+            }
+        })
+    })
+}
+
+module.exports = {createOrdo, selectOrdo, updateDate}
