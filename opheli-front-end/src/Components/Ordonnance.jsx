@@ -9,6 +9,8 @@ const Ordonnance = () => {
     const [src, setSrc] = useState('');
     const [idOrdo, setIdOrdo] = useState(1);
 
+    const [nbMois, setNbMois] = useState(0);
+
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
 
     const [element, setElement] = useState([]);
@@ -26,8 +28,22 @@ const Ordonnance = () => {
             .then((response) => {
                 console.log(response.data);
                 setElement(response.data);
+                console.log(element);
             });
     }, []);
+
+    const handleNbMois = (e) => {
+        setNbMois(e.target.value);
+    };
+
+    const submitProlonger = () => {
+        if (nbMois > 0) {
+            axios.post('http://localhost:8080/prolongerOrdonnance', {
+                idOrdo: idOrdo,
+                nbMois: nbMois,
+            });
+        }
+    };
 
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
@@ -67,10 +83,10 @@ const Ordonnance = () => {
                         <div>
                             {displayProlonger ? (
                                 <>
-                                    <input type="number" placeholder="0" />
+                                    <input type="number" placeholder="1" min={1} max={6} onChange={(e) => handleNbMois(e)} />
                                     <span> mois</span>
                                     <br />
-                                    <button onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                                    <button onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={submitProlonger}>
                                         Valider
                                     </button>
                                     <button
@@ -151,9 +167,6 @@ const Ordonnance = () => {
                 return (
                     <div className="ordo-soins">
                         <>
-                            {element.forEach((element) => {
-                                <OrdoSoinsCard element={element} />;
-                            })}
                             {/* Faire un map des soins ADL et simples de l'ordonnance */}
                             <OrdoSoinsCard n="1" />
                         </>
@@ -229,7 +242,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="medecin-soin-name">
-                            <span id="medecin-soin-title">Nom du soin :{element.nom}</span> <br />
+                            <span id="medecin-soin-title">Nom du soin</span> <br />
                             <span id="medecin-soin-desc">
                                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime ea nulla officia similique esse
                                 vitae?
@@ -241,7 +254,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="mutuelle-soin-name">
-                            <span id="mutuelle-soin-title">Nom du soin {data.nom}</span> <br />
+                            <span id="mutuelle-soin-title">Nom du soin</span> <br />
                         </div>
                         <div id="mutuelle-soin-price">
                             <span>2,39 €</span>
@@ -252,7 +265,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="client-soin-name">
-                            <span id="client-soin-title">Nom du soin {data.nom}</span> <br />
+                            <span id="client-soin-title">Nom du soin</span> <br />
                             <span id="client-soin-desc">
                                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime ea nulla officia similique esse
                                 vitae?
@@ -271,7 +284,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="pharma-soin-name">
-                            <span>Nom du soin {data.nom}</span>
+                            <span>Nom du soin </span>
                         </div>
                         <div id="pharma-soin-generique">
                             {displayGenerique ? (

@@ -2,21 +2,20 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../CSS/Header.css';
-import Axios from "axios";
+import Axios from 'axios';
 
 const Header = () => {
-    const [nom, setNom] = useState("");
-    const [role, setRole] = useState("");
+    const [nom, setNom] = useState('');
+    const [role, setRole] = useState('');
     const [connected, setConnected] = useState(false);
-
 
     function handleConnect() {
         if (!connected) {
-            Axios.get('http://localhost:8080/infos').then(response => {
-                setNom(response.data.nom)
-                setRole(response.data.role)
+            Axios.get('http://localhost:8080/infos').then((response) => {
+                setNom(response.data.nom);
+                setRole(response.data.role);
                 if (nom != null) {
-                    setConnected(true)
+                    setConnected(true);
                 }
             });
         }
@@ -24,10 +23,9 @@ const Header = () => {
 
     setInterval(handleConnect, 1000);
 
-
     function handleDisconnect() {
-        setConnected(false)
-        Axios.get('http://localhost:8080/deconnexion')
+        setConnected(false);
+        Axios.get('http://localhost:8080/deconnexion');
     }
 
     if (connected) {
@@ -52,9 +50,7 @@ const Header = () => {
                             <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                         </svg>
                     </Link>
-                    <div className="header-profile-name">
-                        {nom}
-                    </div>
+                    <div className="header-profile-name">{nom}</div>
                     <div className="header-logout-link">
                         <svg
                             onClick={handleDisconnect}
