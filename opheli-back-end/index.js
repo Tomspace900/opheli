@@ -160,12 +160,13 @@ app.post('/login',(req,res) => {
       request = "SELECT IdUtilisateur from pharmacien WHERE IdPharmacien = ?;";
       break;
     case 'mutuelle':
-      request = "SELECT IdMutuelle, Nom from pharmacien WHERE IdMutuelle = ?;";
+      request = "SELECT IdMutuelle from mutuelle WHERE IdMutuelle = ?;";
+      break;
     default:
       request = "SELECT IdUtilisateur from patient WHERE IdPatient = ?;";
       break;
   }
-  db.query(request, [secu], (err, iduser)=> {
+  db.query(request, [req.body.id], (err, iduser)=> {
     if (iduser == null || iduser.length == 0) {
       return res.end('error')
     }
@@ -173,13 +174,14 @@ app.post('/login',(req,res) => {
     let nomGlobal = ""
     if (roleUser == 'mutuelle') {
       request = "SELECT MotDePasse, Nom from mutuelle WHERE IdMutuelle = ?;";
-      idGlobal = iduser[0].IdMutuelle
+      idGlobal = req.body.id
     } else {
       request = "SELECT MotDePasse, Nom, Prenom from utilisateur WHERE IdUtilisateur = ?;";
       idGlobal = iduser[0].IdUtilisateur
     }
     db.query(request, [idGlobal], (err, mdp)=> {
       bcrypt.compare(password, mdp[0].MotDePasse, function(err, bonmdp) {
+        console.log(bonmdp)
         if (bonmdp == true) {
           if (roleUser == 'mutuelle') {
             nomGlobal = mdp[0].Nom

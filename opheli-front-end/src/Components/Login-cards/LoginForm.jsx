@@ -80,7 +80,7 @@ const LoginForm = ({ account }) => {
                             return (
                                 <div className="login-form-blockline">
                                     <div className="login-label-id">
-                                        <label>Numéro mutuelle :</label>
+                                        <label>Identifiant de mutuelle :</label>
                                     </div>
                                     <div className="login-input-id">
                                         <input
