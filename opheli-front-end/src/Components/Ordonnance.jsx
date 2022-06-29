@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
 import axios from 'axios';
+import { data } from 'jquery';
 
 const Ordonnance = () => {
-    const [login, setLogin] = useState('pharma');
+    const [login, setLogin] = useState('client');
     const [src, setSrc] = useState('');
-    const [idOrdo, setIdOrdo] = useState(2);
+    const [idOrdo, setIdOrdo] = useState(1);
 
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
+
+    const [element, setElement] = useState('');
 
     useEffect(() => {
         QRCode.toDataURL(link).then(setSrc);
@@ -18,10 +21,10 @@ const Ordonnance = () => {
         axios
             .post('http://localhost:8080/getOrdonnance', {
                 idOrdo: idOrdo,
-                role : login,
+                role: login,
             })
             .then((response) => {
-                console.log(response);
+                console.log(response.data);
             });
     }, []);
 
@@ -147,6 +150,9 @@ const Ordonnance = () => {
                 return (
                     <div className="ordo-soins">
                         <>
+                            {element.map(() => {
+                                <OrdoSoinsCard data={element} />;
+                            })}
                             {/* Faire un map des soins ADL et simples de l'ordonnance */}
                             <OrdoSoinsCard n="1" />
                         </>
