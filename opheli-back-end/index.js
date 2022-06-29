@@ -256,7 +256,6 @@ app.post('/getOrdonnance', (req, res) => {
   const role = req.body.role;
   const select = selectOrdo(db, role, idOrdo);
   db.query(select, [idOrdo], (err, result) => {
-    console.log(result);
     res.send(result);
   })
 })

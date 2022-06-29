@@ -76,6 +76,7 @@ function createOrdo(ordonnance){ //TODO à fini j'attends le front, à mettre nb
     }
 }
 
+//return la query pour select l'ordonnance selon le rôle
 function selectOrdo(db, role, idOrdo){
     let select = "";
     switch(role){
