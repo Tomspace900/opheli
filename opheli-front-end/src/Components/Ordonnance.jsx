@@ -210,7 +210,7 @@ const Ordonnance = () => {
         }
     };
 
-    const OrdoSoinsCard = ({ n }) => {
+    const OrdoSoinsCard = ({ data }) => {
         // Medecin voit juste nom et description
         // Pharmacien Mutuelle Client voient le prix
         // Pharmacien modifie le prix, le nb d'utilisations restantes et l'alternative
@@ -228,7 +228,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="medecin-soin-name">
-                            <span id="medecin-soin-title">Nom du soin {n}</span> <br />
+                            <span id="medecin-soin-title">Nom du soin :{data.nom}</span> <br />
                             <span id="medecin-soin-desc">
                                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime ea nulla officia similique esse
                                 vitae?
@@ -240,7 +240,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="mutuelle-soin-name">
-                            <span id="mutuelle-soin-title">Nom du soin {n}</span> <br />
+                            <span id="mutuelle-soin-title">Nom du soin {data.nom}</span> <br />
                         </div>
                         <div id="mutuelle-soin-price">
                             <span>2,39 €</span>
@@ -251,7 +251,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="client-soin-name">
-                            <span id="client-soin-title">Nom du soin {n}</span> <br />
+                            <span id="client-soin-title">Nom du soin {data.nom}</span> <br />
                             <span id="client-soin-desc">
                                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime ea nulla officia similique esse
                                 vitae?
@@ -270,7 +270,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="pharma-soin-name">
-                            <span>Nom du soin {n}</span>
+                            <span>Nom du soin {data.nom}</span>
                         </div>
                         <div id="pharma-soin-generique">
                             {displayGenerique ? (
