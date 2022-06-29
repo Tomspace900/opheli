@@ -113,6 +113,7 @@ function updateDate(db, idOrdo, nbMonthsToAdd){
     })
 }
 
+//retire une utilisation au soin donné
 function useSoin(db, idSoin){
     const selectNbRenouv = "SELECT NbRestants FROM soin WHERE IdSoin = ?;";
     db.query(selectNbRenouv, [idSoin], (err, nb) => {
@@ -128,4 +129,17 @@ function useSoin(db, idSoin){
     })
 }
 
-module.exports = {createOrdo, selectOrdo, updateDate, useSoin}
+//set le générique du soin
+function addGenerique(db, idSoin, generique){
+    if(generique !== null && generique !== ""){
+        const setGenerique = "UPDATE soin SET alternative = ? WHERE IdSoin = ?;";
+        db.query(setGenerique, [generique, idSoin], (err, res) => {
+            if(err){
+                console.log("erreur lors de l'attribution d'un générique");
+                console.log(err);
+            }
+        })
+    }
+}
+
+module.exports = {createOrdo, selectOrdo, updateDate, useSoin, addGenerique}
