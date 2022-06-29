@@ -84,7 +84,7 @@ app.get('/liste_pharmacies', (req,res) => {
   });
 });
 
-app.post('/patient', (req,res) => {
+app.post('/client', (req,res) => {
   //Vérification secu
   request = "SELECT IdPatient from patient WHERE IdPatient = ?;";
   db.query(request, [req.body.secu], (err, verif)=> {
@@ -99,7 +99,7 @@ app.post('/patient', (req,res) => {
     if (message != 'error') {
       code = req.body.secu
       id = message
-      role = 'patient'
+      role = 'client'
       nom = req.body.prenom+" "+req.body.nom
       return res.end('success')
     } else {
