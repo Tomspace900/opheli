@@ -11,7 +11,7 @@ const Ordonnance = () => {
 
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
 
-    const [element, setElement] = useState('');
+    const [element, setElement] = useState([]);
 
     useEffect(() => {
         QRCode.toDataURL(link).then(setSrc);
@@ -25,6 +25,7 @@ const Ordonnance = () => {
             })
             .then((response) => {
                 console.log(response.data);
+                setElement(response.data);
             });
     }, []);
 
@@ -150,8 +151,8 @@ const Ordonnance = () => {
                 return (
                     <div className="ordo-soins">
                         <>
-                            {element.map(() => {
-                                <OrdoSoinsCard data={element} />;
+                            {element.forEach((element) => {
+                                <OrdoSoinsCard element={element} />;
                             })}
                             {/* Faire un map des soins ADL et simples de l'ordonnance */}
                             <OrdoSoinsCard n="1" />
@@ -210,7 +211,7 @@ const Ordonnance = () => {
         }
     };
 
-    const OrdoSoinsCard = ({ data }) => {
+    const OrdoSoinsCard = ({ element }) => {
         // Medecin voit juste nom et description
         // Pharmacien Mutuelle Client voient le prix
         // Pharmacien modifie le prix, le nb d'utilisations restantes et l'alternative
@@ -228,7 +229,7 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="medecin-soin-name">
-                            <span id="medecin-soin-title">Nom du soin :{data.nom}</span> <br />
+                            <span id="medecin-soin-title">Nom du soin :{element.nom}</span> <br />
                             <span id="medecin-soin-desc">
                                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime ea nulla officia similique esse
                                 vitae?
