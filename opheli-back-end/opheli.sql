@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mar. 28 juin 2022 à 12:07
+-- Généré le : mer. 29 juin 2022 à 08:59
 -- Version du serveur :  10.4.13-MariaDB
 -- Version de PHP : 7.3.21
 
@@ -288,11 +288,11 @@ INSERT INTO `soin` (`IdSoin`, `Nom`, `Description`, `Prix`, `Alternative`, `NbRe
 -- --------------------------------------------------------
 
 --
--- Structure de la table `souscrir`
+-- Structure de la table `souscrire`
 --
 
-DROP TABLE IF EXISTS `souscrir`;
-CREATE TABLE IF NOT EXISTS `souscrir` (
+DROP TABLE IF EXISTS `souscrire`;
+CREATE TABLE IF NOT EXISTS `souscrire` (
   `IdMutuelle` varchar(50) NOT NULL,
   `IdPatient` varchar(13) NOT NULL,
   PRIMARY KEY (`IdMutuelle`,`IdPatient`),
@@ -300,10 +300,10 @@ CREATE TABLE IF NOT EXISTS `souscrir` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `souscrir`
+-- Déchargement des données de la table `souscrire`
 --
 
-INSERT INTO `souscrir` (`IdMutuelle`, `IdPatient`) VALUES
+INSERT INTO `souscrire` (`IdMutuelle`, `IdPatient`) VALUES
 ('mutuelletest', '1111111111111');
 
 -- --------------------------------------------------------
@@ -417,11 +417,11 @@ ALTER TABLE `soin`
   ADD CONSTRAINT `soin_ibfk_1` FOREIGN KEY (`IdCategorie`) REFERENCES `categorie` (`IdCategorie`);
 
 --
--- Contraintes pour la table `souscrir`
+-- Contraintes pour la table `souscrire`
 --
-ALTER TABLE `souscrir`
-  ADD CONSTRAINT `souscrir_ibfk_1` FOREIGN KEY (`IdMutuelle`) REFERENCES `mutuelle` (`IdMutuelle`),
-  ADD CONSTRAINT `souscrir_ibfk_2` FOREIGN KEY (`IdPatient`) REFERENCES `patient` (`IdPatient`);
+ALTER TABLE `souscrire`
+  ADD CONSTRAINT `souscrire_ibfk_1` FOREIGN KEY (`IdMutuelle`) REFERENCES `mutuelle` (`IdMutuelle`),
+  ADD CONSTRAINT `souscrire_ibfk_2` FOREIGN KEY (`IdPatient`) REFERENCES `patient` (`IdPatient`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
