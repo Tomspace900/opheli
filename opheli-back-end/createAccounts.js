@@ -185,9 +185,17 @@ class Mutuelle {
     }
 
     addToDatabase(db) {
-        const user = "INSERT INTO `opheli`.`mutuelle` (`IdMutuelle`, `Mail`, `Nom`, `Mdp`) VALUES (?, ?, ?, ?);";
+        const user = "INSERT INTO `opheli`.`mutuelle` (`IdMutuelle`, `Mail`, `Nom`, `MotDePasse`) VALUES (?, ?, ?, ?);";
         db.query(user, [this.id,this.mail,this.nom,this.mdp], (err, add)=> {
-            console.log(err)
+            //Vérification de la création du compte
+            const request = "SELECT IdMutuelle from opheli.mutuelle WHERE IdMutuelle = ?"
+            db.query(request, [this.id], (err, ver) => {
+                if (ver.length != 0) {
+                    return ver[0].IdMutuelle
+                } else {
+                    return ('error')
+                }
+            });
         });
     }
 }

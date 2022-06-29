@@ -126,7 +126,7 @@ app.post('/pharmacien', (req,res) => {
 app.post('/mutuelle', (req,res) => {
   //Vérification mutelle
   request = "SELECT IdMutuelle from pharmacien WHERE IdMutuelle = ?;";
-  db.query(request, [req.body.id], (err, verif)=> {
+  db.query(request, [req.body.identifiant], (err, verif)=> {
     if (verif != null) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
@@ -134,9 +134,17 @@ app.post('/mutuelle', (req,res) => {
   //Création compte
   bcrypt.hash(req.body.mdp, 8, (err, hash) => {
     const mutuelle = new Mutuelle(req.body.identifiant, req.body.mail, req.body.nom, hash)
-    mutuelle.addToDatabase(db)
+    const message = mutuelle.addToDatabase(db)
+    if (message != 'error') {
+      code = req.body.identifiant
+      id = message
+      role = 'mutuelle'
+      nom = req.body.nom
+      return res.end('success')
+    } else {
+      return res.end("Une erreur est survenue durant la création de votre profil.")
+    }
   });
-  //Redirection
 });
 
 app.post('/login',(req,res) => {

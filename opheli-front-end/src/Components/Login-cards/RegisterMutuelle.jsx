@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import Axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const RegisterMutuelle = ({ account }) => {
     // Donnees a envoyer à la BDD
@@ -10,6 +11,7 @@ const RegisterMutuelle = ({ account }) => {
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     // Constante booleenne a utiliser pour envoyer les donnees
     const [submitted, setSubmitted] = useState(false);
@@ -43,13 +45,13 @@ const RegisterMutuelle = ({ account }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (name === '' || email === '' || identifiant === '' || password === '' || repeatPassword === '') {
-            alert('Tout les champs sont obligatoires');
+            setError('Tout les champs sont obligatoires');
         } else if (!email.includes('@')) {
-            alert('Email incorrect');
+            setError('Email incorrect');
         } else if (password !== repeatPassword) {
-            alert('Les mots de passes ne sont pas identiques');
+            setError('Les mots de passes ne sont pas identiques');
         } else if (password.length < 8) {
-            alert('Votre mot de passe doit contenir au moins 8 caractères');
+            setError('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
             setSubmitted(true);
             Axios.post(
@@ -59,12 +61,13 @@ const RegisterMutuelle = ({ account }) => {
                     mail: email,
                     identifiant : identifiant,
                     mdp : password
-                }, function (data) {
-                    if (data != null) {
-                        setError(data);
+                }).then(response => {
+                    if (response.data == 'success') {
+                        navigate('/List')
+                    } else {
+                        setError(response.data)
                     }
-                }
-            );
+                });
         }
     };
 
@@ -131,6 +134,9 @@ const RegisterMutuelle = ({ account }) => {
                 onClick={handleSubmit}>
                     S'inscrire
                 </button>
+            </div>
+            <div>
+                {error}
             </div>
         </form>
     );

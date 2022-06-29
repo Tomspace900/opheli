@@ -1,5 +1,5 @@
 input,
-textarea {
+textarea, select {
     border-radius: 4px;
     font-family: var(--font-main);
     color: #4a565a;
