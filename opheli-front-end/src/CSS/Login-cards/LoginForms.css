@@ -53,7 +53,6 @@
 
 .login-form-line,
 .register-form-line {
-    display: flex;
     justify-content: center;
     max-width: 90%;
 }
@@ -74,7 +73,7 @@
 
 .login-form-blockline,
 .register-form-blockline {
-    max-width: 60%;
+    width: 100%;
     margin: 1% 0 0 0;
 }
 
@@ -90,9 +89,15 @@
     margin: 1% 0 0 0;
 }
 
-.login-form input,
+.login-form input {
+    width: 60%;
+    border-radius: 5px;
+    border: solid black 1px;
+    height: 2em;
+    margin: 3%;
+}
 .register-form input {
-    width: 100%;
+    width: 90%;
     border-radius: 5px;
     border: solid black 1px;
     height: 2em;

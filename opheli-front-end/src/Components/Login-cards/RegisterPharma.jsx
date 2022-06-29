@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 const RegisterPharma = ({ account }) => {
     // Donnees a envoyer à la BDD
+    const [code, setCode] = useState('');
     const [firstname, setFirstname] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
@@ -26,6 +27,9 @@ const RegisterPharma = ({ account }) => {
         });
     }
 
+    const handleCode = (e) => {
+        setCode(e.target.value);
+    };
 
     const handleFirstname = (e) => {
         setFirstname(e.target.value);
@@ -105,7 +109,8 @@ const RegisterPharma = ({ account }) => {
                     rue :street,
                     code : zipcode,
                     ville : city,
-                    mdp : password
+                    mdp : password,
+                    codepro : code
                 }).then(response => {
                 if (response.data == 'success') {
                     navigate('/List')
@@ -118,6 +123,17 @@ const RegisterPharma = ({ account }) => {
 
     return (
         <form className="register-form">
+            <div className="register-form-line">
+                <div className="register-form-blockline">
+                    <div className="register-label-nompharma">
+                        <label>Afin de créer un compte professionnel, un code est nécessaire. Veuillez prouver votre identité auprès des administrateurs d'Opheli en envoyant un mail à l'adresse suivante :</label><br/><br/>
+                        <label>Code :</label>
+                    </div>
+                    <div className="register-input-nompharma">
+                        <input type="text" onChange={handleCode} />
+                    </div>
+                </div>
+            </div>
             <div className="register-form-doubleline">
                 <div className="register-form-blockdoubleline">
                     <div className="register-label-firstname">
@@ -175,7 +191,7 @@ const RegisterPharma = ({ account }) => {
             <div className="register-form-line">
                 <div className="register-form-blockline">
                     <div className="register-label-nompharma">
-                        <label>Selectionnez votre pharmacie :</label>
+                        <label>Sélectionnez votre pharmacie :</label>
                     </div>
                     <div className="register-input-nompharma">
                         <select onChange={handleIdPharma}>

@@ -35,13 +35,14 @@ class Patient extends Utilisateur {
 }
 
 class Prescripteur extends Utilisateur {
-    constructor(rpps, specialite, rue, code, ville, nom, prenom, mail, mdp) {
+    constructor(rpps, specialite, rue, code, ville, nom, prenom, mail, spe, mdp) {
         super(nom, prenom, mail, mdp);
         this.rpps = rpps
         this.specialite = specialite
         this.rue = rue
         this.code = code
         this.ville = ville
+        this.spe = spe
     }
 
     addToDatabase(db) {
@@ -61,7 +62,7 @@ class Prescripteur extends Utilisateur {
                             db.query(verifAdresse, [this.rue,this.code,this.ville], (err, add)=> {
                                 //Création prescripteur
                                 const prescripteur = "INSERT INTO `opheli`.`prescripteur` (`IdPrescripteur`, `IdAdresse`, `IdSpecialite`, `IdUtilisateur`) VALUES (?, ?, ?, ?);"
-                                db.query(prescripteur, [this.rpps,add[0].IdAdresse,1,id[0].IdUtilisateur],(err, add)=> {
+                                db.query(prescripteur, [this.rpps,add[0].IdAdresse,this.spe,id[0].IdUtilisateur],(err, add)=> {
                                     //Vérification de la création du compte
                                     const request = "SELECT IdUtilisateur from opheli.prescripteur NATURAL JOIN opheli.utilisateur WHERE IdPrescripteur = ?"
                                     db.query(request, [this.rpps], (err, ver)=> {
@@ -200,4 +201,19 @@ class Mutuelle {
     }
 }
 
-module.exports = {Utilisateur, Patient, Prescripteur, Pharmacien, Mutuelle}
+function checkCode(db,code) {
+    //Vérification code
+    const request = "SELECT * FROM opheli.code WHERE Code = ?"
+    db.query(request, [code], (err, rep)=> {
+        if (rep.length != 0) {
+            const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
+            db.query(request, [code]);
+            console.log(true)
+            return true;
+        } else {
+            res.end("Code faux")
+        }
+    });
+}
+
+module.exports = {Utilisateur, Patient, Prescripteur, Pharmacien, Mutuelle, checkCode}

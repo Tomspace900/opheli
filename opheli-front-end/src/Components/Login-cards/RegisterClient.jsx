@@ -64,15 +64,15 @@ const RegisterClient = () => {
             password === '' ||
             repeatPassword === ''
         ) {
-            alert('Tout les champs sont obligatoires');
+            setError('Tout les champs sont obligatoires');
         } else if (!email.includes('@')) {
-            alert('Email incorrect');
+            setError('Email incorrect');
         } else if (id.length !== 13 || /[a-zA-Z]/.test(id)) {
-            alert('Le numéro de sécurité sociale est incorrect');
+            setError('Le numéro de sécurité sociale est incorrect');
         } else if (password !== repeatPassword) {
-            alert('Les mots de passes ne sont pas identiques');
+            setError('Les mots de passes ne sont pas identiques');
         } else if (password.length < 8) {
-            alert('Votre mot de passe doit contenir au moins 8 caractères');
+            setError('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
             setSubmitted(true);
             Axios.post(

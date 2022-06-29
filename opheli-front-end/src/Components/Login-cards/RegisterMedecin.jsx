@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 const RegisterMedecin = ({ account }) => {
     // Donnees a envoyer à la BDD
+    const [code, setCode] = useState('');
     const [firstname, setFirstname] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
@@ -15,8 +16,20 @@ const RegisterMedecin = ({ account }) => {
     const [city, setCity] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const [spe, setSpe] = useState('');
+    const [liste, setListe] = useState([]);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    if (liste.length == 0) {
+        Axios.get('http://localhost:8080/liste_specialites').then(response => {
+            setListe(response.data)
+        });
+    }
+
+    const handleCode = (e) => {
+        setCode(e.target.value);
+    };
 
     const handleFirstname = (e) => {
         setFirstname(e.target.value);
@@ -58,6 +71,10 @@ const RegisterMedecin = ({ account }) => {
         setRepeatPassword(e.target.value);
     };
 
+    const handleIdSpe = (e) => {
+        setSpe(e.target.value)
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (
@@ -80,7 +97,7 @@ const RegisterMedecin = ({ account }) => {
             setError('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
             Axios.post(
-                'http://localhost:8080/prescripteur',
+                'http://localhost:8080/medecin',
                 {
                     nom: surname,
                     prenom: firstname,
@@ -89,7 +106,9 @@ const RegisterMedecin = ({ account }) => {
                     rue :street,
                     code : zipcode,
                     ville : city,
-                    mdp : password
+                    spe : spe,
+                    mdp : password,
+                    codepro : code
                 }).then(response => {
                     if (response.data == 'success') {
                         navigate('/List')
@@ -107,6 +126,17 @@ const RegisterMedecin = ({ account }) => {
             // method="post"
             // onSubmit={(event) => handleSumbit(event)}
         >
+            <div className="register-form-line">
+                <div className="register-form-blockline">
+                    <div className="register-label-nompharma">
+                        <label>Afin de créer un compte professionnel, un code est nécessaire. Veuillez prouver votre identité auprès des administrateurs d'Opheli en envoyant un mail à l'adresse suivante :</label><br/><br/>
+                        <label>Code :</label>
+                    </div>
+                    <div className="register-input-nompharma">
+                        <input type="text" onChange={handleCode} />
+                    </div>
+                </div>
+            </div>
             <div className="register-form-doubleline">
                 <div className="register-form-blockdoubleline">
                     <div className="register-label-firstname">
@@ -158,6 +188,24 @@ const RegisterMedecin = ({ account }) => {
                     </div>
                     <div className="register-input-rpwd">
                         <input type="password" onChange={handleRepeatPassword} />
+                    </div>
+                </div>
+            </div>
+            <div className="register-form-line">
+                <div className="register-form-blockline">
+                    <div className="register-label-nompharma">
+                        <label>Sélectionnez votre spécialité :</label>
+                    </div>
+                    <div className="register-input-nompharma">
+                        <select onChange={handleIdSpe}>
+                            {liste.map(item => {
+                                return (
+                                    <option value={item.IdSpecialite}>
+                                        {item.NomSpecialite}
+                                    </option>
+                                );
+                            })}
+                        </select>
                     </div>
                 </div>
             </div>

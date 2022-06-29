@@ -11,10 +11,8 @@ function ListeClients() {
     const navigate = useNavigate();
 
     function suppClient(id) {
-        Axios.post('http://localhost:8080/suppClient',{idClient : id}).then(response => {
-            console.log(response)
-            listeClients()
-        });
+        Axios.post('http://localhost:8080/suppClient',{idClient : id})
+        listeClients()
     }
 
     if (ask == false) {
@@ -22,11 +20,9 @@ function ListeClients() {
     }
 
     function listeClients() {
-        console.log("appel")
         Axios.get('http://localhost:8080/listeClients',{code:'liste'}).then(response => {
             setListe(response.data)
             setAsked(true)
-            console.log("update")
         });
     }
 

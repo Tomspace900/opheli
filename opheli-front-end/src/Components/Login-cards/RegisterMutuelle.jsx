@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 const RegisterMutuelle = ({ account }) => {
     // Donnees a envoyer à la BDD
+    const [code, setCode] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [identifiant, setId] = useState('');
@@ -15,6 +16,10 @@ const RegisterMutuelle = ({ account }) => {
 
     // Constante booleenne a utiliser pour envoyer les donnees
     const [submitted, setSubmitted] = useState(false);
+
+    const handleCode = (e) => {
+        setCode(e.target.value);
+    };
 
     const handleName = (e) => {
         setName(e.target.value);
@@ -73,6 +78,17 @@ const RegisterMutuelle = ({ account }) => {
 
     return (
         <form className="register-form">
+            <div className="register-form-line">
+                <div className="register-form-blockline">
+                    <div className="register-label-nompharma">
+                        <label>Afin de créer un compte professionnel, un code est nécessaire. Veuillez prouver votre identité auprès des administrateurs d'Opheli en envoyant un mail à l'adresse suivante :</label><br/><br/>
+                        <label>Code :</label>
+                    </div>
+                    <div className="register-input-nompharma">
+                        <input type="text" onChange={handleCode} />
+                    </div>
+                </div>
+            </div>
             <div className="register-form-doubleline">
                 <div className="register-form-blockdoubleline">
                     <div className="register-label-firstname">

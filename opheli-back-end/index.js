@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 var bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
 var cors = require('cors')
+const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
 const {selectOrdo, updateDate} = require("./fonctionsOrdonnance");
 //variables
@@ -85,6 +86,14 @@ app.get('/liste_pharmacies', (req,res) => {
   });
 });
 
+app.get('/liste_specialites', (req,res) => {
+  request = "SELECT * from opheli.specialite";
+  db.query(request, (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array)
+  });
+});
+
 app.post('/client', (req,res) => {
   //Vérification secu
   request = "SELECT IdPatient from patient WHERE IdPatient = ?;";
@@ -111,72 +120,103 @@ app.post('/client', (req,res) => {
 
 app.post('/medecin', (req,res) => {
   //Vérification rpps
-  request = "SELECT IdPrescripteur from prescripteur WHERE IdPrescripteur = ?;";
+  let request = "SELECT IdPrescripteur from prescripteur WHERE IdPrescripteur = ?;";
   db.query(request, [req.body.rpps], (err, verif)=> {
     if (verif.length != 0) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
   });
-  //Création compte
-  bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-    const prescripteur = new Prescripteur(req.body.rpps, req.body.specialite, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
-    const message = prescripteur.addToDatabase(db,req.body.rpps)
-    if (message != 'error') {
-      code = req.body.rpps
-      id = message
-      role = 'medecin'
-      nom = req.body.prenom+" "+req.body.nom
-      return res.end('success')
+  //Vérification code
+  request = "SELECT * FROM opheli.code WHERE Code = ?"
+  db.query(request, [req.body.codepro], (err, rep)=> {
+    if (rep.length != 0) {
+      const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
+      db.query(request, [req.body.codepro],(err,rep)=>{
+        //Création compte
+        bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+          const prescripteur = new Prescripteur(req.body.rpps, req.body.specialite, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, req.body.spe, hash)
+          const message = prescripteur.addToDatabase(db,req.body.rpps)
+          if (message != 'error') {
+            code = req.body.rpps
+            id = message
+            role = 'medecin'
+            nom = req.body.prenom+" "+req.body.nom
+            return res.end('success')
+          } else {
+            return res.end("Une erreur est survenue durant la création de votre profil.")
+          }
+        });
+      });
     } else {
-      return res.end("Une erreur est survenue durant la création de votre profil.")
+      res.end("Code incorrect.")
     }
   });
 });
 
 app.post('/pharma', (req,res) => {
   //Vérification rpps
-  request = "SELECT IdPharmacien from pharmacien WHERE IdPharmacien = ?;";
+  let request = "SELECT IdPharmacien from pharmacien WHERE IdPharmacien = ?;";
   db.query(request, [req.body.rpps], (err, verif)=> {
     if (verif != null) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
   });
-  //Création compte
-  bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-    const pharmacien = new Pharmacien(req.body.rpps, req.body.idp, req.body.nomp, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
-    const message = pharmacien.addToDatabase(db)
-    if (message != 'error') {
-      code = req.body.rpps
-      id = message
-      role = 'pharma'
-      nom = req.body.prenom+" "+req.body.nom
-      return res.end('success')
+  //Vérification code
+  request = "SELECT * FROM opheli.code WHERE Code = ?"
+  db.query(request, [req.body.codepro], (err, rep)=> {
+    if (rep.length != 0) {
+      const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
+      db.query(request, [req.body.codepro]);
+      //Création compte
+      bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+        const pharmacien = new Pharmacien(req.body.rpps, req.body.idp, req.body.nomp, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
+        const message = pharmacien.addToDatabase(db)
+        if (message != 'error') {
+          code = req.body.rpps
+          id = message
+          role = 'pharma'
+          nom = req.body.prenom+" "+req.body.nom
+          return res.end('success')
+        } else {
+          return res.end("Une erreur est survenue durant la création de votre profil.")
+        }
+      });
     } else {
-      return res.end("Une erreur est survenue durant la création de votre profil.")
+      res.end("Code incorrect.")
     }
   });
 });
 
 app.post('/mutuelle', (req,res) => {
   //Vérification mutelle
-  request = "SELECT IdMutuelle from pharmacien WHERE IdMutuelle = ?;";
+  let request = "SELECT IdMutuelle from pharmacien WHERE IdMutuelle = ?;";
   db.query(request, [req.body.identifiant], (err, verif)=> {
     if (verif != null) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
   });
-  //Création compte
-  bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-    const mutuelle = new Mutuelle(req.body.identifiant, req.body.mail, req.body.nom, hash)
-    const message = mutuelle.addToDatabase(db)
-    if (message != 'error') {
-      code = req.body.identifiant
-      id = message
-      role = 'mutuelle'
-      nom = req.body.nom
-      return res.end('success')
+  //Vérification code
+  request = "SELECT * FROM opheli.code WHERE Code = ?"
+  db.query(request, [req.body.codepro], (err, rep)=> {
+    if (rep.length != 0) {
+      const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
+      db.query(request, [req.body.codepro]);
+      //Création compte
+      bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+        const mutuelle = new Mutuelle(req.body.identifiant, req.body.mail, req.body.nom, hash)
+        const message = mutuelle.addToDatabase(db)
+        if (message != 'error') {
+          code = req.body.identifiant
+          id = message
+          role = 'mutuelle'
+          nom = req.body.nom
+          return res.end('success')
+        } else {
+          return res.end("Une erreur est survenue durant la création de votre profil.")
+        }
+      });
     } else {
-      return res.end("Une erreur est survenue durant la création de votre profil.")
+      res.end("Code incorrect.")
     }
   });
 });
