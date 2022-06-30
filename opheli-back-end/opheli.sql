@@ -116,7 +116,7 @@ DROP TABLE IF EXISTS `mutuelle`;
 CREATE TABLE IF NOT EXISTS `mutuelle` (
   `IdMutuelle` varchar(50) NOT NULL,
   `Mail` varchar(50) NOT NULL,
-  `Nom` varchar(50) NOT NULL,
+  `NomMutuelle` varchar(50) NOT NULL,
   `MotDePasse` varchar(200) NOT NULL,
   PRIMARY KEY (`IdMutuelle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `mutuelle` (
 -- Déchargement des données de la table `mutuelle`
 --
 
-INSERT INTO `mutuelle` (`IdMutuelle`, `Mail`, `Nom`, `MotDePasse`) VALUES
+INSERT INTO `mutuelle` (`IdMutuelle`, `Mail`, `NomMutuelle`, `MotDePasse`) VALUES
 ('mutuelletest', 'mutuelle@hotmail.com', 'Mutuelle des oiseaux', '$2y$10$4gjgKSvH5dfofs3K1JR1YOB.DvcPiOsgZ/BHOImOSPX1JOn5g3V.q');
 
 -- --------------------------------------------------------
@@ -263,7 +263,7 @@ INSERT INTO `prescripteur` (`IdPrescripteur`, `IdAdresse`, `IdSpecialite`, `IdUt
 DROP TABLE IF EXISTS `soin`;
 CREATE TABLE IF NOT EXISTS `soin` (
   `IdSoin` int(11) NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(50) NOT NULL,
+  `NomSoin` varchar(50) NOT NULL,
   `Description` text NOT NULL,
   `Prix` decimal(5,2) DEFAULT NULL,
   `Alternative` varchar(50) DEFAULT NULL,
@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `soin` (
 -- Déchargement des données de la table `soin`
 --
 
-INSERT INTO `soin` (`IdSoin`, `Nom`, `Description`, `Prix`, `Alternative`, `NbRestants`, `IdCategorie`) VALUES
+INSERT INTO `soin` (`IdSoin`, `NomSoin`, `Description`, `Prix`, `Alternative`, `NbRestants`, `IdCategorie`) VALUES
 (3, 'Doliprane', 'Boite de doliprane (1000mg)', NULL, NULL, 0, 1),
 (4, 'Efferalgan', 'Boite d\'Efferalgan (1000 mg)', NULL, NULL, 0, 1),
 (5, 'Panotile Sol Auric 8ml', '4 gouttes matin, midi et soir en bain d\'oereille dans l\'oreille douloureuse', NULL, NULL, 0, 3),
@@ -340,8 +340,8 @@ INSERT INTO `specialite` (`IdSpecialite`, `NomSpecialite`) VALUES
 DROP TABLE IF EXISTS `utilisateur`;
 CREATE TABLE IF NOT EXISTS `utilisateur` (
   `IdUtilisateur` int(11) NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(50) NOT NULL,
-  `Prenom` varchar(50) NOT NULL,
+  `NomUtilisateur` varchar(50) NOT NULL,
+  `PrenomUtilisateur` varchar(50) NOT NULL,
   `Mail` varchar(50) NOT NULL,
   `MotDePasse` varchar(200) NOT NULL,
   PRIMARY KEY (`IdUtilisateur`)
@@ -351,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 -- Déchargement des données de la table `utilisateur`
 --
 
-INSERT INTO `utilisateur` (`IdUtilisateur`, `Nom`, `Prenom`, `Mail`, `MotDePasse`) VALUES
+INSERT INTO `utilisateur` (`IdUtilisateur`, `NomUtilisateur`, `PrenomUtilisateur`, `Mail`, `MotDePasse`) VALUES
 (1, 'Paysant', 'Mathilde', 'mathilde@hotmail.com', '$2y$10$BjmzK.gph1lRRGyvmLVznulTkg/CN8Hqrzrw7qthJwl0xvCRoN50W'),
 (2, 'Gregoire', 'Ila', 'IlaGregoire@jourrapide.com', '$2y$10$Co6zqtNh2TQFNTkchWJFf.WCdNeihcqq2FfFiZJliefmxugnkdb4G'),
 (3, 'Patient', 'Test', 'test@hotmail.com', '$2y$10$Zkxu6U0HsY8sadZBrB4TbeizMaiaUvSOiAKCbYPPClXH98BFsKXou'),
