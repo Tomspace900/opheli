@@ -1,0 +1,33 @@
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 5% auto;
+    border: #5ccdc4a9 solid 2px;
+    box-shadow: var(--shadow-grey-small);
+    padding: 3% 5%;
+    border-radius: 30px;
+    min-width: 400px;
+    max-width: 500px;
+    background-color: #ffffff;
+}
+
+.contact-title {
+    font-size: 1.6em;
+}
+
+.contact-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    padding: 10px 5%;
+    margin-top: 20px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+}
+
+.contact-infos{
+    text-align: start;
+}

@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
 import axios from 'axios';
-import { data } from 'jquery';
 
 const Ordonnance = () => {
-    const [login, setLogin] = useState('medecin');
+    const [login, setLogin] = useState('pharma');
     const [src, setSrc] = useState('');
     const [idOrdo, setIdOrdo] = useState(1);
 
@@ -68,8 +67,7 @@ const Ordonnance = () => {
             console.log(nbMois);
         };
 
-        const submitProlonger = (e) => {
-            console.log('nbmois au submit ' + nbMois);
+        const submitProlonger = () => {
             if (nbMois > 0) {
                 axios.post('http://localhost:8080/prolongerOrdonnance', {
                     idOrdo: idOrdo,
@@ -114,18 +112,18 @@ const Ordonnance = () => {
                     </div>
                     <div id="medecin-date">
                         <span>Délivrée le </span>
-                        <span>12 septembre 2021</span>
+                        <span>*date de prescription*</span>
                         <br />
                         <span>Valable jusqu'au </span>
-                        <span>12 decembre 2021</span>
-                        {displayProlonger ? (
+                        <span>*date d'expiration*</span>
+                        {/* {displayProlonger ? (
                             <>
                                 <br />
                                 <br />
                                 <span>Nouvelle valabilité : </span>
-                                <span>12 decembre 2021</span>
+                                <span>date d'expiration</span>
                             </>
-                        ) : null}
+                        ) : null} */}
                     </div>
                 </div>
             );
@@ -169,13 +167,11 @@ const Ordonnance = () => {
                 return (
                     <div className="ordo-soins">
                         <>
+                            {element &&
+                                element.map((el) => {
+                                    return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
+                                })}
                             {/* Faire un map des soins ADL et simples de l'ordonnance */}
-                            <OrdoSoinsCard n="1" />
-                        </>
-                        <>
-                            <OrdoSoinsCard n="2" />
-                            <OrdoSoinsCard n="3" />
-                            <OrdoSoinsCard n="4" />
                         </>
                     </div>
                 );
@@ -226,18 +222,43 @@ const Ordonnance = () => {
         }
     };
 
-    const OrdoSoinsCard = ({ element }) => {
+    const OrdoSoinsCard = ({ soin }) => {
         // Medecin voit juste nom et description
         // Pharmacien Mutuelle Client voient le prix
         // Pharmacien modifie le prix, le nb d'utilisations restantes et l'alternative
 
         const [displayGenerique, setDisplayGenerique] = useState(false);
+        const [generique, setGenerique] = useState('');
+        const [deliver, setDeliver] = useState(false);
+        const [soinDelivre, setSoinDelivre] = useState([]);
+
+        const handleGenerique = (e) => {
+            setGenerique(e.target.value);
+            if (deliver) {
+                soinDelivre['generique'] = e.target.value;
+            }
+            console.log(soinDelivre);
+        };
+
+        const handleDeliver = () => {
+            setDeliver((current) => !current);
+            if (generique !== '') {
+                soinDelivre['generique'] = generique;
+            } else {
+                soinDelivre['generique'] = null;
+            }
+            console.log('Delivré ? ' + deliver + 'liste: ' + soinDelivre);
+        };
 
         // verifier que tout les champs sont remplis si modif
         // Si generique : nom + delivré
         // Si delivré : prix
         // doit renvoyer une variable true
-        function submitGenerique() {}
+        function submitGenerique() {
+            if (generique !== '') {
+                return true;
+            } else return false;
+        }
 
         switch (login) {
             case 'medecin':
@@ -291,9 +312,9 @@ const Ordonnance = () => {
                         <div id="pharma-soin-generique">
                             {displayGenerique ? (
                                 <>
-                                    <input type="text" placeholder="Nom du générique"></input>
+                                    <input type="text" placeholder="Nom du générique" onChange={handleGenerique}></input>
                                     <br />
-                                    <button onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                                    <button onMouseEnter={mouseOver} onMouseLeave={mouseOut} onClick={submitGenerique}>
                                         Valider
                                     </button>
                                     <button
@@ -318,7 +339,7 @@ const Ordonnance = () => {
                             )}
                         </div>
                         <div id="pharma-soin-use">
-                            <input type="checkbox" id="pharma-soin-input-use" />
+                            <input type="checkbox" id="pharma-soin-input-use" onChange={handleDeliver} />
                             <span>Délivré</span>
                         </div>
                         <div id="pharma-soin-price">
@@ -390,12 +411,6 @@ const Ordonnance = () => {
 
     const ValiderOrdo = () => {
         switch (login) {
-            case 'medecin':
-                return (
-                    <button className="ordo-submit" onClick={submitOrdo} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
-                        Valider
-                    </button>
-                );
             case 'pharma':
                 return (
                     <button className="ordo-submit" onClick={submitOrdo} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
@@ -407,11 +422,12 @@ const Ordonnance = () => {
         }
     };
 
-    function submitOrdo() {
+    function submitOrdo(e) {
+        e.preventDefault();
         switch (login) {
-            case 'medecin':
-                break;
             case 'pharma':
+                // TODO Envoyer une liste des ID des soins délivrés ET une liste des soins avec génériques
+                break;
                 break;
             default:
                 return null;

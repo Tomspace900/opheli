@@ -99,6 +99,24 @@ function selectOrdo(db, role){
     return select;
 }
 
+function selectListOrdo(db, role){
+    let select = "";
+    switch (role){
+        case 'client':
+
+            break;
+        case 'medecin':
+
+            break;
+        case 'mutuelle':
+
+            break;
+        default:
+            return "error";
+    }
+    return select;
+}
+
 //prolonge l'ordonnance idOrdo de nbMonthsToAdd
 function updateDate(db, idOrdo, nbMonthsToAdd){
     const selectDate = "SELECT DateExpiration FROM ordonnance WHERE IdOrdonnance = ?";

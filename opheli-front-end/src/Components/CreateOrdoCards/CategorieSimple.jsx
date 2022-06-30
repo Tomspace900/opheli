@@ -2,23 +2,30 @@ import React, { Component, useReducer, useState } from 'react';
 import SoinCard from './SoinCard';
 
 //pour Ordonnance Simple
-function CategorieSimple() {
-    //const [, forceRerender] = useReducer(x => x + 1, 0);
-
+function CategorieSimple({ handleNbUse, handleSoins }) {
     const [index, setIndex] = useState(1);
     const [Soins, setSoins] = useState([]);
+
+    const [name, setName] = useState('');
+    const [desc, setDesc] = useState('');
+
+    const handleName = (e) => {
+        setName(e.target.value);
+    };
+
+    const handleDesc = (e) => {
+        setName(e.target.value);
+    };
 
     const addSoin = (e) => {
         Soins.push('Soin' + index);
         setIndex(index + 1);
-        //forceRerender();
     };
 
     const delSoin = (e) => {
         if (Soins.length > 0) {
             Soins.pop();
             setIndex(index - 1);
-            //forceRerender();
         }
     };
 
@@ -36,7 +43,7 @@ function CategorieSimple() {
             <h1 className="create-ordo-categorie-title">Soins classiques</h1>
             <div className="create-ordo-categorie-use">
                 <label>Nombre d'utilisations</label>
-                <input type="number" placeholder="0" />
+                <input type="number" placeholder="1" min={1} max={5} onChange={(e) => handleNbUse(e)} />
             </div>
             <div className="create-ordo-catgeorie-buttons">
                 <button onClick={addSoin} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>

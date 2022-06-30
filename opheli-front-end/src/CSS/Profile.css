@@ -16,3 +16,94 @@
 .profile-title {
     font-size: 1.6em;
 }
+.profile-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    padding: 10px 5%;
+    margin-top: 20px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+}
+
+.profile-attribute {
+    text-align: start;
+    
+}
+
+.attribute{
+    padding-top: 10%;
+}
+.profile-img{
+    width: 25%;
+    text-align: end;
+}
+img{
+   max-width: 100%; 
+}
+
+.profile-options{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    padding: 10px 5%;
+    margin-top: 20px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+    height: 100%;
+}
+
+.update{
+    flex-direction: column;
+    
+}
+.update-height{
+    margin-top: 10%;
+    align-items: flex-start;
+}
+.update-password{
+    margin-top: 10%;
+    align-items: flex-start;
+}
+
+.update-email{
+    margin-top: 10%;
+    margin-bottom: 10%;
+    align-self: flex-start;
+}
+
+
+
+.add-health-insurance{
+    margin-top: 10%;
+}
+
+.my-ordo{
+    margin-top: 20px;
+}
+
+
+
+.my-ordonnances-button{
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        text-decoration: none;
+        color: var(--main-grey);
+        background-color: #ffffff;
+        border: #5ccdc4a9 solid 2px;
+        border-radius: 10px;
+        padding :20%;
+}
+
+.delete-account{
+    margin-top: 20px;
+    justify-content: end;
+    align-items: flex-end;
+}
+
