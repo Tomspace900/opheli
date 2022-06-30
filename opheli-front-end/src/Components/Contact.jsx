@@ -2,6 +2,13 @@ import '../CSS/Contact.css';
 import React from 'react';
 import { useState } from 'react';
 
+function mouseOver(e) {
+    e.target.style.background = '#5ccdc4a9';
+}
+function mouseOut(e) {
+    e.target.style.background = '';
+}
+
 const ContactCard = () => {
 
 const ref = React.useRef(null);
@@ -63,7 +70,7 @@ const Request = () => {
             <span>Entrez votre adresse mail :</span>
             <input type="text" placeholder='Mail' onChange={handleEmail}/>
             <textarea type="text" placeholder='Ecrivez votre message...' onChange={handleRequest}/>
-            <button onClick={handleSubmitRequest}>Envoyer la demande</button>
+            <button onClick={handleSubmitRequest}  onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Envoyer la demande</button>
         </div>
     )
 }
