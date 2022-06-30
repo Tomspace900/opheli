@@ -169,13 +169,11 @@ const Ordonnance = () => {
                 return (
                     <div className="ordo-soins">
                         <>
+                            {element && element.map((el) => {
+                                return <OrdoSoinsCard soin={el} key={el.IdSoin}/>
+                            })}
                             {/* Faire un map des soins ADL et simples de l'ordonnance */}
-                            <OrdoSoinsCard n="1" />
-                        </>
-                        <>
-                            <OrdoSoinsCard n="2" />
-                            <OrdoSoinsCard n="3" />
-                            <OrdoSoinsCard n="4" />
+
                         </>
                     </div>
                 );
@@ -226,7 +224,7 @@ const Ordonnance = () => {
         }
     };
 
-    const OrdoSoinsCard = ({ element }) => {
+    const OrdoSoinsCard = ({ soin }) => {
         // Medecin voit juste nom et description
         // Pharmacien Mutuelle Client voient le prix
         // Pharmacien modifie le prix, le nb d'utilisations restantes et l'alternative
