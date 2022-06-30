@@ -1,9 +1,6 @@
 import '../CSS/Contact.css';
 import React from 'react';
-
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
-
-
+import { useState } from 'react';
 
 const ContactCard = () => {
 
@@ -20,25 +17,53 @@ React.useEffect(() => {
     return(
         <div className='contact-card'>
             <div className='contact-infos'>
-                <span>Opheli</span><br></br>
-                <span>Tel :</span><br></br>
-                <span>Mail</span><br></br>
-                <span>30 Av. de la République, 94800 Villejuif</span>
+                <span>Opheli</span>
+                <div>+33x.xx.xx.xx.xx</div>
+                <div>Mail</div>
+                <div>30 Av. de la République, 94800 Villejuif</div>
 
             </div>
-            <div className='contact-map'>
-                <span>Map here</span>
-
-            </div>
-
         </div>
     )
 }
 const Request = () => {
+    const [request, setRequest] = useState('');
+    const [email, setEmail] = useState('');
+
+    const handleRequest = (e) => {
+        setRequest(e.target.value);
+    };
+    const handleEmail = (e) => {
+        setEmail(e.target.value);
+    };
+
+    const handleSubmitRequest = (e) => {
+        e.preventDefault();
+        if (
+
+            request === ''
+        ) {
+            alert('Veuillez saisir un message');
+        }  
+        e.preventDefault();
+        if (
+
+            email === ''
+        ) {
+            alert("Veuillez saisir l'email");
+        } else if (!email.includes('@')) {
+            alert('Email incorrect');
+        }
+        alert("Message envoyé !");
+    };
+
+    
     return(
         <div className='request'>
-            <input type="text" placeholder='Ecrivez votre message...' />
-            <button>Envoyer la demande</button>
+            <span>Entrez votre adresse mail :</span>
+            <input type="text" placeholder='Mail' onChange={handleEmail}/>
+            <textarea type="text" placeholder='Ecrivez votre message...' onChange={handleRequest}/>
+            <button onClick={handleSubmitRequest}>Envoyer la demande</button>
         </div>
     )
 }
@@ -49,10 +74,6 @@ const Contact = () => {
             <h1 className='contact-title'>Contacts</h1>
             <ContactCard/>
             <Request/>
-            
-        
-            
-
         </div>
     );
 };
