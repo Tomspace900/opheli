@@ -8,7 +8,7 @@ const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
-const {selectOrdo, updateDate, useSoin} = require("./fonctionsOrdonnance");
+const {selectOrdo, updateDate, useSoin, selectListOrdo} = require("./fonctionsOrdonnance");
 //variables
 let code = ""; //Id en fonction du role
 let id = ""; //IdUtilisateur
@@ -298,12 +298,23 @@ app.post('/suppClient', (req, res) => {
 })
 
 //ORDONNANCES
+
 //get les infos de l'ordonnance selon le rôle
 app.post('/getOrdonnance', (req, res) => {
   const idOrdo = req.body.idOrdo;
   const role = req.body.role;
-  const select = selectOrdo(db, role, idOrdo);
+  const select = selectOrdo(role, idOrdo);
   db.query(select, [idOrdo], (err, result) => {
+    res.send(result);
+  })
+})
+
+//get la liste des ordos selon le rôle
+app.post('/getListeOrdonnances', (req, res) => {
+  const role = req.body.role;
+  const id = req.body.id;
+  const select = selectListOrdo(role);
+  db.query(select, [id], (err, result) => {
     res.send(result);
   })
 })

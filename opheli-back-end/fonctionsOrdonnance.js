@@ -66,7 +66,7 @@ class Soin {
     }
 }
 
-function createOrdo(ordonnance){ //TODO à fini j'attends le front, à mettre nbRenouvRestants de Soin comme nbRenouvTotal à la création
+function createOrdo(ordonnance){ //TODO à fini j'attends le front, à mettre nbRenouvRestants de Soin comme nbRenouvTotal à la création, valable 3 mois par défaut
     const ordo = new Ordonnance(ordonnance.type, ordonnance.dateCreation, ordonnance.notes, ordonnance.idPrescripteur, ordonnance.idPatient);
     if(ordonnance.type == 'simple'){
         const categorie = new Categorie('simple', ordonnance.nbRenouvTotal);
@@ -77,20 +77,22 @@ function createOrdo(ordonnance){ //TODO à fini j'attends le front, à mettre nb
 }
 
 //return la query pour select l'ordonnance selon le rôle
-function selectOrdo(db, role){
+function selectOrdo(role){
     let select = "";
+    //select général que j'ai adapté aux rôles
+    //select = "SELECT o.IdOrdonnance, o.TypeOrdonnance, o.DateCreation, o.Notes, c.TypeCategorie, c.NbRenouvTotal, s.NomSoin, s.Description, s.Prix, s.Alternative, s.NbRestants, a.Rue, a.CodePostal, a.Ville, u.NomUtilisateur, u.PrenomUtilisateur, sp.NomSpecialite FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur or u.IdUtilisateur = pr.IdUtilisateur INNER JOIN specialite sp on pr.IdSpecialite = sp.IdSpecialite WHERE o.IdOrdonnance = ?;";
     switch(role){
         case 'client':
-            select = "SELECT * FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
+            select = "SELECT o.IdOrdonnance, o.TypeOrdonnance, o.DateCreation, o.Notes, c.TypeCategorie, c.NbRenouvTotal, s.NomSoin, s.Description, s.Prix, s.Alternative, s.NbRestants, a.Rue, a.CodePostal, a.Ville, u.NomUtilisateur, u.PrenomUtilisateur, sp.NomSpecialite FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur or u.IdUtilisateur = pr.IdUtilisateur INNER JOIN specialite sp on pr.IdSpecialite = sp.IdSpecialite WHERE o.IdOrdonnance = ?;";
             break;
         case 'medecin':
-            select = "SELECT c.*, o.*, p.*, pr.*, s.nom, s.description, s.IdSoin FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
+            select = "SELECT o.IdOrdonnance, o.TypeOrdonnance, o.DateCreation, o.Notes, c.TypeCategorie, s.NomSoin, s.Description, a.Rue, a.CodePostal, a.Ville, u.NomUtilisateur, u.PrenomUtilisateur, sp.NomSpecialite FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur or u.IdUtilisateur = pr.IdUtilisateur INNER JOIN specialite sp on pr.IdSpecialite = sp.IdSpecialite WHERE o.IdOrdonnance = ?;";
             break;
         case 'pharma':
-                select = "SELECT c.*, o.IdOrdonnance, o.Type, o.DateCreation, o.DateExpiration, o.IdPatient, o.IdPrescripteur, p.*, pr.*, s.nom, s.description, s.IdSoin FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = ?;";
+            select = "SELECT o.IdOrdonnance, o.TypeOrdonnance, o.DateCreation, c.TypeCategorie, c.NbRenouvTotal, s.NomSoin, s.Prix, s.Alternative, s.NbRestants, a.Rue, a.CodePostal, a.Ville, u.NomUtilisateur, u.PrenomUtilisateur, sp.NomSpecialite FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur or u.IdUtilisateur = pr.IdUtilisateur INNER JOIN specialite sp on pr.IdSpecialite = sp.IdSpecialite WHERE o.IdOrdonnance = ?;";
             break;
         case 'mutuelle':
-            select = "SELECT c.*, o.IdOrdonnance, o.Type, o.DateCreation, o.DateExpiration, o.IdPatient, o.IdPrescripteur, p.*, pr.*, s.nom, s.description, s.IdSoin, s.Prix FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse WHERE o.IdOrdonnance = 2;";
+            select = "SELECT o.IdOrdonnance, o.TypeOrdonnance, o.DateCreation, c.TypeCategorie, c.NbRenouvTotal, s.NomSoin, s.Prix, s.Alternative, s.NbRestants, a.Rue, a.CodePostal, a.Ville, u.NomUtilisateur, u.PrenomUtilisateur, sp.NomSpecialite FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie INNER JOIN patient p on o.IdPatient = p.IdPatient INNER JOIN prescripteur pr on o.IdPrescripteur = pr.IdPrescripteur INNER JOIN adresse a on pr.IdAdresse = a.IdAdresse INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur or u.IdUtilisateur = pr.IdUtilisateur INNER JOIN specialite sp on pr.IdSpecialite = sp.IdSpecialite WHERE o.IdOrdonnance = ?;";
             break;
         default:
             return "error";
@@ -99,20 +101,22 @@ function selectOrdo(db, role){
     return select;
 }
 
-function selectListOrdo(db, role){
+//return la query pour select la liste des ordos selon le rôle
+function selectListOrdo(role){
     let select = "";
     switch (role){
         case 'client':
-
+                select = "SELECT o.IDOrdonnance, o.DateCreation, o.TypeOrdonnance, u.NomUtilisateur, u.PrenomUtilisateur, pr.IdPrescripteur FROM ordonnance o INNER JOIN prescripteur pr on pr.IdPrescripteur = o.IdPrescripteur INNER JOIN utilisateur u on pr.IdUtilisateur = u.IdUtilisateur WHERE IdPatient = ?;";
             break;
         case 'medecin':
-
+                select = "SELECT o.IDOrdonnance, o.DateCreation, o.TypeOrdonnance, u.NomUtilisateur, u.PrenomUtilisateur, p.IdPatient FROM ordonnance o INNER JOIN patient p on p.IdPatient = o.IdPatient INNER JOIN utilisateur u on p.IdUtilisateur = u.IdUtilisateur WHERE IdPrescripteur = ?;";
             break;
         case 'mutuelle':
-
+                select = "SELECT o.IDOrdonnance, o.DateCreation, o.TypeOrdonnance, u.NomUtilisateur, u.PrenomUtilisateur, p.IdPatient FROM ordonnance o INNER JOIN souscrire s on s.IdPatient = o.IdPatient INNER JOIN patient p on p.IdPatient = o.IdPatient INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur WHERE IdMutuelle = ?;";
             break;
         default:
             return "error";
+            break;
     }
     return select;
 }
@@ -160,4 +164,4 @@ function addGenerique(db, idSoin, generique){
     }
 }
 
-module.exports = {createOrdo, selectOrdo, updateDate, useSoin, addGenerique}
+module.exports = {createOrdo, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo}
