@@ -8,7 +8,7 @@ const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
-const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin} = require("./fonctionsOrdonnance");
+const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique} = require("./fonctionsOrdonnance");
 //variables
 let code = ""; //Id en fonction du role
 let id = ""; //IdUtilisateur
@@ -381,12 +381,15 @@ app.post('/prolongerOrdonnance', (req, res) => {
   updateDate(db, idOrdo, nbMois);
 })
 
-//réduit le nombre d'utilisations restantes de tous les soins de la liste idSoins en entrée
+//réduit le nombre d'utilisations restantes de tous les soins de la liste Soins en entrée et add le générique (sauf s'il est nul)
 app.post('/updateSoins', (req, res) => {
   //TODO voir comment recevoir les strings des génériques pour update les soins
-  const idSoins = req.body.idSoins;
-  idSoins.forEach((idSoin) => {
-    useSoin(db, idSoin);
+  const Soins = req.body.Soins;
+  Soins.forEach((Soin) => {
+    useSoin(db, Soin[0]);
+    if(Soin[1] !== null){
+      addGenerique(db, Soin[0], Soin[1]);
+    }
   })
 })
 
