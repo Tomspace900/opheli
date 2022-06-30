@@ -5,9 +5,6 @@ import { useState } from 'react';
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-
-
-
 function mouseOver(e) {
     e.target.style.background = '#5ccdc4a9';
 }
@@ -16,17 +13,27 @@ function mouseOut(e) {
 }
 
 const ProfileInfos = () => {
+    const [ask, setAsked] = useState(false);
+    const [liste, setListe] = useState('');
+
+    if (!ask) {
+        Axios.get('http://localhost:8080/profil').then(response => {
+            setListe(response.data[0])
+            setAsked(true)
+        })
+    }
+
     return (
         <div className="profile-card">
             <div className="profile-attribute">
                 <span>Nom : </span>
-                <span>Nom à insérer</span>
+                <span>{liste.Nom}</span>
                 <br/>
                 <span>Prénom : </span>
-                <span>Prénom à insérer</span>
+                <span>{liste.Prenom}</span>
                 <br/>
                 <span>Adresse Mail : </span>
-                <span>Mail à insérer</span>
+                <span>{liste.Mail}</span>
                 <br/>
                 <span>Sexe : </span>
                 <span>Sexe à insérer</span>
@@ -273,9 +280,9 @@ const DeleteAccount = () => {
 
     return(
         <div className='delete-account'>
-            <span>Suppresion de compte</span><br></br>
+            <span>Suppression de compte</span><br></br>
             <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
-            <span>Répéter mot de passe</span><br></br>
+            <span>Répétez votre mot de passe</span><br></br>
             <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
             <button id="change-password" onClick={handleSubmitPassword}>Supprimer le compte</button>
         </div>

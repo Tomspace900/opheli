@@ -17,12 +17,36 @@ import Contact from './Components/Contact';
 import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
 import ListeClients from "./Components/ListeClients";
+import {useState} from "react";
+import Axios from "axios";
+
 
 const App = () => {
+    const [nom, setNom] = useState('');
+    const [code, setCode] = useState('');
+    const [id , setId] = useState('');
+    const [role, setRole] = useState('');
+    const [connected, setConnected] = useState(false);
+
+    function handleConnect() {
+        if (!connected) {
+            Axios.get('http://localhost:8080/infos').then((response) => {
+                setNom(response.data.nom);
+                setRole(response.data.role);
+                setCode(response.data.code)
+                setId(response.data.id)
+                if (nom != null) {
+                    setConnected(true);
+                }
+            });
+        }
+    }
+    setInterval(handleConnect, 1000);
+
     return (
         <div className="app">
             <BrowserRouter>
-                <Header />
+                <Header nom={nom} connected={connected} setConnected={setConnected}/>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="*" element={<Home />} />

@@ -4,24 +4,7 @@ import { Link } from 'react-router-dom';
 import '../CSS/Header.css';
 import Axios from 'axios';
 
-const Header = () => {
-    const [nom, setNom] = useState('');
-    const [role, setRole] = useState('');
-    const [connected, setConnected] = useState(false);
-
-    function handleConnect() {
-        if (!connected) {
-            Axios.get('http://localhost:8080/infos').then((response) => {
-                setNom(response.data.nom);
-                setRole(response.data.role);
-                if (nom != null) {
-                    setConnected(true);
-                }
-            });
-        }
-    }
-
-    setInterval(handleConnect, 1000);
+const Header = ({nom,connected,setConnected}) => {
 
     function handleDisconnect() {
         setConnected(false);
