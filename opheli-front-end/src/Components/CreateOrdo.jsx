@@ -3,6 +3,8 @@ import '../CSS/OrdoCards/CreateOrdo.css';
 import CategorieSimple from './CreateOrdoCards/CategorieSimple';
 import CategorieALD from './CreateOrdoCards/CategorieALD';
 import CategorieException from './CreateOrdoCards/CategorieException';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
     const [idPatient, setIdPatient] = useState('');
@@ -55,8 +57,14 @@ function App() {
         e.target.style.border = 'solid #4a565a 1px';
     }
 
-    function handleSubmit() {}
-
+    function handleSubmit() {
+        console.log(soinsALD);
+        console.log(soinsSimples);
+        axios.post('http://localhost:8080/createOrdo', {
+            soinsALD: soinsALD,
+            soinsSimples: soinsSimples,
+        });
+    }
     return (
         <div className="create-ordo">
             <h1 className="create-ordo-title">Délivrer une ordonnance</h1>
@@ -85,14 +93,31 @@ function App() {
                     case 'bizone':
                         return (
                             <>
-                                <CategorieALD handleNbUse={handleNbUseALD} handleSoins={handleSoinsALD} />
-                                <CategorieALD handleNbUse={handleNbUseSimple} handleSoins={handleSoinsSimples} />
+                                <CategorieALD
+                                    soins={soinsALD}
+                                    setSoins={setSoinsALD}
+                                    handleNbUse={handleNbUseALD}
+                                    handleSoins={handleSoinsALD}
+                                />
+                                <CategorieALD
+                                    soins={soinsSimples}
+                                    setSoins={setSoinsSimples}
+                                    handleNbUse={handleNbUseSimple}
+                                    handleSoins={handleSoinsSimples}
+                                />
                             </>
                         );
                     case 'exception':
                         return <CategorieException />;
                     default:
-                        return <CategorieALD handleNbUse={handleNbUseSimple} handleSoins={handleSoinsSimples} />;
+                        return (
+                            <CategorieALD
+                                soins={soinsSimples}
+                                setSoins={setSoinsSimples}
+                                handleNbUse={handleNbUseSimple}
+                                handleSoins={handleSoinsSimples}
+                            />
+                        );
                 }
             })()}
             <div className="create-ordo-notes">

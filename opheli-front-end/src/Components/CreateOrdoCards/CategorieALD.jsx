@@ -2,24 +2,21 @@ import React, { useState } from 'react';
 import SoinCard from './SoinCard';
 
 //pour Ordonnance bizone
-function CategorieBizone({ handleNbUse }) {
-    //const [, forceRerender] = useReducer(x => x + 1, 0);
+function CategorieBizone({ handleNbUse, handleSoins, soins, setSoins }) {
+    const [index, setIndex] = useState(1);
 
-    const [indexALD, setIndexALD] = useState(1);
-    const [SoinsALD, setSoinsALD] = useState([]);
+    function addSoin() {
+        console.log(soins);
+        setSoins([...soins, { name: '', desc: '' }]);
+        console.log(soins);
+    }
 
-    const addSoinALD = (e) => {
-        SoinsALD.push('SoinALD' + indexALD);
-        setIndexALD(indexALD + 1);
-        //forceRerender();
-    };
-
-    const delSoinALD = (e) => {
-        if (SoinsALD.length > 0) {
-            SoinsALD.pop();
-            setIndexALD(indexALD - 1);
-            //forceRerender();
+    const delSoin = () => {
+        if (soins.length > 0) {
+            soins.pop();
+            setIndex(index - 1);
         }
+        console.log(soins);
     };
 
     function mouseOver(e) {
@@ -36,19 +33,20 @@ function CategorieBizone({ handleNbUse }) {
             <h1 className="create-ordo-categorie-title">Soins ALD</h1>
             <div className="create-ordo-categorie-use">
                 <label>Nombre d'utilisations</label>
-                <input type="number" placeholder="1" onChange={handleNbUse} />
+                <input type="number" placeholder="1" min={1} max={5} onChange={(e) => handleNbUse(e)} />
             </div>
             <div className="create-ordo-catgeorie-buttons">
-                <button onClick={addSoinALD} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                <button onClick={addSoin} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     Ajouter
                 </button>
-                <button onClick={delSoinALD} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+                <button onClick={delSoin} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     Supprimer
                 </button>
             </div>
-            {SoinsALD.map((soin) => {
-                return <SoinCard soin={soin} />;
-            })}
+            {soins &&
+                soins.map((soin, index) => {
+                    return <SoinCard soin={soin} key={index} />;
+                })}
         </div>
     );
 }
