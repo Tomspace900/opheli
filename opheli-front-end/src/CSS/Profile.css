@@ -74,7 +74,10 @@ img{
     align-self: flex-start;
 }
 
-
+.part-title {
+    font-weight: bold;
+    margin: 3px;
+}
 
 .add-health-insurance{
     margin-top: 10%;

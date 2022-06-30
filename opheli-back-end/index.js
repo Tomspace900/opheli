@@ -288,7 +288,6 @@ app.get('/listeClients',(req,res) => {
   request = "SELECT NomUtilisateur, PrenomUtilisateur, Mail, opheli.patient.IdPatient  from opheli.souscrire, opheli.patient NATURAL JOIN opheli.utilisateur WHERE opheli.souscrire.IdPatient = opheli.patient.IdPatient AND opheli.souscrire.IdMutuelle = ?";
   db.query(request,[id], (err, array)=> {
     array = JSON.parse(JSON.stringify(array));
-    console.log(array)
     res.send(array)
   });
 })
@@ -297,6 +296,20 @@ app.post('/suppClient', (req, res) => {
   suppClient(db,id,req.body.idClient)
 })
 
+app.get('/listeMutuelles', (req,res) => {
+  request = "SELECT NomMutuelle from opheli.mutuelle NATURAL JOIN opheli.souscrire WHERE IdPatient  = ?";
+  db.query(request,[code], (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array)
+  });
+})
+
+app.post('/ajoutMutuelle',(req,res) => {
+  request = "INSERT INTO `opheli`.`souscrire` (`IdMutuelle`, `IdPatient`) VALUES (?, ?);";
+  db.query(request,[req.body.mutuelle,code], (err, array)=> {
+    res.send('success')
+  });
+})
 //ORDONNANCES
 
 //get les infos de l'ordonnance selon le rôle

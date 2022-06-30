@@ -34,7 +34,7 @@ const App = () => {
                 setRole(response.data.role);
                 setCode(response.data.code);
                 setId(response.data.id);
-                if (nom != null) {
+                if (nom != "") {
                     setConnected(true);
                 }
             });
