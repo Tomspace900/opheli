@@ -14,9 +14,9 @@ class Patient extends Utilisateur {
     }
 
     addToDatabase(db) {
-        const user = "INSERT INTO `opheli`.`utilisateur` (`Nom`, `Prenom`, `Mail`, `MotDePasse`) VALUES (?, ?, ?, ?);";
+        const user = "INSERT INTO `opheli`.`utilisateur` (`NomUtilisateur`, `PrenomUtilisateur`, `Mail`, `MotDePasse`) VALUES (?, ?, ?, ?);";
         db.query(user, [this.nom,this.prenom,this.mail,this.mdp], (err, res)=> {
-            const verif = "SELECT IdUtilisateur FROM utilisateur WHERE Nom = ? AND Prenom = ? AND Mail = ?";
+            const verif = "SELECT IdUtilisateur FROM utilisateur WHERE NomUtilisateur = ? AND PrenomUtilisateur = ? AND Mail = ?";
             db.query(verif, [this.nom,this.prenom,this.mail,this.mdp], (err, res)=> {
                 const request = "INSERT INTO `opheli`.`patient` (`IdPatient`, `IdUtilisateur`) VALUES (?, ?);";
                 db.query(request, [this.secu,res[0].IdUtilisateur], (err, res)=> {
@@ -46,10 +46,10 @@ class Prescripteur extends Utilisateur {
     }
 
     addToDatabase(db) {
-        const user = "INSERT INTO `opheli`.`utilisateur` (`Nom`, `Prenom`, `Mail`, `MotDePasse`) VALUES (?, ?, ?, ?);";
+        const user = "INSERT INTO `opheli`.`utilisateur` (`NomUtilisateur`, `PrenomUtilisateur`, `Mail`, `MotDePasse`) VALUES (?, ?, ?, ?);";
         db.query(user, [this.nom,this.prenom,this.mail,this.mdp], (err, id)=> {
             //Récuperation ID utilisateur
-            const verifUser = "SELECT IdUtilisateur FROM utilisateur WHERE Nom = ? AND Prenom = ? AND Mail = ?";
+            const verifUser = "SELECT IdUtilisateur FROM utilisateur WHERE NomUtilisateur = ? AND PrenomUtilisateur = ? AND Mail = ?";
             db.query(verifUser, [this.nom,this.prenom,this.mail,this.mdp], (err, id)=> {
                 //Verification Adresse
                 const verifAdresse = "SELECT IdAdresse FROM adresse WHERE Rue = ? AND CodePostal = ? AND Ville = ?";
@@ -110,10 +110,10 @@ class Pharmacien extends Utilisateur {
     }
 
     addToDatabase(db) {
-        const user = "INSERT INTO `opheli`.`utilisateur` (`Nom`, `Prenom`, `Mail`, `MotDePasse`) VALUES (?, ?, ?, ?);";
+        const user = "INSERT INTO `opheli`.`utilisateur` (`NomUtilisateur`, `PrenomUtilisateur`, `Mail`, `MotDePasse`) VALUES (?, ?, ?, ?);";
         db.query(user, [this.nom,this.prenom,this.mail,this.mdp]);
         //Récuperation ID utilisateur
-        const verifUser = "SELECT IdUtilisateur FROM utilisateur WHERE Nom = ? AND Prenom = ? AND Mail = ?";
+        const verifUser = "SELECT IdUtilisateur FROM utilisateur WHERE NomUtilisateur = ? AND PrenomUtilisateur = ? AND Mail = ?";
         db.query(verifUser, [this.nom,this.prenom,this.mail,this.mdp], (err, id)=> {
             //Verification pharmacie
             if(this.nomp == '') {
@@ -186,7 +186,7 @@ class Mutuelle {
     }
 
     addToDatabase(db) {
-        const user = "INSERT INTO `opheli`.`mutuelle` (`IdMutuelle`, `Mail`, `Nom`, `MotDePasse`) VALUES (?, ?, ?, ?);";
+        const user = "INSERT INTO `opheli`.`mutuelle` (`IdMutuelle`, `Mail`, `NomMutuelle`, `MotDePasse`) VALUES (?, ?, ?, ?);";
         db.query(user, [this.id,this.mail,this.nom,this.mdp], (err, add)=> {
             //Vérification de la création du compte
             const request = "SELECT IdMutuelle from opheli.mutuelle WHERE IdMutuelle = ?"

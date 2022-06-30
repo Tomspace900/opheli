@@ -14,9 +14,11 @@ function mouseOut(e) {
 
 const ProfileInfos = () => {
     const [ask, setAsked] = useState(false);
-    const [liste, setListe] = useState('');
+    const [liste, setListe] = useState([]);
+    const [sexe, setSexe] = useState(0);
+    const [taille,setTaille] = useState(0);
 
-    if (!ask) {
+    if (ask == false) {
         Axios.get('http://localhost:8080/profil').then(response => {
             setListe(response.data[0])
             setAsked(true)
@@ -27,10 +29,10 @@ const ProfileInfos = () => {
         <div className="profile-card">
             <div className="profile-attribute">
                 <span>Nom : </span>
-                <span>{liste.Nom}</span>
+                <span>{liste.NomUtilisateur}</span>
                 <br/>
                 <span>Prénom : </span>
-                <span>{liste.Prenom}</span>
+                <span>{liste.PrenomUtilisateur}</span>
                 <br/>
                 <span>Adresse Mail : </span>
                 <span>{liste.Mail}</span>
