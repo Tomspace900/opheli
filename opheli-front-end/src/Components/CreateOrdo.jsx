@@ -56,6 +56,7 @@ function App({ idMedecin }) {
     }
 
     function handleSubmit() {
+        idMedecin = 12354698351;
         console.log(soinsALD);
         console.log(soinsSimples);
         console.log(date);
@@ -85,6 +86,8 @@ function App({ idMedecin }) {
                     nbRenouvTotal: nbUseSimple,
                     soinsSimples: soinsSimples,
                     notes: notes,
+                }).then(r => {
+                    console.log(r);
                 });
                 break;
         }

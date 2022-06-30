@@ -1,7 +1,8 @@
 class Ordonnance {
-    constructor(type, dateCreation, notes, idPrescripteur, idPatient){
+    constructor(type, dateCreation, dateExpiration, notes, idPrescripteur, idPatient){
         this.type = type;
         this.dateCreation = dateCreation;
+        this.dateExpiration = dateExpiration;
         this.notes = notes;
         this.idPrescripteur = idPrescripteur;
         this.idPatient = idPatient;
@@ -13,14 +14,17 @@ class Ordonnance {
     }
 
     addToDatabase(db){
-        const addOrdo = "INSERT INTO ordonnance(Type, DateCreation, Notes, IdPrescripteur, IdPatient) VALUES (?, ?, ?, ?, ?);";
-        db.query(addOrdo, [this.type, this.dateCreation, this.notes, this.idPrescripteur, this.idPatient], (error, resultat) => {
-            const idQuery = "SELECT idOrdonnance FROM ordonnance WHERE idOrdonnance = (SELECT MAX(idOrdonnance) FROM ordonnance WHERE idPatient = ?);";
+        const addOrdo = "INSERT INTO ordonnance(TypeOrdonnance, DateCreation, DateExpiration, Notes, IdPrescripteur, IdPatient) VALUES (?, ?, ?, ?, ?, ?);";
+        db.query(addOrdo, [this.type, this.dateCreation, this.dateExpiration, this.notes, this.idPrescripteur, this.idPatient], (error, resultat) => {
+            if(error){
+                console.log("erreur lors de la création d'une ordonnance");
+            }
+            const idQuery = "SELECT IdOrdonnance FROM ordonnance WHERE IdOrdonnance = (SELECT MAX(IdOrdonnance) FROM ordonnance WHERE IdPatient = ?);";
             db.query(idQuery, [this.idPatient], (err, result) => {
-                this.idOrdonnance = result;
-            })
-            this.categorie.forEach((categorie) => {
-                categorie.addToDatabase(db, this.idOrdonnance);
+                this.idOrdonnance = result[0].IdOrdonnance;
+                this.categorie.forEach((categorie) => {
+                    categorie.addToDatabase(db, this.idOrdonnance);
+                })
             })
         });
     }
@@ -39,14 +43,17 @@ class Categorie {
 
     addToDatabase(db, idOrdonnance){
         this.idOrdonnance = idOrdonnance;
-        const addCategorie = "INSERT INTO categorie(Type, NbRenouvTotal, IdOrdonnance) VALUES (?, ?, ?);";
+        const addCategorie = "INSERT INTO categorie(TypeCategorie, NbRenouvTotal, IdOrdonnance) VALUES (?, ?, ?);";
         db.query(addCategorie, [this.type, this.nbRenouvTotal, this.idOrdonnance], (error, resultat) => {
-            const idQuery = "SELECT idCategorie FROM categorie WHERE idCategorie = (SELECT MAX(idCategorie) FROM categorie WHERE idOrdonnance = ?);"
+            if(error){
+                console.log("erreur lors de la création d'une catégorie");
+            }
+            const idQuery = "SELECT IdCategorie FROM categorie WHERE IdCategorie = (SELECT MAX(IdCategorie) FROM categorie WHERE IdOrdonnance = ?);"
             db.query(idQuery, [this.idOrdonnance], (err, result) => {
-                this.idCategorie = result;
-            })
-            this.soins.forEach((soin) => {
-                soin.addToDatabase(db, this.idCategorie);
+                this.idCategorie = result[0].IdCategorie;
+                this.soins.forEach((soin) => {
+                    soin.addToDatabase(db, this.idCategorie);
+                })
             })
         });
     }
@@ -61,18 +68,12 @@ class Soin {
 
     addToDatabase(db, idCategorie){
         this.idCategorie = idCategorie;
-        const addSoin = "INSERT INTO soin(Nom, Description, IdCategorie, NbRestants) VALUES (?, ?, ?, ?);";
-        db.query(addSoin, [this.nom, this.description, this.idCategorie, this.nbRenouvRestant]);
-    }
-}
-
-function createOrdo(ordonnance){ //TODO à fini j'attends le front, à mettre nbRenouvRestants de Soin comme nbRenouvTotal à la création, valable 3 mois par défaut
-    const ordo = new Ordonnance(ordonnance.type, ordonnance.dateCreation, ordonnance.notes, ordonnance.idPrescripteur, ordonnance.idPatient);
-    if(ordonnance.type == 'simple'){
-        const categorie = new Categorie('simple', ordonnance.nbRenouvTotal);
-        ordonnance.soinsSimples.forEach((soin) => {
-
-        })
+        const addSoin = "INSERT INTO soin(NomSoin, Description, IdCategorie, NbRestants) VALUES (?, ?, ?, ?);";
+        db.query(addSoin, [this.nom, this.description, this.idCategorie, this.nbRenouvRestant], (err, res) => {
+            if(err){
+                console.log("erreur lors de la création d'un soin");
+            }
+        });
     }
 }
 
@@ -164,4 +165,4 @@ function addGenerique(db, idSoin, generique){
     }
 }
 
-module.exports = {createOrdo, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo}
+module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo}

@@ -8,7 +8,7 @@ const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
-const {selectOrdo, updateDate, useSoin, selectListOrdo} = require("./fonctionsOrdonnance");
+const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin} = require("./fonctionsOrdonnance");
 //variables
 let code = ""; //Id en fonction du role
 let id = ""; //IdUtilisateur
@@ -311,6 +311,48 @@ app.post('/ajoutMutuelle',(req,res) => {
   });
 })
 //ORDONNANCES
+
+
+//créer une ordonnance
+app.post('/createOrdonnance', (req, res) => {
+
+  const idPatient = req.body.idPatient,
+      idPrescripteur = req.body.idPrescripteur,
+      date = req.body.dateCreation,
+      type = req.body.type,
+      nbRenouvTotal = req.body.nbRenouvTotal,
+      soinsSimples = req.body.soinsSimples,
+      notes = req.body.notes;
+
+  //formattage de la date
+  const newDate = new Date(date);
+  const dateExp = new Date (newDate.setMonth(newDate.getMonth() + 3));
+
+  const dateCreation = "" + newDate.getFullYear() + "-" + newDate.getMonth() + "-" + newDate.getDay();
+  const dateExpiration = "" + dateExp.getFullYear() + "-" + dateExp.getMonth() + "-" + dateExp.getDay();
+
+  const ordonnance = new Ordonnance(type, dateCreation, dateExpiration, notes, idPrescripteur, idPatient);
+
+  const categorieSimple = new Categorie('simple', nbRenouvTotal);
+  soinsSimples.forEach((s) => {
+    const soin = new Soin(s.name, s.desc, nbRenouvTotal);
+    categorieSimple.addSoin(soin);
+  })
+  ordonnance.addCategorie(categorieSimple);
+
+  if(type === 'bizone'){
+    const nbRenouvTotalALD = req.body.nbRenouvTotalALD,
+        soinsALD = req.body.soinsALD;
+    const categorieALD = new Categorie('bizone', nbRenouvTotalALD);
+    soinsALD.forEach((s) => {
+      const soin = new Soin(s.name, s.desc, nbRenouvTotalALD);
+      categorieALD.addSoin(soin);
+    })
+    ordonnance.addCategorie(categorieALD);
+  }
+
+  ordonnance.addToDatabase(db);
+})
 
 //get les infos de l'ordonnance selon le rôle
 app.post('/getOrdonnance', (req, res) => {
