@@ -13,6 +13,7 @@ import CreateOrdo from './Components/CreateOrdo';
 import UpdateOrdo from './Components/UpdateOrdo';
 import Parameters from './Components/Parameters';
 import Profile from './Components/Profile';
+import Contact from './Components/Contact';
 import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
 import ListeClients from "./Components/ListeClients";
@@ -30,6 +31,7 @@ const App = () => {
                     <Route path="/list" element={<List />} />
                     <Route path="/users" element={<UserList />} />
                     <Route path="/profil" element={<Profile />} />
+                    <Route path="/contact" element={<Contact/>} />
                     <Route path="/createordo" element={<CreateOrdo />} />
                     <Route path="/updateordo" element={<UpdateOrdo />} />
                     <Route path="/parametres" element={<Parameters />} />
