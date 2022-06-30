@@ -3,17 +3,17 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
-var bcrypt = require('bcrypt');
+let bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
-var cors = require('cors')
+let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
 const {selectOrdo, updateDate, useSoin} = require("./fonctionsOrdonnance");
 //variables
-var code = ""; //Id en fonction du role
-var id = ""; //IdUtilisateur
-var role = "";
-var nom = "";
+let code = ""; //Id en fonction du role
+let id = ""; //IdUtilisateur
+let role = "";
+let nom = "";
 
 
 app.use(cors());
@@ -33,30 +33,39 @@ app.post('/check', (req,res) => {
   let access = false
   switch (req.body.code) {
     case 'liste': //liste des ordonnances
-      access = (role != "")
+      access = (role !== "")
       break;
     case 'listeClients': //liste des ordonnances
-      access = (role == "mutuelle")
+      access = (role === "mutuelle")
       break;
     case 'profil': //page de profil
-      access = (role != "")
+      access = (role !== "")
       break;
     case 'ordonnance': //page ordonnance
-      access = (role != "")
+      access = (role !== "")
       break;
     case 'creer': //page de profil
-      access = (role != "")
+      access = (role !== "")
       break;
     case 'modifier': //page modifier ordonnance
-      access = (role == "medecin")
+      access = (role === "medecin")
       break;
     case 'valider': //page valider ordonnance
-      access = (role == "pharma")
+      access = (role === "pharma")
       break;
 
   }
   console.log(access)
   res.send(access);
+})
+
+//PROFIL
+app.get('/profil', (req, res) => {
+  request = "SELECT * from opheli.utilisateur where IdUtilisateur  = ?";
+  db.query(request, [id], (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array)
+  });
 })
 
 //HEADER

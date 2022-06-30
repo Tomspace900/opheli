@@ -3,14 +3,13 @@ import { useState } from 'react';
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-const RegisterMedecin = ({ account }) => {
+const RegisterMedecin = () => {
     // Donnees a envoyer à la BDD
     const [code, setCode] = useState('');
     const [firstname, setFirstname] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [id, setId] = useState('');
-    const [address, setAddress] = useState('');
     const [street, setStreet] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [city, setCity] = useState('');
@@ -21,7 +20,7 @@ const RegisterMedecin = ({ account }) => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    if (liste.length == 0) {
+    if (liste.length === 0) {
         Axios.get('http://localhost:8080/liste_specialites').then(response => {
             setListe(response.data)
         });
@@ -45,10 +44,6 @@ const RegisterMedecin = ({ account }) => {
 
     const handleId = (e) => {
         setId(e.target.value);
-    };
-
-    const handleAddress = (e) => {
-        setAddress(e.target.value);
     };
 
     const handleStreet = (e) => {
@@ -82,7 +77,9 @@ const RegisterMedecin = ({ account }) => {
             surname === '' ||
             email === '' ||
             id === '' ||
-            (address === '' && (street === '' || zipcode === '' || city === '')) ||
+            street === '' ||
+            zipcode === '' ||
+            city === '' ||
             password === '' ||
             repeatPassword === ''
         ) {
@@ -120,12 +117,7 @@ const RegisterMedecin = ({ account }) => {
     };
 
     return (
-        <form
-            className="register-form"
-            // action="http://localhost/opheli/opheli-back-end/PHP/login/login_pro.php"
-            // method="post"
-            // onSubmit={(event) => handleSumbit(event)}
-        >
+        <form className="register-form">
             <div className="register-form-line">
                 <div className="register-form-blockline">
                     <div className="register-label-nompharma">
@@ -166,7 +158,7 @@ const RegisterMedecin = ({ account }) => {
                 </div>
                 <div className="register-form-blockdoubleline">
                     <div className="register-label-id">
-                        <label>Numero RPPS :</label>
+                        <label>Numéro RPPS :</label>
                     </div>
                     <div className="register-input-id">
                         <input type="text" placeholder="12345678901" onChange={handleId} />
