@@ -76,7 +76,7 @@ INSERT INTO `adresse` (`IdAdresse`, `Rue`, `CodePostal`, `Ville`) VALUES
 DROP TABLE IF EXISTS `categorie`;
 CREATE TABLE IF NOT EXISTS `categorie` (
   `IdCategorie` int(11) NOT NULL AUTO_INCREMENT,
-  `Type` varchar(50) NOT NULL,
+  `TypeCategorie` varchar(50) NOT NULL,
   `NbRenouvTotal` int(11) NOT NULL,
   `IdOrdonnance` int(11) NOT NULL,
   PRIMARY KEY (`IdCategorie`),
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `categorie` (
 -- Déchargement des données de la table `categorie`
 --
 
-INSERT INTO `categorie` (`IdCategorie`, `Type`, `NbRenouvTotal`, `IdOrdonnance`) VALUES
+INSERT INTO `categorie` (`IdCategorie`, `TypeCategorie`, `NbRenouvTotal`, `IdOrdonnance`) VALUES
 (1, 'simple', 3, 1),
 (2, 'ALD', 2, 2),
 (3, 'simple', 1, 2);
@@ -137,7 +137,7 @@ INSERT INTO `mutuelle` (`IdMutuelle`, `Mail`, `NomMutuelle`, `MotDePasse`) VALUE
 DROP TABLE IF EXISTS `ordonnance`;
 CREATE TABLE IF NOT EXISTS `ordonnance` (
   `IdOrdonnance` int(11) NOT NULL AUTO_INCREMENT,
-  `Type` varchar(50) NOT NULL,
+  `TypeOrdonnance` varchar(50) NOT NULL,
   `DateCreation` date NOT NULL,
   `DateExpiration` date NOT NULL,
   `Notes` text DEFAULT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `ordonnance` (
 -- Déchargement des données de la table `ordonnance`
 --
 
-INSERT INTO `ordonnance` (`IdOrdonnance`, `Type`, `DateCreation`, `DateExpiration`, `Notes`, `IdPrescripteur`, `IdPatient`) VALUES
+INSERT INTO `ordonnance` (`IdOrdonnance`, `TypeOrdonnance`, `DateCreation`, `DateExpiration`, `Notes`, `IdPrescripteur`, `IdPatient`) VALUES
 (1, 'simple', '2022-06-28', '2022-08-30', NULL, '12354698351', '1111111111111'),
 (2, 'bizone', '2022-03-13', '2022-04-20', 'Otite externe', '22222222222', '1111111111111');
 

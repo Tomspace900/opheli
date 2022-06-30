@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import '../CSS/OrdoCards/CreateOrdo.css';
-import CategorieSimple from './CreateOrdoCards/CategorieSimple';
-import CategorieALD from './CreateOrdoCards/CategorieALD';
-import CategorieException from './CreateOrdoCards/CategorieException';
-import { useEffect } from 'react';
+import Categorie from './CreateOrdoCards/Categorie';
 import axios from 'axios';
 
-function App() {
+function App({ idMedecin }) {
     const [idPatient, setIdPatient] = useState('');
     const [categorie, setCategorie] = useState('simple');
+    const [date, setDate] = useState(Date());
     const [nbUseSimple, setNbUseSimple] = useState(1);
     const [nbUseALD, setNbUseALD] = useState(1);
-    const [notes, setNotes] = useState('');
     const [soinsSimples, setSoinsSimples] = useState([]);
     const [soinsALD, setSoinsALD] = useState([]);
+    const [notes, setNotes] = useState('');
 
     const handleIdPatient = (e) => {
         setIdPatient(e.target.value);
@@ -60,10 +58,36 @@ function App() {
     function handleSubmit() {
         console.log(soinsALD);
         console.log(soinsSimples);
-        axios.post('http://localhost:8080/createOrdo', {
-            soinsALD: soinsALD,
-            soinsSimples: soinsSimples,
-        });
+        console.log(date);
+        // type, dateCreation, notes, idPrescripteur, idPatient
+        // pour chaque catégorie: type, nbRenouv
+        switch (categorie) {
+            case 'bizone':
+                axios.post('http://localhost:8080/createOrdonnance', {
+                    idPatient: idPatient,
+                    idPrescripteur: idMedecin,
+                    dateCreation: date,
+                    type: categorie,
+                    nbRenouvTotalALD: nbUseALD,
+                    soinsALD: soinsALD,
+                    nbRenouvTotal: nbUseSimple,
+                    soinsSimples: soinsSimples,
+                    notes: notes,
+                });
+                break;
+
+            default:
+                axios.post('http://localhost:8080/createOrdonnance', {
+                    idPatient: idPatient,
+                    idPrescripteur: idMedecin,
+                    dateCreation: date,
+                    type: categorie,
+                    nbRenouvTotal: nbUseSimple,
+                    soinsSimples: soinsSimples,
+                    notes: notes,
+                });
+                break;
+        }
     }
     return (
         <div className="create-ordo">
@@ -84,7 +108,7 @@ function App() {
                     <select onChange={(e) => handleChangeCategorie(e)}>
                         <option value="simple"> Simple </option>
                         <option value="bizone"> Bi-zone </option>
-                        <option value="exception"> Médicaments d'exception </option>
+                        {/* <option value="exception"> Médicaments d'exception </option> */}
                     </select>
                 </div>
             </div>
@@ -93,13 +117,15 @@ function App() {
                     case 'bizone':
                         return (
                             <>
-                                <CategorieALD
+                                <Categorie
+                                    title={'ALD'}
                                     soins={soinsALD}
                                     setSoins={setSoinsALD}
                                     handleNbUse={handleNbUseALD}
                                     handleSoins={handleSoinsALD}
                                 />
-                                <CategorieALD
+                                <Categorie
+                                    title={'simples'}
                                     soins={soinsSimples}
                                     setSoins={setSoinsSimples}
                                     handleNbUse={handleNbUseSimple}
@@ -107,11 +133,19 @@ function App() {
                                 />
                             </>
                         );
-                    case 'exception':
-                        return <CategorieException />;
+                    // case 'exception':
+                    //     return (
+                    //         <Categorie
+                    //             soins={soinsSimples}
+                    //             setSoins={setSoinsSimples}
+                    //             handleNbUse={handleNbUseSimple}
+                    //             handleSoins={handleSoinsSimples}
+                    //         />
+                    //     );
                     default:
                         return (
-                            <CategorieALD
+                            <Categorie
+                                title={'simples'}
                                 soins={soinsSimples}
                                 setSoins={setSoinsSimples}
                                 handleNbUse={handleNbUseSimple}
