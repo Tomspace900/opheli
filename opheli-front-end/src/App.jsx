@@ -5,6 +5,7 @@ import Home from './Components/Home';
 import './CSS/Reset.css';
 import './CSS/App.css';
 import './CSS/Index.css';
+import './CSS/Form.css';
 import Login from './Components/Login';
 import List from './Components/List';
 import UserList from './Components/Admin/UserList';
@@ -16,13 +17,13 @@ import Error from './Components/Error';
 import ListeClients from './Components/Mutuelle/ListeClients';
 import ListeOrdonnances from './Components/List';
 import { useState } from 'react';
-import Axios from 'axios';
 
 const App = () => {
     const [nom, setNom] = useState('');
     const [code, setCode] = useState('');
     const [id, setId] = useState('');
     const [role, setRole] = useState('');
+    const [idOrdo, setIdOrdo] = useState('');
     const [connected, setConnected] = useState(false);
 
     /*
@@ -44,11 +45,33 @@ const App = () => {
     return (
         <div className="app">
             <BrowserRouter>
-                <Header nom={nom} connected={connected} setId={setId} setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} role={role} />
+                <Header
+                    nom={nom}
+                    connected={connected}
+                    setId={setId}
+                    setNom={setNom}
+                    setRole={setRole}
+                    setCode={setCode}
+                    setConnected={setConnected}
+                    role={role}
+                />
                 <Routes>
-                    <Route path="/" element={<Home setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} role={role} />} />
-                    <Route path="*" element={<Home setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} role={role} />} />
-                    <Route path="/login" element={<Login setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />} />
+                    <Route
+                        path="/"
+                        element={
+                            <Home setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} role={role} />
+                        }
+                    />
+                    <Route
+                        path="*"
+                        element={
+                            <Home setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} role={role} />
+                        }
+                    />
+                    <Route
+                        path="/login"
+                        element={<Login setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />}
+                    />
                     <Route path="/list" element={<List role={role} />} />
                     <Route path="/users" element={<UserList />} />
                     <Route path="/profil" element={<Profil role={role} />} />

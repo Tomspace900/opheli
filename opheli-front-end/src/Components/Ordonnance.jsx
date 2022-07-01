@@ -3,32 +3,36 @@ import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
 import '../CSS/Form.css';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-const Ordonnance = ({ nomMedecin, role }) => {
-    const [login, setLogin] = useState('pharma');
-    const [src, setSrc] = useState('');
+const Ordonnance = ({
+    nomMedecin,
+    role,
+    // idOrdo
+}) => {
+    // Remplacer la const login par role et la const idOrdo par idOrdo A LA FIN UNIQUEMENT !!!!!
+    const [login, setLogin] = useState('medecin');
     const [idOrdo, setIdOrdo] = useState(1);
     const navigate = useNavigate();
 
+    const [src, setSrc] = useState('');
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
 
     const [element, setElement] = useState([]);
 
-    if (role == '') {navigate('/Error')}
+    // if (role == '') {
+    //     navigate('/Error');
+    // }
 
     useEffect(() => {
         QRCode.toDataURL(link).then(setSrc);
-    }, []);
-
-    useEffect(() => {
         axios
             .post('http://localhost:8080/getOrdonnance', {
                 idOrdo: idOrdo,
                 role: login,
             })
             .then((response) => {
-                console.log('data: ' + response.data);
+                console.log(response.data);
                 setElement(response.data);
             });
     }, []);
@@ -66,6 +70,40 @@ const Ordonnance = ({ nomMedecin, role }) => {
 
         const [nbMois, setNbMois] = useState(0);
 
+        const monthList = [
+            'janvier',
+            'février',
+            'mars',
+            'avril',
+            'mai',
+            'juin',
+            'juillet',
+            'août',
+            'septembre',
+            'octobre',
+            'novembre',
+            'décembre',
+        ];
+
+        function day(date) {
+            return date.getDate() - 1;
+        }
+        function month(date) {
+            return monthList[date.getMonth()];
+        }
+        function addMonth(date, month) {
+            return monthList[(parseInt(date.getMonth()) + parseInt(month)) % 12];
+        }
+        function year(date) {
+            return date.getFullYear();
+        }
+
+        var dp = new Date(element[0].DateCreation);
+        var de = new Date(element[0].DateExpiration);
+
+        var datePre = day(dp) + ' ' + month(dp) + ' ' + year(dp);
+        var dateExp = day(de) + ' ' + addMonth(de, nbMois) + ' ' + year(de);
+
         const handleNbMois = (e) => {
             setNbMois(e.target.value);
             console.log(nbMois);
@@ -77,6 +115,7 @@ const Ordonnance = ({ nomMedecin, role }) => {
                     idOrdo: idOrdo,
                     nbMois: nbMois,
                 });
+                setDisplayProlonger(false);
             }
         };
 
@@ -116,10 +155,10 @@ const Ordonnance = ({ nomMedecin, role }) => {
                     </div>
                     <div id="medecin-date">
                         <span>Délivrée le </span>
-                        <span>*date de prescription*</span>
+                        <span>{datePre}</span>
                         <br />
                         <span>Valable jusqu'au </span>
-                        <span>*date d'expiration*</span>
+                        <span>{dateExp}</span>
                         {/* {displayProlonger ? (
                             <>
                                 <br />
@@ -135,10 +174,10 @@ const Ordonnance = ({ nomMedecin, role }) => {
             return (
                 <div className="ordo-date">
                     <span>Délivrée le </span>
-                    <span>{element[0].DateCreation}</span>
+                    <span>{datePre}</span>
                     <br />
                     <span>Valable jusqu'au </span>
-                    <span>*date d'expiration*</span>
+                    <span>{dateExp}</span>
                 </div>
             );
         }
@@ -157,12 +196,7 @@ const Ordonnance = ({ nomMedecin, role }) => {
         } else return null;
     };
 
-    const OrdoSoins = ({ delivres, setDelivres, generiques, setGeneriques, checkOrdo }) => {
-        function setLists() {
-            setDelivres([...delivres, { id: '', price: '' }]);
-            setGeneriques([...generiques, { id: '', generique: '', price: '' }]);
-        }
-
+    const OrdoSoins = ({ delivres, setDelivres, checkOrdo }) => {
         // TODO :
         // Medecin et client voientt tout les soins initiaux
         // Pharma voit les soins restants a delivrer (= nb restant > 0)
@@ -174,7 +208,8 @@ const Ordonnance = ({ nomMedecin, role }) => {
                         <>
                             {element &&
                                 element.map((el) => {
-                                    setLists();
+                                    // setDelivres([...delivres, { id: '', price: '' }]);
+                                    // setGeneriques([...generiques, { id: '', generique: '', price: '' }]);
                                     return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
                                 })}
                         </>
@@ -244,9 +279,9 @@ const Ordonnance = ({ nomMedecin, role }) => {
             if (checkOrdo && deliver) {
                 if (price > 0) {
                     if (generique !== '') {
-                        generiques.id = soin.IdSoin;
-                        generiques.generique = generique;
-                        generiques.price = price;
+                        delivres.id = soin.IdSoin;
+                        delivres.generique = generique;
+                        delivres.price = price;
                     } else {
                         delivres.id = soin.IdSoin;
                         delivres.price = price;
@@ -269,13 +304,7 @@ const Ordonnance = ({ nomMedecin, role }) => {
                 return (
                     <div className="soin-card">
                         <div id="medecin-soin-name">
-                            <span id="medecin-soin-title">
-                                {() => {
-                                    if (soin.Alternative !== null) {
-                                        return soin.Alternative;
-                                    } else return soin.NomSoin;
-                                }}
-                            </span>
+                            <span id="medecin-soin-title">{soin.NomSoin}</span>
                             <br />
                             <span id="medecin-soin-desc">{soin.Description}</span>
                         </div>
@@ -285,14 +314,7 @@ const Ordonnance = ({ nomMedecin, role }) => {
                 return (
                     <div className="soin-card">
                         <div id="mutuelle-soin-name">
-                            <span id="mutuelle-soin-title">
-                                {() => {
-                                    if (soin.Alternative !== null) {
-                                        return soin.Alternative;
-                                    } else return soin.NomSoin;
-                                }}
-                            </span>{' '}
-                            <br />
+                            <span id="mutuelle-soin-title">{soin.NomSoin}</span> <br />
                         </div>
                         <div id="mutuelle-soin-price">
                             <span>{soin.Prix}</span>
@@ -303,13 +325,11 @@ const Ordonnance = ({ nomMedecin, role }) => {
                 return (
                     <div className="soin-card">
                         <div id="client-soin-name">
-                            <span id="client-soin-title">
-                                {() => {
-                                    if (soin.Alternative !== null) {
-                                        return soin.Alternative;
-                                    } else return soin.NomSoin;
-                                }}
-                            </span>{' '}
+                            {() => {
+                                if (soin.Alternative !== null) {
+                                    return <span id="client-soin-title">{soin.Alternative}</span>;
+                                } else return <span id="client-soin-title">{soin.NomSoin}</span>;
+                            }}
                             <br />
                             <span id="client-soin-desc">{soin.Description}</span>
                         </div>
@@ -330,8 +350,6 @@ const Ordonnance = ({ nomMedecin, role }) => {
                                 {() => {
                                     if (changeName !== '') {
                                         return changeName;
-                                    } else if (soin.Alternative !== null) {
-                                        return soin.Alternative;
                                     } else return soin.NomSoin;
                                 }}
                             </span>
@@ -383,11 +401,13 @@ const Ordonnance = ({ nomMedecin, role }) => {
     const OrdoNotes = () => {
         // Medecin Patient
         if (login === 'client' || login === 'medecin') {
-            return (
-                <div className="ordo-notes">
-                    <span>{element[0].Notes}</span>
-                </div>
-            );
+            if (element[0].Notes !== null) {
+                return (
+                    <div className="ordo-notes">
+                        <span>{element[0].Notes}</span>
+                    </div>
+                );
+            }
         } else return null;
     };
 
@@ -420,7 +440,7 @@ const Ordonnance = ({ nomMedecin, role }) => {
 
     function downloadQR() {
         const a = document.createElement('a');
-        const name = 'Ordonnance ' + 'id_ordonnance';
+        const name = 'Ordonnance N°' + element[0].IdOrdonnance;
         a.href = src;
         a.download = name;
         a.click();
@@ -446,7 +466,6 @@ const Ordonnance = ({ nomMedecin, role }) => {
     };
 
     const [delivres, setDelivres] = useState([]);
-    const [generiques, setGeneriques] = useState([]);
 
     const [checkOrdo, setCheckOrdo] = useState(false);
 
@@ -459,7 +478,6 @@ const Ordonnance = ({ nomMedecin, role }) => {
 
                 axios.post('http://localhost:8080/deliverOrdonnance', {
                     soinsDelivres: delivres,
-                    soinsGeneriques: generiques,
                 });
                 break;
             default:
@@ -467,19 +485,15 @@ const Ordonnance = ({ nomMedecin, role }) => {
         }
     }
 
+    if (element.length === 0) return <div>Loading</div>;
+
     return (
         <div className="ordo">
-            <h1 className="ordo-title">{element[0].IdOrdonnance}</h1>
+            <h1 className="ordo-title">{'Ordonnance N°' + element[0].IdOrdonnance}</h1>
             <OrdoMedecin />
             <OrdoDate />
             <OrdoPatient />
-            <OrdoSoins
-                delivres={delivres}
-                setDelivres={setDelivres}
-                generiques={generiques}
-                setGeneriques={setGeneriques}
-                checkOrdo={checkOrdo}
-            />
+            <OrdoSoins delivres={delivres} setDelivres={setDelivres} checkOrdo={checkOrdo} />
             <OrdoNotes />
             <OrdoQR />
             <ValiderOrdo />
