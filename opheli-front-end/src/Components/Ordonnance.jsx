@@ -11,7 +11,7 @@ const Ordonnance = ({
     // idOrdo
 }) => {
     // Remplacer la const login par role et la const idOrdo par idOrdo A LA FIN UNIQUEMENT !!!!!
-    const [login, setLogin] = useState('medecin');
+    const [login, setLogin] = useState('pharma');
     const [idOrdo, setIdOrdo] = useState(1);
     const navigate = useNavigate();
 
@@ -159,14 +159,6 @@ const Ordonnance = ({
                         <br />
                         <span>Valable jusqu'au </span>
                         <span>{dateExp}</span>
-                        {/* {displayProlonger ? (
-                            <>
-                                <br />
-                                <br />
-                                <span>Nouvelle valabilité : </span>
-                                <span>date d'expiration</span>
-                            </>
-                        ) : null} */}
                     </div>
                 </div>
             );
@@ -299,6 +291,17 @@ const Ordonnance = ({
             }
         }
 
+        // function displaySoinName() {
+        //     console.log('hehooooo');
+        //     if (soin.Alternative !== null && soin.Alternative !== undefined) {
+        //         console.log('alternative not null');
+        //         return <span id="client-soin-title">{soin.Alternative}</span>;
+        //     } else {
+        //         console.log('alternative null');
+        //         return <span id="client-soin-title">{soin.NomSoin}</span>;
+        //     }
+        // }
+
         switch (login) {
             case 'medecin':
                 return (
@@ -325,11 +328,11 @@ const Ordonnance = ({
                 return (
                     <div className="soin-card">
                         <div id="client-soin-name">
-                            {() => {
-                                if (soin.Alternative !== null) {
-                                    return <span id="client-soin-title">{soin.Alternative}</span>;
-                                } else return <span id="client-soin-title">{soin.NomSoin}</span>;
-                            }}
+                            {soin.Alternative !== null ? (
+                                <span id="client-soin-title">{soin.Alternative}</span>
+                            ) : (
+                                <span id="client-soin-title">{soin.NomSoin}</span>
+                            )}
                             <br />
                             <span id="client-soin-desc">{soin.Description}</span>
                         </div>
@@ -346,13 +349,17 @@ const Ordonnance = ({
                 return (
                     <div className="soin-card">
                         <div id="pharma-soin-name">
-                            <span>
-                                {() => {
-                                    if (changeName !== '') {
-                                        return changeName;
-                                    } else return soin.NomSoin;
-                                }}
-                            </span>
+                            {(() => {
+                                if (changeName !== '') {
+                                    return <span id="client-soin-title">{changeName}</span>;
+                                } else {
+                                    soin.Alternative !== null ? (
+                                        <span id="client-soin-title">{soin.Alternative}</span>
+                                    ) : (
+                                        <span id="client-soin-title">{soin.NomSoin}</span>
+                                    );
+                                }
+                            })()}
                         </div>
                         <div id="pharma-soin-generique">
                             {displayGenerique ? (
