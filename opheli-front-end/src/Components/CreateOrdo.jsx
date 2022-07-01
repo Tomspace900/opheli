@@ -3,7 +3,7 @@ import '../CSS/OrdoCards/CreateOrdo.css';
 import Categorie from './CreateOrdoCards/Categorie';
 import axios from 'axios';
 
-function App({ idMedecin }) {
+function App({ idMedecin, role }) {
     const [idPatient, setIdPatient] = useState('');
     const [categorie, setCategorie] = useState('simple');
     const [date, setDate] = useState(Date());
@@ -12,6 +12,8 @@ function App({ idMedecin }) {
     const [soinsSimples, setSoinsSimples] = useState([]);
     const [soinsALD, setSoinsALD] = useState([]);
     const [notes, setNotes] = useState('');
+
+    if (role  != 'medecin') {navigate('/Error')}
 
     const handleIdPatient = (e) => {
         setIdPatient(e.target.value);

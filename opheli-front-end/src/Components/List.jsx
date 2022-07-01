@@ -8,7 +8,7 @@ function List({role}) {
     const [access, setAccess] = useState('start');
     const navigate = useNavigate();
 
-    console.log(role)
+    if (role  == '') {navigate('/Error')}
 
     //TODO ça c'était pour mes tests c'est pas final je pense -Clovis
     const [id, setId] = useState(12354698351);

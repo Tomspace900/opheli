@@ -3,8 +3,11 @@ import '../../CSS/List.css';
 import '../../CSS/Login.css';
 import $ from "jquery";
 
-function UserList() {
+function UserList({role}) {
     const [patients, setPat] = useState([]);
+
+    if (role  != 'admin') {navigate('/Error')}
+
     if (patients.length == 0) {
         $.ajax({
             type: 'POST',
