@@ -328,11 +328,7 @@ const Ordonnance = ({
                 return (
                     <div className="soin-card">
                         <div id="client-soin-name">
-                            {soin.Alternative !== null ? (
-                                <span id="client-soin-title">{soin.Alternative}</span>
-                            ) : (
-                                <span id="client-soin-title">{soin.NomSoin}</span>
-                            )}
+                            <span id="client-soin-title">{soin.Alternative !== null ? soin.Alternative : soin.NomSoin}</span>
                             <br />
                             <span id="client-soin-desc">{soin.Description}</span>
                         </div>
@@ -349,9 +345,18 @@ const Ordonnance = ({
                 return (
                     <div className="soin-card">
                         <div id="pharma-soin-name">
-                            {(() => {
+                            <span id="client-soin-title">
+                                {(() => {
+                                    if (changeName !== '') {
+                                        return changeName;
+                                    } else {
+                                        return soin.Alternative !== null ? soin.Alternative : soin.NomSoin;
+                                    }
+                                })()}
+                            </span>
+                            {/* {(() => {
                                 if (changeName !== '') {
-                                    return <span id="client-soin-title">{changeName}</span>;
+                                    changeName;
                                 } else {
                                     soin.Alternative !== null ? (
                                         <span id="client-soin-title">{soin.Alternative}</span>
@@ -359,7 +364,7 @@ const Ordonnance = ({
                                         <span id="client-soin-title">{soin.NomSoin}</span>
                                     );
                                 }
-                            })()}
+                            })()} */}
                         </div>
                         <div id="pharma-soin-generique">
                             {displayGenerique ? (
