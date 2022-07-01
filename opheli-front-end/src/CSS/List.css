@@ -12,14 +12,15 @@
     border-radius: 30px;
     overflow: hidden;
 }
-tr {
+.tr {
+    padding: 5px;
     background: #c1e8e5;
 }
-tr:hover {
+.tr:hover {
     background: #5ccdc4a9;
 }
-td {
-    padding: 10px;
+.td {
+    padding: 5px;
     border-bottom: 2px solid white;
 }
 

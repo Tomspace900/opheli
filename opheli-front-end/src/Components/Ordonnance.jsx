@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
+import '../CSS/Form.css';
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 

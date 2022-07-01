@@ -18,6 +18,7 @@ class Ordonnance {
         db.query(addOrdo, [this.type, this.dateCreation, this.dateExpiration, this.notes, this.idPrescripteur, this.idPatient], (error, resultat) => {
             if(error){
                 console.log("erreur lors de la création d'une ordonnance");
+                console.log(error);
             }
             const idQuery = "SELECT IdOrdonnance FROM ordonnance WHERE IdOrdonnance = (SELECT MAX(IdOrdonnance) FROM ordonnance WHERE IdPatient = ?);";
             db.query(idQuery, [this.idPatient], (err, result) => {

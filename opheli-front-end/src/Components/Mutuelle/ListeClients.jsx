@@ -28,15 +28,6 @@ function ListeClients({role}) {
         });
     }
 
-    if (access == 'start') {
-        Axios.post('http://localhost:8080/check',{code:'listeClients'}).then(response => {
-            setAccess(response.data)
-        });
-    }
-    if (access == false) {
-        navigate('/Error')
-    }
-
     return (
         <div>
             <div className="login">
