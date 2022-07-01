@@ -1,18 +1,19 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import '../CSS/Header.css';
 import Axios from 'axios';
 
 const Header = ({nom,connected,setConnected}) => {
+    const navigate = useNavigate();
 
     function handleDisconnect() {
-        setConnected(false);
-        Axios.get('http://localhost:8080/deconnexion');
+        setConnected(false)
+        Axios.get('http://localhost:8080/deconnexion')
+        navigate('/Error')
     }
 
     if (connected == true) {
-        console.log(connected)
         return (
             <div className="header">
                 <Link

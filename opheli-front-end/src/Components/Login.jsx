@@ -7,7 +7,7 @@ import RegisterClient from './Login-cards/RegisterClient';
 import RegisterPharma from './Login-cards/RegisterPharma';
 import RegisterMutuelle from './Login-cards/RegisterMutuelle';
 
-const Login = () => {
+const Login = ({setNom, setRole, setCode, setConnected}) => {
     const [action, setAction] = useState(true);
     const [login, setLogin] = useState('client');
 
@@ -102,25 +102,25 @@ const Login = () => {
                     ? (() => {
                           switch (login) {
                               case 'medecin':
-                                  return <LoginForm account="medecin" />;
+                                  return <LoginForm setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} account="medecin" />;
                               case 'pharma':
-                                  return <LoginForm account="pharma" />;
+                                  return <LoginForm setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} account="pharma" />;
                               case 'mutuelle':
-                                  return <LoginForm account="mutuelle" />;
+                                  return <LoginForm setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} account="mutuelle" />;
                               default:
-                                  return <LoginForm account="client" />;
+                                  return <LoginForm setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} account="client" />;
                           }
                       })()
                     : (() => {
                           switch (login) {
                               case 'medecin':
-                                  return <RegisterMedecin />;
+                                  return <RegisterMedecin setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />;
                               case 'pharma':
-                                  return <RegisterPharma />;
+                                  return <RegisterPharma setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />;
                               case 'mutuelle':
-                                  return <RegisterMutuelle />;
+                                  return <RegisterMutuelle setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />;
                               default:
-                                  return <RegisterClient />;
+                                  return <RegisterClient setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />;
                           }
                       })()}
             </div>

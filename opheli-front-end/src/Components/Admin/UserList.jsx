@@ -2,9 +2,14 @@ import React, {useState,useEffect,setState} from 'react';
 import '../../CSS/List.css';
 import '../../CSS/Login.css';
 import $ from "jquery";
+import {useNavigate} from "react-router-dom";
 
-function UserList() {
+function UserList({role}) {
     const [patients, setPat] = useState([]);
+    const navigate = useNavigate();
+
+    if (role  != 'admin') {navigate('/Error')}
+
     if (patients.length == 0) {
         $.ajax({
             type: 'POST',

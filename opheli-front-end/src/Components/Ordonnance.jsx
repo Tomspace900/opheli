@@ -2,15 +2,19 @@ import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
-const Ordonnance = ({ nomMedecin }) => {
+const Ordonnance = ({ nomMedecin, role }) => {
     const [login, setLogin] = useState('pharma');
     const [src, setSrc] = useState('');
     const [idOrdo, setIdOrdo] = useState(1);
+    const navigate = useNavigate();
 
     const [link, setLink] = useState('http://localhost:3000/ordonnance');
 
     const [element, setElement] = useState([]);
+
+    if (role == '') {navigate('/Error')}
 
     useEffect(() => {
         QRCode.toDataURL(link).then(setSrc);

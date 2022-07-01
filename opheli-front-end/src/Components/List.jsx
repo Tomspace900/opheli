@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import '../CSS/List.css';
 import '../CSS/Login.css';
-import $ from 'jquery';
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-function List() {
+function List({role}) {
     const [access, setAccess] = useState('start');
     const navigate = useNavigate();
 
+    if (role  == '') {navigate('/Error')}
+
     //TODO ça c'était pour mes tests c'est pas final je pense -Clovis
-    const [role, setRole] = useState('medecin');
     const [id, setId] = useState(12354698351);
     const [listOrdos, setListOrdos] = useState([]);
 

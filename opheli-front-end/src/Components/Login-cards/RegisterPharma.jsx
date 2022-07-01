@@ -3,9 +3,9 @@ import { useState } from 'react';
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-const RegisterPharma = ({ account }) => {
+const RegisterPharma = ({setNom, setRole, setCode, setConnected}) => {
     // Donnees a envoyer à la BDD
-    const [code, setCode] = useState('');
+    const [codepro, setCodepro] = useState('');
     const [firstname, setFirstname] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
@@ -28,7 +28,7 @@ const RegisterPharma = ({ account }) => {
     }
 
     const handleCode = (e) => {
-        setCode(e.target.value);
+        setCodepro(e.target.value);
     };
 
     const handleFirstname = (e) => {
@@ -110,10 +110,19 @@ const RegisterPharma = ({ account }) => {
                     code : zipcode,
                     ville : city,
                     mdp : password,
-                    codepro : code
+                    codepro : codepro
                 }).then(response => {
                 if (response.data == 'success') {
-                    navigate('/List')
+                    Axios.get('http://localhost:8080/infos').then((response) => {
+                        setNom(response.data.nom);
+                        setRole(response.data.role);
+                        setCode(response.data.code);
+                        setId(response.data.id);
+                        if (response.data.nom != '') {
+                            setConnected(true);
+                        }
+                        navigate('/List')
+                    });
                 } else {
                     setError(response.data)
                 }

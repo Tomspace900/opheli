@@ -112,9 +112,9 @@ app.post('/client', (req,res) => {
     }
     //Création compte
     bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-      const patient = new Patient(req.body.secu,req.body.nom,req.body.prenom,req.body.mail,hash)
+      const patient = new Patient(req.body.secu, req.body.nom, req.body.prenom, req.body.mail,hash, req.body.date);
       const message = patient.addToDatabase(db)
-      if (message != 'error') {
+      if (message !== 'error') {
         code = req.body.secu
         id = message
         role = 'client'
@@ -383,7 +383,6 @@ app.post('/prolongerOrdonnance', (req, res) => {
 
 //réduit le nombre d'utilisations restantes de tous les soins de la liste Soins en entrée et add le générique (sauf s'il est nul)
 app.post('/updateSoins', (req, res) => {
-  //TODO voir comment recevoir les strings des génériques pour update les soins
   const Soins = req.body.Soins;
   Soins.forEach((Soin) => {
     useSoin(db, Soin[0]);

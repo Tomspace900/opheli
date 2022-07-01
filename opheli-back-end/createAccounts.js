@@ -8,9 +8,10 @@ class Utilisateur {
 }
 
 class Patient extends Utilisateur {
-    constructor(secu, nom, prenom, mail, mdp) {
+    constructor(secu, nom, prenom, mail, mdp, date) {
         super(nom, prenom, mail, mdp);
         this.secu = secu
+        this.date = date;
     }
 
     addToDatabase(db) {
@@ -18,8 +19,8 @@ class Patient extends Utilisateur {
         db.query(user, [this.nom,this.prenom,this.mail,this.mdp], (err, res)=> {
             const verif = "SELECT IdUtilisateur FROM utilisateur WHERE NomUtilisateur = ? AND PrenomUtilisateur = ? AND Mail = ?";
             db.query(verif, [this.nom,this.prenom,this.mail,this.mdp], (err, res)=> {
-                const request = "INSERT INTO `opheli`.`patient` (`IdPatient`, `IdUtilisateur`) VALUES (?, ?);";
-                db.query(request, [this.secu,res[0].IdUtilisateur], (err, res)=> {
+                const request = "INSERT INTO `opheli`.`patient` (`IdPatient`, `IdUtilisateur`, DateNaissance) VALUES (?, ?, ?);";
+                db.query(request, [this.secu,res[0].IdUtilisateur, this.date], (err, res)=> {
                     const request = "SELECT IdUtilisateur from utilisateur NATURAL JOIN patient WHERE IdPatient = ?"
                     db.query(request, [this.secu], (err, verif)=> {
                         if (verif != []) {

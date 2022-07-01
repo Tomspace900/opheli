@@ -3,9 +3,9 @@ import { useState } from 'react';
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-const RegisterMutuelle = ({ account }) => {
+const RegisterMutuelle = ({setNom, setRole, setCode, setConnected}) => {
     // Donnees a envoyer à la BDD
-    const [code, setCode] = useState('');
+    const [codepro, setCodepro] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [identifiant, setId] = useState('');
@@ -18,7 +18,7 @@ const RegisterMutuelle = ({ account }) => {
     const [submitted, setSubmitted] = useState(false);
 
     const handleCode = (e) => {
-        setCode(e.target.value);
+        setCodepro(e.target.value);
     };
 
     const handleName = (e) => {
@@ -65,10 +65,20 @@ const RegisterMutuelle = ({ account }) => {
                     nom: name,
                     mail: email,
                     identifiant : identifiant,
-                    mdp : password
+                    mdp : password,
+                    codepro : codepro
                 }).then(response => {
                     if (response.data == 'success') {
-                        navigate('/List')
+                        Axios.get('http://localhost:8080/infos').then((response) => {
+                            setNom(response.data.nom);
+                            setRole(response.data.role);
+                            setCode(response.data.code);
+                            setId(response.data.id);
+                            if (response.data.nom != '') {
+                                setConnected(true);
+                            }
+                            navigate('/listeClients')
+                        });
                     } else {
                         setError(response.data)
                     }
