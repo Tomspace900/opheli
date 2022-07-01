@@ -18,17 +18,20 @@ const transporter = nodemailer.createTransport({
 
 let templateFile = fs.readFileSync("../opheli-back-end/mailTemplate.html", "utf8");
 let templateCompiled = handlebars.compile(templateFile);
+const queryNom = "SELECT NomUtilisateur FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
+const queryPrenom = "SELECT PrenomUtilisateur FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
+const querySexe = "SELECT Sexe FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
+const queryMail = "SELECT Mail FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
 
 var data = {
     nom : "",
     prenom : "",
-    sexe : ""
+    sexe : "",
+    sujet : "",
+    texte : ""
 }
 
-const createDataNewOrdo = (db, ID) => {
-    const queryNom = "SELECT NomUtilisateur FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
-    const queryPrenom = "SELECT PrenomUtilisateur FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
-    const querySexe = "SELECT Sexe FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
+const createDataMailClient = (db, ID, usage) => {
 
     db.query(queryNom, [ID], (err, result) => {
         data.nom = result[0].NomUtilisateur;
@@ -41,16 +44,22 @@ const createDataNewOrdo = (db, ID) => {
                 else if ((result[0].Sexe)===1) {
                     data.sexe=" Mme ";
                 }
-
-                var htmlToSend = templateCompiled(data);
-                sendMail(htmlToSend);
+                db.query(queryMail, [ID], (err, result) => {
+                    if (usage==="new") {
+                        data.sujet="Nouvelle ordonnance disponible";
+                        data.texte="Une nouvelle ordonnance est disponible sur votre compte Opheli."
+                    }
+                    else if (usage==="used") {
+                        data.sujet="Ordonnance utilisée";
+                        data.texte="Une ordonnance a été utilisée sur votre compte Opheli."
+                    }
+                    var htmlToSend = templateCompiled(data);
+                    sendMail(htmlToSend, result[0].Mail, data.sujet);
+                });
             });
         });
     });
 
-}
-
-const createDataUsedOrdo = (db, ID) => {
 }
 
 const sendMail = (htmlToSend, mailAddress, mailSubject)  => {
@@ -70,4 +79,4 @@ const sendMail = (htmlToSend, mailAddress, mailSubject)  => {
     });
 }
 
-module.exports = {createDataNewOrdo, createDataUsedOrdo, sendMail}
+module.exports = {createDataMailClient, sendMail}
