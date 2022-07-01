@@ -387,8 +387,9 @@ app.post('/updateSoins', (req, res) => {
   const Soins = req.body.Soins;
   Soins.forEach((Soin) => {
     useSoin(db, Soin[0]);
-    if(Soin[1] !== null){
-      addGenerique(db, Soin[0], Soin[1]);
+    addPrix(db, Soin[0], Soin[1]);
+    if(Soin[2] !== null){
+      addGenerique(db, Soin[0], Soin[2]);
     }
   })
 })

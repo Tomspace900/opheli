@@ -165,4 +165,17 @@ function addGenerique(db, idSoin, generique){
     }
 }
 
-module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo}
+//set le prix du soin
+function addPrix(db, idSoin, prix){
+    if(prix !== null && prix !== ""){
+        const setPrix = "UPDATE soin SET Prix = ? WHERE IdSoin = ?;";
+        db.query(setPrix, [prix, idSoin], (err, res) => {
+            if(err){
+                console.log("erreur lors de l'attribution d'un prix");
+                console.log(err);
+            }
+        })
+    }
+}
+
+module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix}
