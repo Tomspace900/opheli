@@ -1,15 +1,32 @@
 .footer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 130px;
     border-radius: 40px 40px 0 0;
     box-shadow: var(--shadow-grey);
     background-color: #ffffff;
+    width: 100%;
+}
+.footer-part-social{
+    display: flex;
+}
+.footer-part-social svg{
+    margin-right:30px;
+    margin-left: 30px;
+}
+.footer-top{
+    display: flex;
+    font-weight: bold;
+    margin: 12px;
 }
 
-.footer div {
-    width: 33%;
+.footer-bottom{
+    display: flex;
     text-align: center;
+    width: 50%;
+    font-size: 13px;
+    font-style: italic;
 }
+
