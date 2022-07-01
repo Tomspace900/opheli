@@ -1,7 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
-const HomeMedecin = () => {
+const HomeMedecin = ({role}) => {
+    const navigate = useNavigate();
+
+    if (role.role  == '') {navigate('/Error')}
+
     function mouseOver(e) {
         e.target.style.background = '#5ccdc4a9';
     }

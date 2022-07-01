@@ -4,7 +4,7 @@ import '../../CSS/Login.css';
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-function ListeClients(role) {
+function ListeClients({role}) {
     const [ask, setAsked] = useState(false);
     const [liste, setListe] = useState([]);
     const [access, setAccess] = useState('start');

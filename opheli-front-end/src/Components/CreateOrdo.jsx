@@ -15,6 +15,7 @@ function App({ idMedecin, role }) {
     const [notes, setNotes] = useState('');
     const navigate = useNavigate();
 
+    console.log(role)
     if (role  != 'medecin') {navigate('/Error')}
 
     const handleIdPatient = (e) => {

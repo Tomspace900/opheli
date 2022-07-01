@@ -77,7 +77,7 @@ const RegisterMutuelle = ({setNom, setRole, setCode, setConnected}) => {
                             if (response.data.nom != '') {
                                 setConnected(true);
                             }
-                            navigate('/listeClients')
+                            navigate('/')
                         });
                     } else {
                         setError(response.data)

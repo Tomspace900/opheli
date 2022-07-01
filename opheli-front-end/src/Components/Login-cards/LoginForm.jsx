@@ -39,7 +39,7 @@ const LoginForm = ({ account, setNom, setRole, setCode, setConnected}) => {
                         if (response.data.nom != '') {
                             setConnected(true);
                         }
-                        navigate('/List')
+                        navigate('/')
                     });
                 }
             });

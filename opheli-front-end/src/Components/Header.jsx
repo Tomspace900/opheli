@@ -4,13 +4,19 @@ import {Link, useNavigate} from 'react-router-dom';
 import '../CSS/Header.css';
 import Axios from 'axios';
 
-const Header = ({nom,connected,setConnected}) => {
+const Header = ({nom,connected,setConnected, setNom, setRole, setCode, setId}) => {
     const navigate = useNavigate();
 
     function handleDisconnect() {
         setConnected(false)
         Axios.get('http://localhost:8080/deconnexion')
-        navigate('/Error')
+        Axios.get('http://localhost:8080/infos').then((response) => {
+            setNom(response.data.nom);
+            setRole(response.data.role);
+            setCode(response.data.code);
+            setId(response.data.id);
+            navigate('/')
+        });
     }
 
     if (connected == true) {

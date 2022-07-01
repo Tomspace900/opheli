@@ -44,10 +44,10 @@ const App = () => {
     return (
         <div className="app">
             <BrowserRouter>
-                <Header nom={nom} connected={connected} setConnected={setConnected} />
+                <Header nom={nom} connected={connected} setId={setId} setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} role={role} />
                 <Routes>
-                    <Route path="/" element={<Home role={role} />} />
-                    <Route path="*" element={<Home role={role} />} />
+                    <Route path="/" element={<Home setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} role={role} />} />
+                    <Route path="*" element={<Home setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} role={role} />} />
                     <Route path="/login" element={<Login setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />} />
                     <Route path="/list" element={<List role={role} />} />
                     <Route path="/users" element={<UserList />} />

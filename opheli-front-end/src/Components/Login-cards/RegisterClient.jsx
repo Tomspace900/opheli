@@ -95,7 +95,7 @@ const RegisterClient = ({setNom, setRole, setCode, setConnected}) => {
                         if (response.data.nom != '') {
                             setConnected(true);
                         }
-                        navigate('/List')
+                        navigate('/')
                     });
                 } else {
                     setError(response.data)
