@@ -383,7 +383,6 @@ app.post('/prolongerOrdonnance', (req, res) => {
 
 //réduit le nombre d'utilisations restantes de tous les soins de la liste Soins en entrée et add le générique (sauf s'il est nul)
 app.post('/updateSoins', (req, res) => {
-  //TODO voir comment recevoir les strings des génériques pour update les soins
   const Soins = req.body.Soins;
   Soins.forEach((Soin) => {
     useSoin(db, Soin[0]);
