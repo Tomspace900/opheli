@@ -18,6 +18,8 @@ const ProfileInfos = () => {
     const [sexe, setSexe] = useState(0);
     const [taille,setTaille] = useState(0);
 
+
+
     if (ask == false) {
         askDB()
     }
@@ -296,7 +298,10 @@ const DeleteAccount = () => {
     )
 }
 
-const Profile = () => {
+const Profile = (role) => {
+    const navigate = useNavigate();
+
+    if (role  == '') {navigate('/Error')}
     
     return (
         <div className='profile'>

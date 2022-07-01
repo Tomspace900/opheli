@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import '../CSS/List.css';
-import '../CSS/Login.css';
+import '../../CSS/List.css';
+import '../../CSS/Login.css';
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-function ListeClients() {
+function ListeClients(role) {
     const [ask, setAsked] = useState(false);
     const [liste, setListe] = useState([]);
     const [access, setAccess] = useState('start');
     const navigate = useNavigate();
+
+    if (role  != 'medecin') {navigate('/Error')}
 
     function suppClient(id) {
         Axios.post('http://localhost:8080/suppClient',{idClient : id})

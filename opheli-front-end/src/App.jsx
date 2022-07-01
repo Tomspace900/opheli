@@ -13,7 +13,7 @@ import Profil from './Components/Profile';
 import Contact from './Components/Contact';
 import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
-import ListeClients from './Components/ListeClients';
+import ListeClients from './Components/Mutuelle/ListeClients';
 import ListeOrdonnances from './Components/List';
 import { useState } from 'react';
 import Axios from 'axios';

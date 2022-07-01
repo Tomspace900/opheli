@@ -14,9 +14,7 @@ const Ordonnance = ({ nomMedecin, role }) => {
 
     const [element, setElement] = useState([]);
 
-    if (role != 'medecin') {
-        navigate('/Error')
-    }
+    if (role == '') {navigate('/Error')}
 
     useEffect(() => {
         QRCode.toDataURL(link).then(setSrc);
