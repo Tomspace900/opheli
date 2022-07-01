@@ -18,10 +18,10 @@ const transporter = nodemailer.createTransport({
 
 let templateFile = fs.readFileSync("../opheli-back-end/mailTemplate.html", "utf8");
 let templateCompiled = handlebars.compile(templateFile);
-const queryNom = "SELECT NomUtilisateur FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
-const queryPrenom = "SELECT PrenomUtilisateur FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
-const querySexe = "SELECT Sexe FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
-const queryMail = "SELECT Mail FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND utilisateur.IdUtilisateur=?;";
+const queryNom = "SELECT NomUtilisateur FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND patient.IdPatient=?;";
+const queryPrenom = "SELECT PrenomUtilisateur FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND patient.IdPatient=?;";
+const querySexe = "SELECT Sexe FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND patient.IdPatient=?;";
+const queryMail = "SELECT Mail FROM utilisateur,patient WHERE utilisateur.IdUtilisateur=patient.IdUtilisateur AND patient.IdPatient=?;";
 
 var data = {
     nom : "",

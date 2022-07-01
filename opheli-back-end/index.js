@@ -9,6 +9,8 @@ let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
 const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique} = require("./fonctionsOrdonnance");
+const {createDataMailClient} = require("./fonctionsMail");
+
 //variables
 let code = ""; //Id en fonction du role
 let id = ""; //IdUtilisateur
@@ -339,6 +341,7 @@ app.post('/createOrdonnance', (req, res) => {
     categorieSimple.addSoin(soin);
   })
   ordonnance.addCategorie(categorieSimple);
+  createDataMailClient(db, ordonnance.idPatient, "new");
 
   if(type === 'bizone'){
     const nbRenouvTotalALD = req.body.nbRenouvTotalALD,
@@ -390,7 +393,11 @@ app.post('/updateSoins', (req, res) => {
       addGenerique(db, Soin[0], Soin[1]);
     }
   })
-})
+  const idPatientQuery = "SELECT o.IdPatient FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie WHERE s.IdSoin = ?;";
+  db.query(idPatientQuery, [Soins[0][0]], (err, result) => {
+      createDataMailClient(db, result[0].IdPatient, "used");
+  });
+});
 
 app.listen(8080, () => {
   console.log("Le serveur est bien lancé");
