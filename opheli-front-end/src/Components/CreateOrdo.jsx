@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../CSS/OrdoCards/CreateOrdo.css';
 import Categorie from './CreateOrdoCards/Categorie';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
 function App({ idMedecin, role }) {
     const [idPatient, setIdPatient] = useState('');
@@ -12,6 +13,7 @@ function App({ idMedecin, role }) {
     const [soinsSimples, setSoinsSimples] = useState([]);
     const [soinsALD, setSoinsALD] = useState([]);
     const [notes, setNotes] = useState('');
+    const navigate = useNavigate();
 
     if (role  != 'medecin') {navigate('/Error')}
 
