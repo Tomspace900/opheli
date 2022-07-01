@@ -54,8 +54,8 @@ function ListeClients() {
                         {liste.map(item => {
                             return (
                                 <tr>
-                                    <td>{item.Nom}</td>
-                                    <td>{item.Prenom}</td>
+                                    <td>{item.NomUtilisateur}</td>
+                                    <td>{item.PrenomUtilisateur}</td>
                                     <td>{item.Mail}</td>
                                     <td><button onClick={() => suppClient(item.IdPatient)}>Supprimer</button></td>
                                 </tr>

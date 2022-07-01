@@ -16,15 +16,14 @@ import Profile from './Components/Profile';
 import Contact from './Components/Contact';
 import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
-import ListeClients from "./Components/ListeClients";
-import {useState} from "react";
-import Axios from "axios";
-
+import ListeClients from './Components/ListeClients';
+import { useState } from 'react';
+import Axios from 'axios';
 
 const App = () => {
     const [nom, setNom] = useState('');
     const [code, setCode] = useState('');
-    const [id , setId] = useState('');
+    const [id, setId] = useState('');
     const [role, setRole] = useState('');
     const [connected, setConnected] = useState(false);
 
@@ -33,9 +32,9 @@ const App = () => {
             Axios.get('http://localhost:8080/infos').then((response) => {
                 setNom(response.data.nom);
                 setRole(response.data.role);
-                setCode(response.data.code)
-                setId(response.data.id)
-                if (nom != null) {
+                setCode(response.data.code);
+                setId(response.data.id);
+                if (nom != '') {
                     setConnected(true);
                 }
             });
@@ -46,7 +45,7 @@ const App = () => {
     return (
         <div className="app">
             <BrowserRouter>
-                <Header nom={nom} connected={connected} setConnected={setConnected}/>
+                <Header nom={nom} connected={connected} setConnected={setConnected} />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="*" element={<Home />} />
@@ -55,13 +54,13 @@ const App = () => {
                     <Route path="/list" element={<List />} />
                     <Route path="/users" element={<UserList />} />
                     <Route path="/profil" element={<Profile />} />
-                    <Route path="/contact" element={<Contact/>} />
-                    <Route path="/createordo" element={<CreateOrdo />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/createordo" element={<CreateOrdo idMedecin={code} />} />
                     <Route path="/updateordo" element={<UpdateOrdo />} />
                     <Route path="/parametres" element={<Parameters />} />
-                    <Route path="/ordonnance" element={<Ordonnance />} />
-                    <Route path="/error" element={<Error />} />
+                    <Route path="/ordonnance" element={<Ordonnance nomMedecin={nom} />} />
                     <Route path="/listeClients" element={<ListeClients />} />
+                    <Route path="/error" element={<Error />} />
                 </Routes>
                 <Footer />
             </BrowserRouter>

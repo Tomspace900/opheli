@@ -29,9 +29,11 @@
 
 .profile-attribute {
     text-align: start;
-    
 }
-
+.profile-attribute div{
+    margin-top: 10%;
+    margin-bottom:10% ;
+}
 .attribute{
     padding-top: 10%;
 }
@@ -59,29 +61,34 @@ img{
     flex-direction: column;
     
 }
-.update-height{
+
+.update-password div{
     margin-top: 10%;
-    align-items: flex-start;
-}
-.update-password{
-    margin-top: 10%;
-    align-items: flex-start;
+    margin-bottom: 3%
 }
 
 .update-email{
     margin-top: 10%;
     margin-bottom: 10%;
-    align-self: flex-start;
+    
 }
 
-
+.part-title {
+    font-weight: bold;
+    margin-bottom: 2%;
+    margin-top: 10%;
+}
 
 .add-health-insurance{
     margin-top: 10%;
 }
 
 .my-ordo{
+    width: 300px;
     margin-top: 20px;
+}
+.my-ordo svg{
+    margin-top: 10px;
 }
 
 
@@ -106,4 +113,9 @@ img{
     justify-content: end;
     align-items: flex-end;
 }
-
+.delete-account h1{
+    font-weight: bold;
+}
+.delete-account div{
+    margin-top: 5%;
+}

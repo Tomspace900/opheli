@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import SoinCard from './SoinCard';
 
 //pour Ordonnance bizone
-function CategorieBizone({ handleNbUse, handleSoins, soins, setSoins }) {
-    const [index, setIndex] = useState(1);
-
+function CategorieBizone({ title, handleNbUse, soins, setSoins }) {
     function addSoin() {
-        console.log(soins);
         setSoins([...soins, { name: '', desc: '' }]);
         console.log(soins);
     }
@@ -14,7 +11,6 @@ function CategorieBizone({ handleNbUse, handleSoins, soins, setSoins }) {
     const delSoin = () => {
         if (soins.length > 0) {
             soins.pop();
-            setIndex(index - 1);
         }
         console.log(soins);
     };
@@ -30,7 +26,7 @@ function CategorieBizone({ handleNbUse, handleSoins, soins, setSoins }) {
 
     return (
         <div className="create-ordo-categorie">
-            <h1 className="create-ordo-categorie-title">Soins ALD</h1>
+            <h1 className="create-ordo-categorie-title">Soins {title}</h1>
             <div className="create-ordo-categorie-use">
                 <label>Nombre d'utilisations</label>
                 <input type="number" placeholder="1" min={1} max={5} onChange={(e) => handleNbUse(e)} />

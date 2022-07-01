@@ -8,7 +8,7 @@ const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
-const {selectOrdo, updateDate, useSoin} = require("./fonctionsOrdonnance");
+const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique} = require("./fonctionsOrdonnance");
 //variables
 let code = ""; //Id en fonction du role
 let id = ""; //IdUtilisateur
@@ -61,7 +61,7 @@ app.post('/check', (req,res) => {
 
 //PROFIL
 app.get('/profil', (req, res) => {
-  request = "SELECT * from opheli.utilisateur where IdUtilisateur  = ?";
+  request = "SELECT NomUtilisateur, PrenomUtilisateur, Mail, Sexe, Taille, Poids from opheli.utilisateur NATURAL JOIN opheli.patient where IdUtilisateur  = ?";
   db.query(request, [id], (err, array)=> {
     array = JSON.parse(JSON.stringify(array));
     res.send(array)
@@ -107,23 +107,23 @@ app.post('/client', (req,res) => {
   //Vérification secu
   request = "SELECT IdPatient from patient WHERE IdPatient = ?;";
   db.query(request, [req.body.secu], (err, verif)=> {
-    if (verif != null) {
+    if (verif.length != 0) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
-  });
-  //Création compte
-  bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-    const patient = new Patient(req.body.secu,req.body.nom,req.body.prenom,req.body.mail,hash)
-    const message = patient.addToDatabase(db)
-    if (message != 'error') {
-      code = req.body.secu
-      id = message
-      role = 'client'
-      nom = req.body.prenom+" "+req.body.nom
-      return res.end('success')
-    } else {
-      return res.end("Une erreur est survenue durant la création de votre profil.")
-    }
+    //Création compte
+    bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+      const patient = new Patient(req.body.secu,req.body.nom,req.body.prenom,req.body.mail,hash)
+      const message = patient.addToDatabase(db)
+      if (message != 'error') {
+        code = req.body.secu
+        id = message
+        role = 'client'
+        nom = req.body.prenom+" "+req.body.nom
+        return res.end('success')
+      } else {
+        return res.end("Une erreur est survenue durant la création de votre profil.")
+      }
+    });
   });
 });
 
@@ -134,31 +134,31 @@ app.post('/medecin', (req,res) => {
     if (verif.length != 0) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
-  });
-  //Vérification code
-  request = "SELECT * FROM opheli.code WHERE Code = ?"
-  db.query(request, [req.body.codepro], (err, rep)=> {
-    if (rep.length != 0) {
-      const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
-      db.query(request, [req.body.codepro],(err,rep)=>{
-        //Création compte
-        bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-          const prescripteur = new Prescripteur(req.body.rpps, req.body.specialite, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, req.body.spe, hash)
-          const message = prescripteur.addToDatabase(db,req.body.rpps)
-          if (message != 'error') {
-            code = req.body.rpps
-            id = message
-            role = 'medecin'
-            nom = req.body.prenom+" "+req.body.nom
-            return res.end('success')
-          } else {
-            return res.end("Une erreur est survenue durant la création de votre profil.")
-          }
+    //Vérification code
+    request = "SELECT * FROM opheli.code WHERE Code = ?"
+    db.query(request, [req.body.codepro], (err, rep)=> {
+      if (rep.length != 0) {
+        const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
+        db.query(request, [req.body.codepro],(err,rep)=>{
+          //Création compte
+          bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+            const prescripteur = new Prescripteur(req.body.rpps, req.body.specialite, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, req.body.spe, hash)
+            const message = prescripteur.addToDatabase(db,req.body.rpps)
+            if (message != 'error') {
+              code = req.body.rpps
+              id = message
+              role = 'medecin'
+              nom = req.body.prenom+" "+req.body.nom
+              return res.end('success')
+            } else {
+              return res.end("Une erreur est survenue durant la création de votre profil.")
+            }
+          });
         });
-      });
-    } else {
-      res.end("Code incorrect.")
-    }
+      } else {
+        res.end("Code incorrect.")
+      }
+    });
   });
 });
 
@@ -169,30 +169,30 @@ app.post('/pharma', (req,res) => {
     if (verif != null) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
-  });
-  //Vérification code
-  request = "SELECT * FROM opheli.code WHERE Code = ?"
-  db.query(request, [req.body.codepro], (err, rep)=> {
-    if (rep.length != 0) {
-      const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
-      db.query(request, [req.body.codepro]);
-      //Création compte
-      bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-        const pharmacien = new Pharmacien(req.body.rpps, req.body.idp, req.body.nomp, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
-        const message = pharmacien.addToDatabase(db)
-        if (message != 'error') {
-          code = req.body.rpps
-          id = message
-          role = 'pharma'
-          nom = req.body.prenom+" "+req.body.nom
-          return res.end('success')
-        } else {
-          return res.end("Une erreur est survenue durant la création de votre profil.")
-        }
-      });
-    } else {
-      res.end("Code incorrect.")
-    }
+    //Vérification code
+    request = "SELECT * FROM opheli.code WHERE Code = ?"
+    db.query(request, [req.body.codepro], (err, rep)=> {
+      if (rep.length != 0) {
+        const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
+        db.query(request, [req.body.codepro]);
+        //Création compte
+        bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+          const pharmacien = new Pharmacien(req.body.rpps, req.body.idp, req.body.nomp, req.body.rue, req.body.code, req.body.ville, req.body.nom, req.body.prenom, req.body.mail, hash)
+          const message = pharmacien.addToDatabase(db)
+          if (message != 'error') {
+            code = req.body.rpps
+            id = message
+            role = 'pharma'
+            nom = req.body.prenom+" "+req.body.nom
+            return res.end('success')
+          } else {
+            return res.end("Une erreur est survenue durant la création de votre profil.")
+          }
+        });
+      } else {
+        res.end("Code incorrect.")
+      }
+    });
   });
 });
 
@@ -203,30 +203,30 @@ app.post('/mutuelle', (req,res) => {
     if (verif != null) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
-  });
-  //Vérification code
-  request = "SELECT * FROM opheli.code WHERE Code = ?"
-  db.query(request, [req.body.codepro], (err, rep)=> {
-    if (rep.length != 0) {
-      const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
-      db.query(request, [req.body.codepro]);
-      //Création compte
-      bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-        const mutuelle = new Mutuelle(req.body.identifiant, req.body.mail, req.body.nom, hash)
-        const message = mutuelle.addToDatabase(db)
-        if (message != 'error') {
-          code = req.body.identifiant
-          id = message
-          role = 'mutuelle'
-          nom = req.body.nom
-          return res.end('success')
-        } else {
-          return res.end("Une erreur est survenue durant la création de votre profil.")
-        }
-      });
-    } else {
-      res.end("Code incorrect.")
-    }
+    //Vérification code
+    request = "SELECT * FROM opheli.code WHERE Code = ?"
+    db.query(request, [req.body.codepro], (err, rep)=> {
+      if (rep.length != 0) {
+        const request = "UPDATE `opheli`.`code` SET `Utilisation` = '1' WHERE `Code` = ?"
+        db.query(request, [req.body.codepro]);
+        //Création compte
+        bcrypt.hash(req.body.mdp, 8, (err, hash) => {
+          const mutuelle = new Mutuelle(req.body.identifiant, req.body.mail, req.body.nom, hash)
+          const message = mutuelle.addToDatabase(db)
+          if (message != 'error') {
+            code = req.body.identifiant
+            id = message
+            role = 'mutuelle'
+            nom = req.body.nom
+            return res.end('success')
+          } else {
+            return res.end("Une erreur est survenue durant la création de votre profil.")
+          }
+        });
+      } else {
+        res.end("Code incorrect.")
+      }
+    });
   });
 });
 
@@ -256,23 +256,22 @@ app.post('/login',(req,res) => {
     let idGlobal = ""
     let nomGlobal = ""
     if (roleUser == 'mutuelle') {
-      request = "SELECT MotDePasse, Nom from mutuelle WHERE IdMutuelle = ?;";
+      request = "SELECT MotDePasse, NomMutuelle from mutuelle WHERE IdMutuelle = ?;";
       idGlobal = req.body.id
     } else {
-      request = "SELECT MotDePasse, Nom, Prenom from utilisateur WHERE IdUtilisateur = ?;";
+      request = "SELECT MotDePasse, NomUtilisateur, PrenomUtilisateur from utilisateur WHERE IdUtilisateur = ?;";
       idGlobal = iduser[0].IdUtilisateur
     }
     db.query(request, [idGlobal], (err, mdp)=> {
       bcrypt.compare(password, mdp[0].MotDePasse, function(err, bonmdp) {
-        console.log(bonmdp)
         if (bonmdp == true) {
           if (roleUser == 'mutuelle') {
-            nomGlobal = mdp[0].Nom
+            nomGlobal = mdp[0].NomMutuelle
           } else {
-            nomGlobal = mdp[0].Prenom+" "+mdp[0].Nom
+            nomGlobal = mdp[0].PrenomUtilisateur+" "+mdp[0].NomUtilisateur
           }
-          code = idGlobal
-          id = secu
+          code = secu
+          id = idGlobal
           role = roleUser
           nom = nomGlobal
           return res.end('success');
@@ -286,10 +285,9 @@ app.post('/login',(req,res) => {
 
 //MUTUELLE
 app.get('/listeClients',(req,res) => {
-  request = "SELECT Nom, Prenom, Mail, opheli.patient.IdPatient  from opheli.souscrire, opheli.patient NATURAL JOIN opheli.utilisateur WHERE opheli.souscrire.IdPatient = opheli.patient.IdPatient AND opheli.souscrire.IdMutuelle = ?";
+  request = "SELECT NomUtilisateur, PrenomUtilisateur, Mail, opheli.patient.IdPatient  from opheli.souscrire, opheli.patient NATURAL JOIN opheli.utilisateur WHERE opheli.souscrire.IdPatient = opheli.patient.IdPatient AND opheli.souscrire.IdMutuelle = ?";
   db.query(request,[id], (err, array)=> {
     array = JSON.parse(JSON.stringify(array));
-    console.log(array)
     res.send(array)
   });
 })
@@ -298,13 +296,80 @@ app.post('/suppClient', (req, res) => {
   suppClient(db,id,req.body.idClient)
 })
 
+app.get('/listeMutuelles', (req,res) => {
+  request = "SELECT NomMutuelle from opheli.mutuelle NATURAL JOIN opheli.souscrire WHERE IdPatient  = ?";
+  db.query(request,[code], (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array)
+  });
+})
+
+app.post('/ajoutMutuelle',(req,res) => {
+  request = "INSERT INTO `opheli`.`souscrire` (`IdMutuelle`, `IdPatient`) VALUES (?, ?);";
+  db.query(request,[req.body.mutuelle,code], (err, array)=> {
+    res.send('success')
+  });
+})
 //ORDONNANCES
+
+
+//créer une ordonnance
+app.post('/createOrdonnance', (req, res) => {
+
+  const idPatient = req.body.idPatient,
+      idPrescripteur = req.body.idPrescripteur,
+      date = req.body.dateCreation,
+      type = req.body.type,
+      nbRenouvTotal = req.body.nbRenouvTotal,
+      soinsSimples = req.body.soinsSimples,
+      notes = req.body.notes;
+
+  //formattage de la date
+  const newDate = new Date(date);
+  const dateExp = new Date (newDate.setMonth(newDate.getMonth() + 3));
+
+  const dateCreation = "" + newDate.getFullYear() + "-" + newDate.getMonth() + "-" + newDate.getDay();
+  const dateExpiration = "" + dateExp.getFullYear() + "-" + dateExp.getMonth() + "-" + dateExp.getDay();
+
+  const ordonnance = new Ordonnance(type, dateCreation, dateExpiration, notes, idPrescripteur, idPatient);
+
+  const categorieSimple = new Categorie('simple', nbRenouvTotal);
+  soinsSimples.forEach((s) => {
+    const soin = new Soin(s.name, s.desc, nbRenouvTotal);
+    categorieSimple.addSoin(soin);
+  })
+  ordonnance.addCategorie(categorieSimple);
+
+  if(type === 'bizone'){
+    const nbRenouvTotalALD = req.body.nbRenouvTotalALD,
+        soinsALD = req.body.soinsALD;
+    const categorieALD = new Categorie('bizone', nbRenouvTotalALD);
+    soinsALD.forEach((s) => {
+      const soin = new Soin(s.name, s.desc, nbRenouvTotalALD);
+      categorieALD.addSoin(soin);
+    })
+    ordonnance.addCategorie(categorieALD);
+  }
+
+  ordonnance.addToDatabase(db);
+})
+
 //get les infos de l'ordonnance selon le rôle
 app.post('/getOrdonnance', (req, res) => {
   const idOrdo = req.body.idOrdo;
   const role = req.body.role;
-  const select = selectOrdo(db, role, idOrdo);
+  const select = selectOrdo(role, idOrdo);
   db.query(select, [idOrdo], (err, result) => {
+    res.send(result);
+  })
+})
+
+//get la liste des ordos selon le rôle
+app.post('/getListeOrdonnances', (req, res) => {
+  const role = req.body.role;
+  const id = req.body.id;
+  const select = selectListOrdo(role);
+  db.query(select, [id], (err, result) => {
     res.send(result);
   })
 })
@@ -316,12 +381,15 @@ app.post('/prolongerOrdonnance', (req, res) => {
   updateDate(db, idOrdo, nbMois);
 })
 
-//réduit le nombre d'utilisations restantes de tous les soins de la liste idSoins en entrée
+//réduit le nombre d'utilisations restantes de tous les soins de la liste Soins en entrée et add le générique (sauf s'il est nul)
 app.post('/updateSoins', (req, res) => {
   //TODO voir comment recevoir les strings des génériques pour update les soins
-  const idSoins = req.body.idSoins;
-  idSoins.forEach((idSoin) => {
-    useSoin(db, idSoin);
+  const Soins = req.body.Soins;
+  Soins.forEach((Soin) => {
+    useSoin(db, Soin[0]);
+    if(Soin[1] !== null){
+      addGenerique(db, Soin[0], Soin[1]);
+    }
   })
 })
 

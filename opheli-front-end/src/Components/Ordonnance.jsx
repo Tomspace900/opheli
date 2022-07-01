@@ -3,7 +3,7 @@ import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
 import axios from 'axios';
 
-const Ordonnance = () => {
+const Ordonnance = ({ nomMedecin }) => {
     const [login, setLogin] = useState('pharma');
     const [src, setSrc] = useState('');
     const [idOrdo, setIdOrdo] = useState(1);
@@ -23,9 +23,8 @@ const Ordonnance = () => {
                 role: login,
             })
             .then((response) => {
-                console.log(response.data);
+                console.log('data: ' + response.data);
                 setElement(response.data);
-                console.log(element);
             });
     }, []);
 
@@ -44,14 +43,14 @@ const Ordonnance = () => {
                 <div className="ordo-docteur">
                     <span>Docteur</span>
                     <br />
-                    <span>ATCHOUM</span>
+                    <span>{nomMedecin}</span>
                     <br />
-                    <span>Généraliste</span>
+                    <span>{element[0].NomSpecialite}</span>
                 </div>
                 <div className="ordo-cabinet">
-                    <span>1, rue de la République</span>
+                    <span>{element[0].Rue}</span>
                     <br />
-                    <span>75000, PARIS</span>
+                    <span>{element[0].CodePostal + ', ' + element[0].Ville}</span>
                 </div>
             </div>
         );
@@ -131,18 +130,14 @@ const Ordonnance = () => {
             return (
                 <div className="ordo-date">
                     <span>Délivrée le </span>
-                    <span>12 septembre 2021</span>
+                    <span>{element[0].DateCreation}</span>
                     <br />
                     <span>Valable jusqu'au </span>
-                    <span>12 decembre 2021</span>
+                    <span>*date d'expiration*</span>
                 </div>
             );
         }
     };
-    // Pour prolonger la date d'expiration :
-    // const [prolonger, setProlonger] = useState('');
-
-    // function prolongerDate() {}
 
     const OrdoPatient = () => {
         // Medecin Patient Mutuelle
@@ -151,17 +146,22 @@ const Ordonnance = () => {
                 <div className="ordo-patient">
                     <span>Madame / Monsieur</span>
                     <br />
-                    <span>DEMILE</span>
+                    <span>{element[0].Id}</span>
                 </div>
             );
         } else return null;
     };
 
-    const OrdoSoins = () => {
-        // Medecin voit tout les soins initiaux
-        // Client voit les soins initiaux et le nombre restant (meme si zéro)
-        // Pharma voit les soins restants a delivrer
-        // Mutuelle voit les soins delivres
+    const OrdoSoins = ({ delivres, setDelivres, generiques, setGeneriques, checkOrdo }) => {
+        function setLists() {
+            setDelivres([...delivres, { id: '', price: '' }]);
+            setGeneriques([...generiques, { id: '', generique: '', price: '' }]);
+        }
+
+        // TODO :
+        // Medecin et client voientt tout les soins initiaux
+        // Pharma voit les soins restants a delivrer (= nb restant > 0)
+        // Mutuelle voit les soins delivres (= nb restant < nb initial)
         switch (login) {
             case 'medecin':
                 return (
@@ -169,9 +169,9 @@ const Ordonnance = () => {
                         <>
                             {element &&
                                 element.map((el) => {
+                                    setLists();
                                     return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
                                 })}
-                            {/* Faire un map des soins ADL et simples de l'ordonnance */}
                         </>
                     </div>
                 );
@@ -179,13 +179,10 @@ const Ordonnance = () => {
                 return (
                     <div className="ordo-soins">
                         <>
-                            {/* Faire un map des soins ADL et simples de l'ordonnance */}
-                            <OrdoSoinsCard n="1" />
-                        </>
-                        <>
-                            <OrdoSoinsCard n="2" />
-                            <OrdoSoinsCard n="3" />
-                            <OrdoSoinsCard n="4" />
+                            {element &&
+                                element.map((el) => {
+                                    return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
+                                })}
                         </>
                     </div>
                 );
@@ -193,13 +190,10 @@ const Ordonnance = () => {
                 return (
                     <div className="ordo-soins">
                         <>
-                            {/* Faire un map des soins ADL et simples de l'ordonnance */}
-                            <OrdoSoinsCard n="1" />
-                        </>
-                        <>
-                            <OrdoSoinsCard n="2" />
-                            <OrdoSoinsCard n="3" />
-                            <OrdoSoinsCard n="4" />
+                            {element &&
+                                element.map((el) => {
+                                    return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
+                                })}
                         </>
                     </div>
                 );
@@ -207,13 +201,10 @@ const Ordonnance = () => {
                 return (
                     <div className="ordo-soins">
                         <>
-                            {/* Faire un map des soins ADL et simples de l'ordonnance */}
-                            <OrdoSoinsCard n="1" />
-                        </>
-                        <>
-                            <OrdoSoinsCard n="2" />
-                            <OrdoSoinsCard n="3" />
-                            <OrdoSoinsCard n="4" />
+                            {element &&
+                                element.map((el) => {
+                                    return <OrdoSoinsCard soin={el} key={el.IdSoin} checkOrdo={checkOrdo} />;
+                                })}
                         </>
                     </div>
                 );
@@ -222,7 +213,7 @@ const Ordonnance = () => {
         }
     };
 
-    const OrdoSoinsCard = ({ soin }) => {
+    const OrdoSoinsCard = ({ soin, checkOrdo }) => {
         // Medecin voit juste nom et description
         // Pharmacien Mutuelle Client voient le prix
         // Pharmacien modifie le prix, le nb d'utilisations restantes et l'alternative
@@ -230,34 +221,42 @@ const Ordonnance = () => {
         const [displayGenerique, setDisplayGenerique] = useState(false);
         const [generique, setGenerique] = useState('');
         const [deliver, setDeliver] = useState(false);
-        const [soinDelivre, setSoinDelivre] = useState([]);
+        const [price, setPrice] = useState(0);
 
         const handleGenerique = (e) => {
             setGenerique(e.target.value);
-            if (deliver) {
-                soinDelivre['generique'] = e.target.value;
-            }
-            console.log(soinDelivre);
         };
 
         const handleDeliver = () => {
             setDeliver((current) => !current);
-            if (generique !== '') {
-                soinDelivre['generique'] = generique;
-            } else {
-                soinDelivre['generique'] = null;
-            }
-            console.log('Delivré ? ' + deliver + 'liste: ' + soinDelivre);
         };
 
-        // verifier que tout les champs sont remplis si modif
-        // Si generique : nom + delivré
-        // Si delivré : prix
-        // doit renvoyer une variable true
+        const handlePrice = (e) => {
+            setPrice(e.target.value);
+        };
+
+        useEffect(() => {
+            if (checkOrdo && deliver) {
+                if (price > 0) {
+                    if (generique !== '') {
+                        generiques.id = soin.IdSoin;
+                        generiques.generique = generique;
+                        generiques.price = price;
+                    } else {
+                        delivres.id = soin.IdSoin;
+                        delivres.price = price;
+                    }
+                } else alert('Veuillez renseigner tous les prix des soins délivrés');
+            }
+        }, []);
+
+        const [changeName, setChangeName] = useState('');
+
         function submitGenerique() {
             if (generique !== '') {
-                return true;
-            } else return false;
+                setChangeName(generique);
+                setDisplayGenerique(false);
+            }
         }
 
         switch (login) {
@@ -265,11 +264,15 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="medecin-soin-name">
-                            <span id="medecin-soin-title">Nom du soin</span> <br />
-                            <span id="medecin-soin-desc">
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime ea nulla officia similique esse
-                                vitae?
+                            <span id="medecin-soin-title">
+                                {() => {
+                                    if (soin.Alternative !== null) {
+                                        return soin.Alternative;
+                                    } else return soin.NomSoin;
+                                }}
                             </span>
+                            <br />
+                            <span id="medecin-soin-desc">{soin.Description}</span>
                         </div>
                     </div>
                 );
@@ -277,10 +280,17 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="mutuelle-soin-name">
-                            <span id="mutuelle-soin-title">Nom du soin</span> <br />
+                            <span id="mutuelle-soin-title">
+                                {() => {
+                                    if (soin.Alternative !== null) {
+                                        return soin.Alternative;
+                                    } else return soin.NomSoin;
+                                }}
+                            </span>{' '}
+                            <br />
                         </div>
                         <div id="mutuelle-soin-price">
-                            <span>2,39 €</span>
+                            <span>{soin.Prix}</span>
                         </div>
                     </div>
                 );
@@ -288,16 +298,20 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="client-soin-name">
-                            <span id="client-soin-title">Nom du soin</span> <br />
-                            <span id="client-soin-desc">
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime ea nulla officia similique esse
-                                vitae?
-                            </span>
+                            <span id="client-soin-title">
+                                {() => {
+                                    if (soin.Alternative !== null) {
+                                        return soin.Alternative;
+                                    } else return soin.NomSoin;
+                                }}
+                            </span>{' '}
+                            <br />
+                            <span id="client-soin-desc">{soin.Description}</span>
                         </div>
                         <div id="client-soin-use">
                             <span>Valable </span>
                             <br />
-                            <span>X</span>
+                            <span>{soin.NbRestants}</span>
                             <br />
                             <span> fois</span>
                         </div>
@@ -307,7 +321,15 @@ const Ordonnance = () => {
                 return (
                     <div className="soin-card">
                         <div id="pharma-soin-name">
-                            <span>Nom du soin </span>
+                            <span>
+                                {() => {
+                                    if (changeName !== '') {
+                                        return changeName;
+                                    } else if (soin.Alternative !== null) {
+                                        return soin.Alternative;
+                                    } else return soin.NomSoin;
+                                }}
+                            </span>
                         </div>
                         <div id="pharma-soin-generique">
                             {displayGenerique ? (
@@ -343,7 +365,7 @@ const Ordonnance = () => {
                             <span>Délivré</span>
                         </div>
                         <div id="pharma-soin-price">
-                            <input type="number" id="pharma-soin-input-price" />
+                            <input type="number" id="pharma-soin-input-price" onChange={handlePrice} />
                             <span> €</span>
                         </div>
                     </div>
@@ -358,11 +380,7 @@ const Ordonnance = () => {
         if (login === 'client' || login === 'medecin') {
             return (
                 <div className="ordo-notes">
-                    <span>
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque nihil vel iste maiores. Molestiae quas
-                        vero totam doloribus minus iusto facilis dolore exercitationem, perferendis eaque aut quibusdam, quia
-                        necessitatibus cupiditate.
-                    </span>
+                    <span>{element[0].Notes}</span>
                 </div>
             );
         } else return null;
@@ -422,12 +440,22 @@ const Ordonnance = () => {
         }
     };
 
+    const [delivres, setDelivres] = useState([]);
+    const [generiques, setGeneriques] = useState([]);
+
+    const [checkOrdo, setCheckOrdo] = useState(false);
+
     function submitOrdo(e) {
         e.preventDefault();
+        setCheckOrdo(true);
         switch (login) {
             case 'pharma':
-                // TODO Envoyer une liste des ID des soins délivrés ET une liste des soins avec génériques
-                break;
+                // TODO Axios une liste des ID des soins délivrés ET une liste des soins avec génériques
+
+                axios.post('http://localhost:8080/deliverOrdonnance', {
+                    soinsDelivres: delivres,
+                    soinsGeneriques: generiques,
+                });
                 break;
             default:
                 return null;
@@ -436,11 +464,17 @@ const Ordonnance = () => {
 
     return (
         <div className="ordo">
-            <h1 className="ordo-title">Ordonnance N 123456</h1>
+            <h1 className="ordo-title">{element[0].IdOrdonnance}</h1>
             <OrdoMedecin />
             <OrdoDate />
             <OrdoPatient />
-            <OrdoSoins />
+            <OrdoSoins
+                delivres={delivres}
+                setDelivres={setDelivres}
+                generiques={generiques}
+                setGeneriques={setGeneriques}
+                checkOrdo={checkOrdo}
+            />
             <OrdoNotes />
             <OrdoQR />
             <ValiderOrdo />

@@ -31,3 +31,21 @@
 .contact-infos{
     text-align: start;
 }
+.contact-infos div{
+    margin-top: 5%;
+}
+
+.request{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    padding: 10px 5%;
+    margin-top: 20px;
+    box-shadow: var(--shadow-grey-small);
+    border-radius: 10px;
+    align-items: flex-start;
+}
+.request textarea{
+    width: 95%;
+    height: 180px;
+}

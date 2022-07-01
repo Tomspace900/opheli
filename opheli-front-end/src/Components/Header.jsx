@@ -11,7 +11,8 @@ const Header = ({nom,connected,setConnected}) => {
         Axios.get('http://localhost:8080/deconnexion');
     }
 
-    if (connected) {
+    if (connected == true) {
+        console.log(connected)
         return (
             <div className="header">
                 <Link
