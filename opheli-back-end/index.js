@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 let bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
+const morgan = require('morgan')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
 const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique} = require("./fonctionsOrdonnance");
@@ -17,14 +18,20 @@ let nom = "";
 
 
 app.use(cors());
+app.use(morgan('dev'))
 
-const db = mysql.createPool({
   host: "localhost",
+const db = mysql.createConnection({
   port: PORT,
   user: USER,
   password: PASSWORD,
   database: "opheli"
 })
+db.connect((err) => {
+  if (err) throw err
+  console.log("Connecté à la bdd")
+})
+
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
@@ -360,6 +367,10 @@ app.post('/getOrdonnance', (req, res) => {
   const role = req.body.role;
   const select = selectOrdo(role, idOrdo);
   db.query(select, [idOrdo], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(result)
     res.send(result);
   })
 })

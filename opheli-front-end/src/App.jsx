@@ -40,7 +40,7 @@ const App = () => {
             });
         }
     }
-    setInterval(handleConnect, 1000);
+    setTimeout(handleConnect, 1000);
 
     return (
         <div className="app">
