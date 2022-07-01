@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 let bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
+const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
 const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique} = require("./fonctionsOrdonnance");
 //variables
