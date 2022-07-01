@@ -1,3 +1,5 @@
+const {createDataMailClient} = require("./fonctionsMail");
+
 class Ordonnance {
     constructor(type, dateCreation, dateExpiration, notes, idPrescripteur, idPatient){
         this.type = type;
