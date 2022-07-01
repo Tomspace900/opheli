@@ -112,9 +112,9 @@ app.post('/client', (req,res) => {
     }
     //Création compte
     bcrypt.hash(req.body.mdp, 8, (err, hash) => {
-      const patient = new Patient(req.body.secu,req.body.nom,req.body.prenom,req.body.mail,hash)
+      const patient = new Patient(req.body.secu, req.body.nom, req.body.prenom, req.body.mail,hash, req.body.date);
       const message = patient.addToDatabase(db)
-      if (message != 'error') {
+      if (message !== 'error') {
         code = req.body.secu
         id = message
         role = 'client'
