@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import Axios from 'axios';
 
-const LoginForm = ({ account }) => {
+const LoginForm = ({ account, setNom, setRole, setCode, setConnected}) => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -31,7 +31,16 @@ const LoginForm = ({ account }) => {
                 if (response.data == 'error') {
                     setError('Les données entrées ne correspondent pas à celles d\'un compte existant.');
                 } else if (response.data == 'success') {
-                    navigate('/List')
+                    Axios.get('http://localhost:8080/infos').then((response) => {
+                        setNom(response.data.nom);
+                        setRole(response.data.role);
+                        setCode(response.data.code);
+                        setId(response.data.id);
+                        if (response.data.nom != '') {
+                            setConnected(true);
+                        }
+                        navigate('/List')
+                    });
                 }
             });
         }

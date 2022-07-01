@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-const RegisterClient = () => {
+const RegisterClient = ({setNom, setRole, setCode, setConnected}) => {
     // Donnees a envoyer à la BDD
     const [firstname, setFirstname] = useState('');
     const [surname, setSurname] = useState('');
@@ -86,9 +86,17 @@ const RegisterClient = () => {
                     mdp : password
                 }
             ).then(response => {
-                console.log(response.data)
                 if (response.data == 'success') {
-                    navigate('/List')
+                    Axios.get('http://localhost:8080/infos').then((response) => {
+                        setNom(response.data.nom);
+                        setRole(response.data.role);
+                        setCode(response.data.code);
+                        setId(response.data.id);
+                        if (response.data.nom != '') {
+                            setConnected(true);
+                        }
+                        navigate('/List')
+                    });
                 } else {
                     setError(response.data)
                 }

@@ -6,17 +6,15 @@ import './CSS/Reset.css';
 import './CSS/App.css';
 import './CSS/Index.css';
 import Login from './Components/Login';
-import Form_test from './Components/Form_test';
 import List from './Components/List';
 import UserList from './Components/Admin/UserList';
 import CreateOrdo from './Components/CreateOrdo';
-import UpdateOrdo from './Components/UpdateOrdo';
-import Parameters from './Components/Parameters';
-import Profile from './Components/Profile';
+import Profil from './Components/Profile';
 import Contact from './Components/Contact';
 import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
 import ListeClients from './Components/ListeClients';
+import ListeOrdonnances from './Components/List';
 import { useState } from 'react';
 import Axios from 'axios';
 
@@ -27,6 +25,7 @@ const App = () => {
     const [role, setRole] = useState('');
     const [connected, setConnected] = useState(false);
 
+    /*
     function handleConnect() {
         if (!connected) {
             Axios.get('http://localhost:8080/infos').then((response) => {
@@ -40,26 +39,24 @@ const App = () => {
             });
         }
     }
-    setInterval(handleConnect, 1000);
+    setInterval(handleConnect, 1000);*/
 
     return (
         <div className="app">
             <BrowserRouter>
                 <Header nom={nom} connected={connected} setConnected={setConnected} />
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="*" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/test" element={<Form_test />} />
-                    <Route path="/list" element={<List />} />
+                    <Route path="/" element={<Home role={role} />} />
+                    <Route path="*" element={<Home role={role} />} />
+                    <Route path="/login" element={<Login setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />} />
+                    <Route path="/list" element={<List role={role} />} />
                     <Route path="/users" element={<UserList />} />
-                    <Route path="/profil" element={<Profile />} />
+                    <Route path="/profil" element={<Profil role={role} />} />
                     <Route path="/contact" element={<Contact />} />
-                    <Route path="/createordo" element={<CreateOrdo idMedecin={code} />} />
-                    <Route path="/updateordo" element={<UpdateOrdo />} />
-                    <Route path="/parametres" element={<Parameters />} />
-                    <Route path="/ordonnance" element={<Ordonnance nomMedecin={nom} />} />
-                    <Route path="/listeClients" element={<ListeClients />} />
+                    <Route path="/createordo" element={<CreateOrdo role={role} idMedecin={code} />} />
+                    <Route path="/ordonnance" element={<Ordonnance role={role} nomMedecin={nom} />} />
+                    <Route path="/listeClients" element={<ListeClients role={role} />} />
+                    <Route path="/listeOrdonnances" element={<ListeOrdonnances role={role} />} />
                     <Route path="/error" element={<Error />} />
                 </Routes>
                 <Footer />
