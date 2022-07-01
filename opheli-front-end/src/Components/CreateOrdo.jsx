@@ -33,14 +33,6 @@ function App({ idMedecin }) {
         console.log('ALD' + e.target.value);
     };
 
-    const handleSoinsSimples = (e) => {
-        setSoinsSimples(e.target.value);
-    };
-
-    const handleSoinsALD = (e) => {
-        setSoinsALD(e.target.value);
-    };
-
     const handleNotes = (e) => {
         setNotes(e.target.value);
         console.log(e.target.value);
@@ -78,17 +70,19 @@ function App({ idMedecin }) {
                 break;
 
             default:
-                axios.post('http://localhost:8080/createOrdonnance', {
-                    idPatient: idPatient,
-                    idPrescripteur: idMedecin,
-                    dateCreation: date,
-                    type: categorie,
-                    nbRenouvTotal: nbUseSimple,
-                    soinsSimples: soinsSimples,
-                    notes: notes,
-                }).then(r => {
-                    console.log(r);
-                });
+                axios
+                    .post('http://localhost:8080/createOrdonnance', {
+                        idPatient: idPatient,
+                        idPrescripteur: idMedecin,
+                        dateCreation: date,
+                        type: categorie,
+                        nbRenouvTotal: nbUseSimple,
+                        soinsSimples: soinsSimples,
+                        notes: notes,
+                    })
+                    .then((r) => {
+                        console.log(r);
+                    });
                 break;
         }
     }
@@ -120,19 +114,12 @@ function App({ idMedecin }) {
                     case 'bizone':
                         return (
                             <>
-                                <Categorie
-                                    title={'ALD'}
-                                    soins={soinsALD}
-                                    setSoins={setSoinsALD}
-                                    handleNbUse={handleNbUseALD}
-                                    handleSoins={handleSoinsALD}
-                                />
+                                <Categorie title={'ALD'} soins={soinsALD} setSoins={setSoinsALD} handleNbUse={handleNbUseALD} />
                                 <Categorie
                                     title={'simples'}
                                     soins={soinsSimples}
                                     setSoins={setSoinsSimples}
                                     handleNbUse={handleNbUseSimple}
-                                    handleSoins={handleSoinsSimples}
                                 />
                             </>
                         );
@@ -152,7 +139,6 @@ function App({ idMedecin }) {
                                 soins={soinsSimples}
                                 setSoins={setSoinsSimples}
                                 handleNbUse={handleNbUseSimple}
-                                handleSoins={handleSoinsSimples}
                             />
                         );
                 }

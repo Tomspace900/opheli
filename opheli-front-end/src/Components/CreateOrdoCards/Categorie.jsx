@@ -3,10 +3,7 @@ import SoinCard from './SoinCard';
 
 //pour Ordonnance bizone
 function CategorieBizone({ title, handleNbUse, soins, setSoins }) {
-    const [index, setIndex] = useState(1);
-
     function addSoin() {
-        console.log(soins);
         setSoins([...soins, { name: '', desc: '' }]);
         console.log(soins);
     }
@@ -14,7 +11,6 @@ function CategorieBizone({ title, handleNbUse, soins, setSoins }) {
     const delSoin = () => {
         if (soins.length > 0) {
             soins.pop();
-            setIndex(index - 1);
         }
         console.log(soins);
     };

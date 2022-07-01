@@ -34,7 +34,7 @@ const App = () => {
                 setRole(response.data.role);
                 setCode(response.data.code);
                 setId(response.data.id);
-                if (nom != "") {
+                if (nom != '') {
                     setConnected(true);
                 }
             });
@@ -58,7 +58,7 @@ const App = () => {
                     <Route path="/createordo" element={<CreateOrdo idMedecin={code} />} />
                     <Route path="/updateordo" element={<UpdateOrdo />} />
                     <Route path="/parametres" element={<Parameters />} />
-                    <Route path="/ordonnance" element={<Ordonnance />} />
+                    <Route path="/ordonnance" element={<Ordonnance nomMedecin={nom} />} />
                     <Route path="/listeClients" element={<ListeClients />} />
                     <Route path="/error" element={<Error />} />
                 </Routes>
