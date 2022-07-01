@@ -20,8 +20,9 @@ let nom = "";
 app.use(cors());
 app.use(morgan('dev'))
 
-  host: "localhost",
+
 const db = mysql.createConnection({
+  host: "localhost",
   port: PORT,
   user: USER,
   password: PASSWORD,
@@ -397,10 +398,10 @@ app.post('/updateSoins', (req, res) => {
   //TODO voir comment recevoir les strings des génériques pour update les soins
   const Soins = req.body.Soins;
   Soins.forEach((Soin) => {
-    useSoin(db, Soin[0]);
-    addPrix(db, Soin[0], Soin[1]);
-    if(Soin[2] !== null){
-      addGenerique(db, Soin[0], Soin[2]);
+    useSoin(db, Soin.idSoin);
+    addPrix(db, Soin.idSoin, Soin.prix);
+    if(Soin.generique !== null){
+      addGenerique(db, Soin.idSoin, Soin.generique);
     }
   })
 })
