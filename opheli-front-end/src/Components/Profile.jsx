@@ -20,7 +20,7 @@ const ProfileInfos = () => {
 
 
 
-    if (ask == false) {
+    if (ask === false) {
         askDB()
     }
 
@@ -63,7 +63,7 @@ const ProfileOptions = () => {
     const [ask,setAsk] = useState('')
     const navigate = useNavigate();
 
-    if (ask == false) {
+    if (ask === false) {
         Axios.get('http://localhost:8080/listeMutuelles').then((response) => {
             setListe(response.data)
             setAsk(true)
@@ -110,7 +110,7 @@ const ProfileOptions = () => {
                 }
             ).then(response => {
                 console.log(response.data)
-                if (response.data == 'success') {
+                if (response.data === 'success') {
                     navigate('/Profile')
                 }
             });
@@ -133,7 +133,7 @@ const ProfileOptions = () => {
                     mail: email,
                 }
             ).then(response => {
-                if (response.data == 'success') {
+                if (response.data === 'success') {
                     navigate('/List')
                 }
             });
@@ -142,20 +142,20 @@ const ProfileOptions = () => {
     const handleSubmitHeight = (e) => {
         e.preventDefault();
         if (
-           
+
             height === ''
         ) {
             alert('Tout les champs sont obligatoires');
-        } else if (!typeof(height)==Number || height<0) {
+        } else if (!typeof(height)===Number || height<0) {
             alert('Taille incorrecte');
         } else {
             Axios.post(
                 'http://localhost:8080/taille',
                 {
-                    taille: height, 
+                    taille: height,
                 }
             ).then(response => {
-                if (response.data == 'success') {
+                if (response.data === 'success') {
                     navigate('/profil')
                 }
             });
@@ -176,7 +176,7 @@ const ProfileOptions = () => {
                     mutuelle: healthinsurance,
                 }
             ).then(response => {
-                if (response.data == 'success') {
+                if (response.data === 'success') {
                     navigate('/profil')
                 }
             });
@@ -191,7 +191,7 @@ const ProfileOptions = () => {
                         <input type="number" id='height' placeholder='Taille en cm' onChange={handleHeight}></input>
                         <button id='change-height' onClick={handleSubmitHeight}>Valider</button>
                     </div>
-                
+
                     <div className='update-password'>
                         <span className='part-title'>Modifier votre mot de passe</span><br></br>
                         <span>Ancien mot de passe</span><br></br>
@@ -200,14 +200,14 @@ const ProfileOptions = () => {
                         <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
                         <button id="change-password" onClick={handleSubmitPassword}>Valider</button>
                     </div>
-                    
+
                     <div className='update-email'>
                         <span className='part-title'>Modifier votre adresse mail</span><br></br>
                         <input type="email" id='email' placeholder='Adresse Mail' onChange={handleEmail}></input>
                         <button id='change-email' onClick={handleSubmitEmail}>Valider</button>
-                    </div>  
+                    </div>
 
-                      
+
             </div>
 
                 <div className='right-column'>
@@ -226,10 +226,10 @@ const ProfileOptions = () => {
                         <span>Ajouter une mutuelle</span><br></br>
                         <input type="text" id='health-insurance' placeholder='Nom mutuelle' onChange={handleHealthInsurance}></input><br></br>
                         <button id='add-health-insurance' onClick={handleSubmitHealthInsurance}>Valider</button>
-                    </div>  
-                
+                    </div>
+
                 </div>
-                
+
         </div>
     )
     }
@@ -253,8 +253,8 @@ const DeleteAccount = () => {
     const handlePassword = (e) => {
         setPassword(e.target.value);
     };
-    
-    
+
+
     const handleRepeatPassword = (e) => {
         setRepeatPassword(e.target.value);
     };
@@ -278,7 +278,7 @@ const DeleteAccount = () => {
                 }
             ).then(response => {
                 console.log(response.data)
-                if (response.data == 'success') {
+                if (response.data === 'success') {
                     navigate('/List')
                 } else {
                     setError(response.data)
@@ -301,8 +301,8 @@ const DeleteAccount = () => {
 const Profile = (role) => {
     const navigate = useNavigate();
 
-    if (role  == '') {navigate('/Error')}
-    
+    if (role === '') {navigate('/Error')}
+
     return (
         <div className='profile'>
             <h1 className='profile-title'>Profil</h1>
@@ -310,8 +310,8 @@ const Profile = (role) => {
             <ProfileOptions/>
             <MyOrdo/>
             <DeleteAccount/>
-        
-            
+
+
 
         </div>
     );
