@@ -16,7 +16,7 @@ function App({ idMedecin, role }) {
     const navigate = useNavigate();
 
     console.log(role)
-    if (role  != 'medecin') {navigate('/Error')}
+    //if (role  != 'medecin') {navigate('/Error')}
 
     const handleIdPatient = (e) => {
         setIdPatient(e.target.value);

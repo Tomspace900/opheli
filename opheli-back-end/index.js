@@ -8,7 +8,9 @@ const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
-const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique} = require("./fonctionsOrdonnance");
+const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique, getNomMedecin,
+  getNomPatient
+} = require("./fonctionsOrdonnance");
 const {createDataMailClient} = require("./fonctionsMail");
 
 //variables
@@ -369,7 +371,7 @@ app.post('/getOrdonnance', (req, res) => {
 
 //get la liste des ordos selon le rôle
 app.post('/getListeOrdonnances', (req, res) => {
-  //const role = req.body.role;
+  const role = req.body.role;
   const id = req.body.id;
   const select = selectListOrdo(role);
   db.query(select, [id], (err, result) => {
@@ -395,9 +397,18 @@ app.post('/updateSoins', (req, res) => {
   })
   const idPatientQuery = "SELECT o.IdPatient FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie WHERE s.IdSoin = ?;";
   db.query(idPatientQuery, [Soins[0][0]], (err, result) => {
-      createDataMailClient(db, result[0].IdPatient, "used");
+    console.log(result[0].IdPatient);
+    createDataMailClient(db, result[0].IdPatient, "used");
   });
 });
+
+app.post('/getNomMedecin', (req, res) => {
+  res.send(getNomMedecin(db, req.body.id));
+})
+
+app.post('/getNomPatient', (req, res) => {
+  res.send(getNomPatient(db, req.body.id));
+})
 
 app.listen(8080, () => {
   console.log("Le serveur est bien lancé");

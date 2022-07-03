@@ -11,8 +11,8 @@ const Ordonnance = ({
     // idOrdo
 }) => {
     // Remplacer la const login par role et la const idOrdo par idOrdo A LA FIN UNIQUEMENT !!!!!
-    const [login, setLogin] = useState('pharma');
-    const [idOrdo, setIdOrdo] = useState(1);
+    const [login, setLogin] = useState('client');
+    const [idOrdo, setIdOrdo] = useState(2);
     const navigate = useNavigate();
 
     const [src, setSrc] = useState('');
