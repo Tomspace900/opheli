@@ -413,7 +413,7 @@ app.post('/getNomMedecin', (req, res) => {
 
 app.post('/getNomPatient', (req, res) => {
   if(id !== null){
-    const selectNom = "SELECT u.NomUtilisateur, u.PrenomUtilisateur FROM patient p INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur WHERE IdPatient = ?;";
+    const selectNom = "SELECT u.NomUtilisateur, u.PrenomUtilisateur, p.Sexe FROM patient p INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur WHERE IdPatient = ?;";
     db.query(selectNom, [id], (err, result) => {
       res.send(result);
     })
