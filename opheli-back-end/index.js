@@ -386,7 +386,7 @@ app.post('/getOrdonnance', (req, res) => {
 //get la liste des ordos selon le rôle
 app.get('/getListeOrdonnances', (req, res) => {
   const select = selectListOrdo(role);
-  db.query(select, [id], (err, result) => {
+  db.query(select, [code], (err, result) => {
     res.send(result);
   })
 })

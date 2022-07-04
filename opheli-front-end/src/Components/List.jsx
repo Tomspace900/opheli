@@ -12,7 +12,6 @@ function List({role}) {
     //if (role  == '') {navigate('/Error')}
 
     //TODO ça c'était pour mes tests c'est pas final je pense -Clovis
-    const [id, setId] = useState(1111111111111);
     const [listOrdos, setListOrdos] = useState([]);
 
     if (access == false) {
