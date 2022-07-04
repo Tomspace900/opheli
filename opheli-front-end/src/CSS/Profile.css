@@ -45,6 +45,10 @@ img{
    max-width: 100%; 
 }
 
+.table {
+    width: 100%;
+}
+
 .profile-options{
     display: flex;
     justify-content: space-between;
@@ -59,7 +63,7 @@ img{
 
 .update{
     flex-direction: column;
-    
+    width: 100%;
 }
 
 .update-password div{

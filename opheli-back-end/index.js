@@ -176,7 +176,7 @@ app.post('/pharmacien', (req,res) => {
   //Vérification rpps
   let request = "SELECT IdPharmacien from pharmacien WHERE IdPharmacien = ?;";
   db.query(request, [req.body.rpps], (err, verif)=> {
-    if (verif != null) {
+    if (verif.length != 0) {
       return res.end("Un compte avec ces identifiants existe déjà.")
     }
     //Vérification code

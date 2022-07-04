@@ -37,6 +37,7 @@ const ProfileInfos = ({role}) => {
                     <div>Prénom : <span>{liste.PrenomUtilisateur}</span></div>
                     <div>Adresse Mail : <span>{liste.Mail}</span></div>
                     <div>Taille : <span>{liste.Taille}</span></div>
+                    <div>Poids : <span>{liste.Poids}</span></div>
                 </div>
                 <div className="profile-img">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -176,6 +177,8 @@ const ProfileOptions = ({role}) => {
         }
     };
 
+    const handleSubmitWeight = (e) => {}
+
     const handleSubmitHealthInsurance = (e) => {
         e.preventDefault();
         if (
@@ -201,43 +204,61 @@ const ProfileOptions = ({role}) => {
         return(
             <div className='profile-options'>
                 <div className='update'>
-                    <div className='update-height'>
-                        <div className='part-title'>Modifier votre taille</div>
-                        <input type="number" id='height' placeholder='Taille en cm' onChange={handleHeight}></input>
-                        <button id='change-height' onClick={handleSubmitHeight} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
-                    </div>
-                    <div className='update-password'>
-                        <div className='part-title'>Modifier votre mot de passe</div>
-                        <span>Ancien mot de passe</span><br></br>
-                        <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
-                        <span>Nouveau mot de passe</span><br></br>
-                        <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
-                        <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
-                    </div>
+                    <table className='table'>
+                        <tr>
+                            <td>
+                                <div className='update-height'>
+                                    <div className='part-title'>Modifier votre taille</div>
+                                    <input type="number" id='height' placeholder='Taille en cm' onChange={handleHeight}></input>
+                                    <button id='change-height' onClick={handleSubmitHeight} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
+                                </div>
+                            </td>
+                            <td>
+                                <div className='update-weight'>
+                                    <div className='part-title'>Modifier votre poids</div>
+                                    <input type="number" id='weight' placeholder='Taille en cm' onChange={handleHeight}></input>
+                                    <button id='change-weight' onClick={handleSubmitWeight} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div className='update-password'>
+                                    <div className='part-title'>Modifier votre mot de passe</div>
+                                    <span>Ancien mot de passe</span><br></br>
+                                    <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
+                                    <span>Nouveau mot de passe</span><br></br>
+                                    <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
+                                    <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
+                                </div>
+                            </td>
+                            <td>
+                                <div className='right-column'>
+                                    <div className='part-title'>Vos mutuelles</div>
+                                    <div className='list-health-insurance'>
+                                        <div>
+                                            {liste.map(item => {
+                                                return (
+                                                    <div>{item.NomMutuelle}</div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    <div className='add-health-insurance'>
+                                        <div>Ajouter une mutuelle</div>
+                                        <input type="text" id='health-insurance' placeholder='Nom mutuelle' onChange={handleHealthInsurance}></input><br></br>
+                                        <button id='add-health-insurance' onClick={handleSubmitHealthInsurance} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                     <div className='update-email'>
                         <div className='part-title'>Modifier votre adresse mail</div>
                         <input type="email" id='email' placeholder='Adresse Mail' onChange={handleEmail}></input>
                         <button id='change-email' onClick={handleSubmitEmail} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
                     </div>
-                </div>
-                <div className='right-column'>
-                    <div className='part-title'>Vos mutuelles</div>
-                    <div className='list-health-insurance'>
-                        <div>
-                            {liste.map(item => {
-                                return (
-                                    <div>{item.NomMutuelle}</div>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    <div className='add-health-insurance'>
-                        <div>Ajouter une mutuelle</div>
-                        <input type="text" id='health-insurance' placeholder='Nom mutuelle' onChange={handleHealthInsurance}></input><br></br>
-                        <button id='add-health-insurance' onClick={handleSubmitHealthInsurance} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
-                    </div>
-
                 </div>
 
             </div>
@@ -246,27 +267,27 @@ const ProfileOptions = ({role}) => {
         return(
             <div className='profile-options'>
                 <div className='update'>
-                    <div className='update-password'>
-                        <div className='part-title'>Modifier votre mot de passe</div>
-                        <span>Ancien mot de passe</span><br></br>
-                        <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
-                        <span>Nouveau mot de passe</span><br></br>
-                        <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
-                        <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
-                    </div>
-                    <div className='update-email'>
-                        <div className='part-title'>Modifier votre adresse mail</div>
-                        <input type="email" id='email' placeholder='Adresse Mail' onChange={handleEmail}></input>
-                        <button id='change-email' onClick={handleSubmitEmail} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
-                    </div>
-                    <div className='delete-account'>
-                        <h1>Suppression de compte</h1>
-                        <div>Veuillez saisir votre mot de passe :</div>
-                        <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
-                        <div>Répétez votre mot de passe</div>
-                        <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
-                        <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Supprimer le compte</button>
-                    </div>
+                    <table className='table'>
+                        <tr>
+                            <td>
+                                <div className='update-password'>
+                                    <div className='part-title'>Modifier votre mot de passe</div>
+                                    <span>Ancien mot de passe</span><br></br>
+                                    <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
+                                    <span>Nouveau mot de passe</span><br></br>
+                                    <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
+                                    <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
+                                </div>
+                            </td>
+                            <td>
+                                <div className='update-email'>
+                                    <div className='part-title'>Modifier votre adresse mail</div>
+                                    <input type="email" id='email' placeholder='Adresse Mail' onChange={handleEmail}></input>
+                                    <button id='change-email' onClick={handleSubmitEmail} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
 

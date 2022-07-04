@@ -115,7 +115,7 @@ class Pharmacien extends Utilisateur {
         db.query(user, [this.nom,this.prenom,this.mail,this.mdp]);
         //Récuperation ID utilisateur
         const verifUser = "SELECT IdUtilisateur FROM utilisateur WHERE NomUtilisateur = ? AND PrenomUtilisateur = ? AND Mail = ?";
-        db.query(verifUser, [this.nom,this.prenom,this.mail,this.mdp], (err, id)=> {
+        db.query(verifUser, [this.nom,this.prenom,this.mail], (err, id)=> {
             //Verification pharmacie
             if(this.nomp == '') {
                 //Creation pharmacien
