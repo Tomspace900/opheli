@@ -10,10 +10,11 @@ const Ordonnance = ({
     // idOrdo
 }) => {
     // Remplacer la const login par role et la const idOrdo par idOrdo A LA FIN UNIQUEMENT !!!!!
-    const [login, setLogin] = useState('client');
+    const [login, setLogin] = useState('pharma');
     const [idOrdo, setIdOrdo] = useState(2);
     const [nomMedecin, setNomMedecin] = useState('');
     const [nomPatient, setNomPatient] = useState('');
+    const [sexePatient, setSexePatient] = useState('');
     const navigate = useNavigate();
 
     const [src, setSrc] = useState('');
@@ -37,13 +38,11 @@ const Ordonnance = ({
         });
         console.log(response.data);
         setElement(response.data);
-        console.log(response.data[0].IdPrescripteur);
         axios
             .post('http://localhost:8080/getNomMedecin', {
                 id: response.data[0].IdPrescripteur,
             })
             .then((res1) => {
-                console.log('medecin: ' + res1.data);
                 setNomMedecin(res1.data[0].NomUtilisateur);
             });
         axios
@@ -51,9 +50,10 @@ const Ordonnance = ({
                 id: response.data[0].IdPatient,
             })
             .then((res2) => {
-                console.log('patient: ' + res2.data);
                 setNomPatient(res2.data[0].NomUtilisateur);
+                setSexePatient(res2.data[0].Sexe);
             });
+        createDelivres(response.data);
     };
 
     function mouseOver(e) {
@@ -199,7 +199,18 @@ const Ordonnance = ({
         if (login === 'client' || login === 'medecin' || login === 'mutuelle') {
             return (
                 <div className="ordo-patient">
-                    <span>Madame / Monsieur</span>
+                    <span>
+                        {(() => {
+                            switch (sexePatient) {
+                                case 0:
+                                    return 'Monsieur';
+                                case 1:
+                                    return 'Madame';
+                                default:
+                                    return 'Madame / Monsieur';
+                            }
+                        })()}
+                    </span>
                     <br />
                     <span>{nomPatient}</span>
                 </div>
@@ -207,11 +218,12 @@ const Ordonnance = ({
         } else return null;
     };
 
-    const OrdoSoins = ({ delivres, setDelivres, checkOrdo }) => {
+    const OrdoSoins = ({ delivres }) => {
         // TODO :
         // Medecin et client voientt tout les soins initiaux
         // Pharma voit les soins restants a delivrer (= nb restant > 0)
         // Mutuelle voit les soins delivres (= nb restant < nb initial)
+
         switch (login) {
             case 'medecin':
                 return (
@@ -219,8 +231,7 @@ const Ordonnance = ({
                         <>
                             {element &&
                                 element.map((el) => {
-                                    // setDelivres([...delivres, { id: '', price: '' }]);
-                                    // setGeneriques([...generiques, { id: '', generique: '', price: '' }]);
+                                    // setDelivres([...generiques, { id: '', generique: '', price: '' }]);
                                     return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
                                 })}
                         </>
@@ -253,8 +264,8 @@ const Ordonnance = ({
                     <div className="ordo-soins">
                         <>
                             {element &&
-                                element.map((el) => {
-                                    return <OrdoSoinsCard soin={el} key={el.IdSoin} checkOrdo={checkOrdo} />;
+                                element.map((el, index) => {
+                                    return <OrdoSoinsCard soin={el} key={el.IdSoin} soinDelivre={delivres[index]} />;
                                 })}
                         </>
                     </div>
@@ -264,10 +275,12 @@ const Ordonnance = ({
         }
     };
 
-    const OrdoSoinsCard = ({ soin, checkOrdo }) => {
+    const OrdoSoinsCard = ({ soin, soinDelivre }) => {
         // Medecin voit juste nom et description
         // Pharmacien Mutuelle Client voient le prix
         // Pharmacien modifie le prix, le nb d'utilisations restantes et l'alternative
+
+        const [changeName, setChangeName] = useState('');
 
         const [displayGenerique, setDisplayGenerique] = useState(false);
         const [generique, setGenerique] = useState('');
@@ -276,32 +289,18 @@ const Ordonnance = ({
 
         const handleGenerique = (e) => {
             setGenerique(e.target.value);
+            soinDelivre.generique = e.target.value;
         };
 
         const handleDeliver = () => {
-            setDeliver((current) => !current);
+            soinDelivre.deliver = !deliver;
+            setDeliver(!deliver);
         };
 
         const handlePrice = (e) => {
             setPrice(e.target.value);
+            soinDelivre.price = e.target.value;
         };
-
-        useEffect(() => {
-            if (checkOrdo && deliver) {
-                if (price > 0) {
-                    if (generique !== '') {
-                        delivres.id = soin.IdSoin;
-                        delivres.generique = generique;
-                        delivres.price = price;
-                    } else {
-                        delivres.id = soin.IdSoin;
-                        delivres.price = price;
-                    }
-                } else alert('Veuillez renseigner tous les prix des soins délivrés');
-            }
-        }, []);
-
-        const [changeName, setChangeName] = useState('');
 
         function submitGenerique() {
             if (generique !== '') {
@@ -309,17 +308,6 @@ const Ordonnance = ({
                 setDisplayGenerique(false);
             }
         }
-
-        // function displaySoinName() {
-        //     console.log('hehooooo');
-        //     if (soin.Alternative !== null && soin.Alternative !== undefined) {
-        //         console.log('alternative not null');
-        //         return <span id="client-soin-title">{soin.Alternative}</span>;
-        //     } else {
-        //         console.log('alternative null');
-        //         return <span id="client-soin-title">{soin.NomSoin}</span>;
-        //     }
-        // }
 
         switch (login) {
             case 'medecin':
@@ -424,7 +412,7 @@ const Ordonnance = ({
             if (element[0].Notes !== null) {
                 return (
                     <div className="ordo-notes">
-                        <span>{element[0].Notes}</span>
+                        <span>Notes : {element[0].Notes}</span>
                     </div>
                 );
             }
@@ -487,18 +475,29 @@ const Ordonnance = ({
 
     const [delivres, setDelivres] = useState([]);
 
-    const [checkOrdo, setCheckOrdo] = useState(false);
+    function createDelivres(element) {
+        const tab = [];
+        for (let i = 0; i < element.length; i++) {
+            tab.push({ id: element[i].IdSoin, price: '', generique: '', deliver: false });
+        }
+        setDelivres(tab);
+    }
 
     function submitOrdo(e) {
         e.preventDefault();
-        setCheckOrdo(true);
         switch (login) {
             case 'pharma':
-                // TODO Axios une liste des ID des soins délivrés ET une liste des soins avec génériques
-
-                axios.post('http://localhost:8080/deliverOrdonnance', {
-                    soinsDelivres: delivres,
+                const data = delivres.filter((soinDelivre) => {
+                    if (soinDelivre.deliver) {
+                        if (soinDelivre.price > 0) {
+                            return true;
+                        }
+                    } else return false;
                 });
+                setDelivres(data);
+                console.log(data);
+                axios.post('http://localhost:8080/updateSoins', {soinsDelivres: delivres,});
+                createDelivres(element);
                 break;
             default:
                 return null;
@@ -513,7 +512,7 @@ const Ordonnance = ({
             <OrdoMedecin />
             <OrdoDate />
             <OrdoPatient />
-            <OrdoSoins delivres={delivres} setDelivres={setDelivres} checkOrdo={checkOrdo} />
+            <OrdoSoins delivres={delivres} />
             <OrdoNotes />
             <OrdoQR />
             <ValiderOrdo />

@@ -90,6 +90,7 @@
 #medecin-soin-desc,
 #client-soin-desc {
     font-size: 0.9em;
+    font-style: italic;
 }
 
 #mutuelle-soin-name {
@@ -135,17 +136,16 @@
     width: 95%;
     padding: 10px 5%;
     text-align: justify;
-    text-indent: 5%;
     margin-top: 10px;
     box-shadow: var(--shadow-grey-small);
     border-radius: 10px;
+    font-style: italic;
 }
 
 .ordo-qrcode {
     width: 95%;
     padding: 10px 5%;
     text-align: center;
-    text-indent: 5%;
     margin-top: 10px;
     box-shadow: var(--shadow-grey-small);
     border-radius: 10px;
