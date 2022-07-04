@@ -17,10 +17,7 @@ function List({role}) {
 
     if (access == false) {
         //requête qui get les ordos selon le rôle
-        Axios.post('http://localhost:8080/getListeOrdonnances', {
-            role : 'client',
-            id : id,
-        }).then(response => {
+        Axios.get('http://localhost:8080/getListeOrdonnances').then(response => {
             setListOrdos(response.data);
             setAccess(true);
             console.log(response.data);

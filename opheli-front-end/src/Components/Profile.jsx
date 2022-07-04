@@ -75,7 +75,8 @@ const ProfileOptions = ({role}) => {
     const [height, setHeight] = useState('');
     const [healthinsurance, setHealthInsurance] = useState('');
     const [liste, setListe] = useState([]);
-    const [ask,setAsk] = useState('')
+    const [ask,setAsk] = useState(false);
+    const [error,setError] = useState('');
     const navigate = useNavigate();
 
     if (ask === false) {
@@ -93,7 +94,6 @@ const ProfileOptions = ({role}) => {
         setPassword(e.target.value);
     };
 
-
     const handleRepeatPassword = (e) => {
         setRepeatPassword(e.target.value);
     };
@@ -104,7 +104,7 @@ const ProfileOptions = ({role}) => {
 
     const handleHealthInsurance =(e) => {
         setHealthInsurance(e.target.value);
-    }
+    };
 
     const handleSubmitPassword = (e) => {
         e.preventDefault();
@@ -153,31 +153,25 @@ const ProfileOptions = ({role}) => {
                 }
             });
         }
-    }
+    };
+
     const handleSubmitHeight = (e) => {
         e.preventDefault();
-        if (
-
-            height === ''
-        ) {
-            alert('Tout les champs sont obligatoires');
+        if (height === '') {
+            setError('Tout les champs sont obligatoires');
         } else if (!typeof(height)===Number || height<0) {
-            alert('Taille incorrecte');
+            setError('Taille incorrecte');
         } else {
-            Axios.post(
-                'http://localhost:8080/taille',
-                {
-                    taille: height,
-                }
-            ).then(response => {
+            Axios.post('http://localhost:8080/taille', {taille: height}).then(response => {
                 if (response.data === 'success') {
+                    setAsk(false)
                     navigate('/profil')
                 }
             });
         }
     };
 
-    const handleSubmitWeight = (e) => {}
+    const handleSubmitWeight = (e) => {};
 
     const handleSubmitHealthInsurance = (e) => {
         e.preventDefault();
@@ -209,14 +203,14 @@ const ProfileOptions = ({role}) => {
                             <td>
                                 <div className='update-height'>
                                     <div className='part-title'>Modifier votre taille</div>
-                                    <input type="number" id='height' placeholder='Taille en cm' onChange={handleHeight}></input>
+                                    <input type="number" id='height' placeholder='Taille en cm' onChange={handleHeight} min="1" max="250"></input>
                                     <button id='change-height' onClick={handleSubmitHeight} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
                                 </div>
                             </td>
                             <td>
                                 <div className='update-weight'>
                                     <div className='part-title'>Modifier votre poids</div>
-                                    <input type="number" id='weight' placeholder='Taille en cm' onChange={handleHeight}></input>
+                                    <input type="number" id='weight' placeholder='Poids en kg' onChange={handleHeight} min="1" max="999"></input>
                                     <button id='change-weight' onClick={handleSubmitWeight} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
                                 </div>
                             </td>

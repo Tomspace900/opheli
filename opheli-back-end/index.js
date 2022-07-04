@@ -78,6 +78,14 @@ app.get('/profil', (req, res) => {
   });
 })
 
+app.post('/taille', (req,res) => {
+  request = "UPDATE `opheli`.`patient` SET `Taille` = ? WHERE (`IdPatient` = ?) and (`IdUtilisateur` = ?);"
+  db.query(request, [req.body.taille, code, id], (err, array)=> {
+    console.log(err)
+    return res.end("success")
+  });
+})
+
 //HEADER
 app.get('/infos', (req,res) => {
   const array = {
@@ -376,9 +384,7 @@ app.post('/getOrdonnance', (req, res) => {
 })
 
 //get la liste des ordos selon le rôle
-app.post('/getListeOrdonnances', (req, res) => {
-  const role = req.body.role;
-  const id = req.body.id;
+app.get('/getListeOrdonnances', (req, res) => {
   const select = selectListOrdo(role);
   db.query(select, [id], (err, result) => {
     res.send(result);
