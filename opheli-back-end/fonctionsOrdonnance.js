@@ -181,4 +181,4 @@ function addPrix(db, idSoin, prix){
     }
 }
 
-module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix, getNomMedecin, getNomPatient}
+module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix}
