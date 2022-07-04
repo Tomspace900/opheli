@@ -12,13 +12,11 @@ function mouseOut(e) {
     e.target.style.background = '';
 }
 
-const ProfileInfos = () => {
+const ProfileInfos = ({role}) => {
     const [ask, setAsked] = useState(false);
     const [liste, setListe] = useState([]);
     const [sexe, setSexe] = useState(0);
     const [taille,setTaille] = useState(0);
-
-
 
     if (ask === false) {
         askDB()
@@ -31,26 +29,45 @@ const ProfileInfos = () => {
         })
     }
 
-    return (
-        <div className="profile-card">
-            <div className="profile-attribute">
-            <div>Nom : <span>{liste.NomUtilisateur}</span></div>
-                <div>Prénom : <span>{liste.PrenomUtilisateur}</span></div>
-                <div>Adresse Mail : <span>{liste.Mail}</span></div>
-                <div>Taille : <span>{liste.Taille}</span></div>
+    if (role == 'client') {
+        return (
+            <div className="profile-card">
+                <div className="profile-attribute">
+                    <div>Nom : <span>{liste.NomUtilisateur}</span></div>
+                    <div>Prénom : <span>{liste.PrenomUtilisateur}</span></div>
+                    <div>Adresse Mail : <span>{liste.Mail}</span></div>
+                    <div>Taille : <span>{liste.Taille}</span></div>
+                </div>
+                <div className="profile-img">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <circle cx="12" cy="7" r="4" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    </svg>
+                </div>
             </div>
-            <div className="profile-img">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <circle cx="12" cy="7" r="4" />
-            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-            </svg>
+        );
+    } else if (role == 'medecin' || role == 'pharmacien') {
+        return (
+            <div className="profile-card">
+                <div className="profile-attribute">
+                    <div>Nom : <span>{liste.NomUtilisateur}</span></div>
+                    <div>Prénom : <span>{liste.PrenomUtilisateur}</span></div>
+                    <div>Adresse Mail : <span>{liste.Mail}</span></div>
+                </div>
+                <div className="profile-img">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <circle cx="12" cy="7" r="4" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    </svg>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 };
 
-const ProfileOptions = () => {
+const ProfileOptions = ({role}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
@@ -180,15 +197,15 @@ const ProfileOptions = () => {
         }
     };
 
-    return(
-        <div className='profile-options'>
-            <div className='update'>
+    if (role == 'client') {
+        return(
+            <div className='profile-options'>
+                <div className='update'>
                     <div className='update-height'>
-                    <div className='part-title'>Modifier votre taille</div>
+                        <div className='part-title'>Modifier votre taille</div>
                         <input type="number" id='height' placeholder='Taille en cm' onChange={handleHeight}></input>
                         <button id='change-height' onClick={handleSubmitHeight} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
                     </div>
-
                     <div className='update-password'>
                         <div className='part-title'>Modifier votre mot de passe</div>
                         <span>Ancien mot de passe</span><br></br>
@@ -197,17 +214,12 @@ const ProfileOptions = () => {
                         <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
                         <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
                     </div>
-
                     <div className='update-email'>
                         <div className='part-title'>Modifier votre adresse mail</div>
                         <input type="email" id='email' placeholder='Adresse Mail' onChange={handleEmail}></input>
                         <button id='change-email' onClick={handleSubmitEmail} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
-                    </div>  
-
-
-
-            </div>
-
+                    </div>
+                </div>
                 <div className='right-column'>
                     <div className='part-title'>Vos mutuelles</div>
                     <div className='list-health-insurance'>
@@ -228,10 +240,41 @@ const ProfileOptions = () => {
 
                 </div>
 
-        </div>
-    )
-    }
+            </div>
+        )
+    } else {
+        return(
+            <div className='profile-options'>
+                <div className='update'>
+                    <div className='update-password'>
+                        <div className='part-title'>Modifier votre mot de passe</div>
+                        <span>Ancien mot de passe</span><br></br>
+                        <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
+                        <span>Nouveau mot de passe</span><br></br>
+                        <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
+                        <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
+                    </div>
+                    <div className='update-email'>
+                        <div className='part-title'>Modifier votre adresse mail</div>
+                        <input type="email" id='email' placeholder='Adresse Mail' onChange={handleEmail}></input>
+                        <button id='change-email' onClick={handleSubmitEmail} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
+                    </div>
+                    <div className='delete-account'>
+                        <h1>Suppression de compte</h1>
+                        <div>Veuillez saisir votre mot de passe :</div>
+                        <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
+                        <div>Répétez votre mot de passe</div>
+                        <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
+                        <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Supprimer le compte</button>
+                    </div>
+                </div>
+            </div>
 
+        )
+    }
+}
+
+/*
 const MyOrdo = () => {
     return(
         <div className='my-ordo'>
@@ -248,7 +291,7 @@ const MyOrdo = () => {
             </Link>
         </div>
     )
-}
+}*/
 
 const DeleteAccount = () => {
     const [password, setPassword] = useState('');
@@ -305,7 +348,7 @@ const DeleteAccount = () => {
     )
 }
 
-const Profile = (role) => {
+const Profile = ({role}) => {
     const navigate = useNavigate();
 
     if (role === '') {navigate('/Error')}
@@ -313,9 +356,8 @@ const Profile = (role) => {
     return (
         <div className='profile'>
             <h1 className='profile-title'>Profil</h1>
-            <ProfileInfos/>
-            <ProfileOptions/>
-            <MyOrdo/>
+            <ProfileInfos role={role}/>
+            <ProfileOptions role={role}/>
             <DeleteAccount/>
 
 

@@ -65,7 +65,13 @@ app.post('/check', (req,res) => {
 
 //PROFIL
 app.get('/profil', (req, res) => {
-  request = "SELECT NomUtilisateur, PrenomUtilisateur, Mail, Sexe, Taille, Poids from opheli.utilisateur NATURAL JOIN opheli.patient where IdUtilisateur  = ?";
+  if (role == 'client') {
+    request = "SELECT NomUtilisateur, PrenomUtilisateur, Mail, Sexe, Taille, Poids from opheli.utilisateur NATURAL JOIN opheli.patient where IdUtilisateur  = ?";
+  } else if (role == 'pharmacien' || role == 'medecin') {
+    request = "SELECT NomUtilisateur, PrenomUtilisateur, Mail from opheli.utilisateur where IdUtilisateur  = ?";
+  } else {
+    request = "SELECT IdMutuelle, Mail, NomMutuelle from opheli.mutuelle where IdMutuelle = ?"
+  }
   db.query(request, [id], (err, array)=> {
     array = JSON.parse(JSON.stringify(array));
     res.send(array)
@@ -166,7 +172,7 @@ app.post('/medecin', (req,res) => {
   });
 });
 
-app.post('/pharma', (req,res) => {
+app.post('/pharmacien', (req,res) => {
   //Vérification rpps
   let request = "SELECT IdPharmacien from pharmacien WHERE IdPharmacien = ?;";
   db.query(request, [req.body.rpps], (err, verif)=> {
