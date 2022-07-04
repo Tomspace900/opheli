@@ -496,7 +496,7 @@ const Ordonnance = ({
                 });
                 setDelivres(data);
                 console.log(data);
-                // TODO axios.post('http://localhost:8080/updateSoins', {soinsDelivres: delivres,});
+                axios.post('http://localhost:8080/updateSoins', {soinsDelivres: delivres,});
                 createDelivres(element);
                 break;
             default:

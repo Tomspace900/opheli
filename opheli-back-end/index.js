@@ -9,7 +9,7 @@ let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
 const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique, getNomMedecin,
-  getNomPatient
+  getNomPatient, addPrix
 } = require("./fonctionsOrdonnance");
 const {createDataMailClient} = require("./fonctionsMail");
 
@@ -394,15 +394,18 @@ app.post('/prolongerOrdonnance', (req, res) => {
 
 //réduit le nombre d'utilisations restantes de tous les soins de la liste Soins en entrée et add le générique (sauf s'il est nul)
 app.post('/updateSoins', (req, res) => {
-  const Soins = req.body.Soins;
+  const Soins = req.body.soinsDelivres;
   Soins.forEach((Soin) => {
-    useSoin(db, Soin[0]);
-    if(Soin[1] !== null){
-      addGenerique(db, Soin[0], Soin[1]);
+    useSoin(db, Soin.id);
+    if(Soin.generique !== null){
+      addGenerique(db, Soin.id, Soin.generique);
+    }
+    if(Soin.price !== null){
+      addPrix(db, Soin.id, Soin.price);
     }
   })
   const idPatientQuery = "SELECT o.IdPatient FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie WHERE s.IdSoin = ?;";
-  db.query(idPatientQuery, [Soins[0][0]], (err, result) => {
+  db.query(idPatientQuery, [Soins[0].id], (err, result) => {
     console.log(result[0].IdPatient);
     createDataMailClient(db, result[0].IdPatient, "used");
   });
