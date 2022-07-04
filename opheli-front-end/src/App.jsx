@@ -77,7 +77,7 @@ const App = () => {
                     <Route path="/profil" element={<Profil role={role} />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/createordo" element={<CreateOrdo role={role} idMedecin={code} />} />
-                    <Route path="/ordonnance" element={<Ordonnance role={role} nomMedecin={nom} />} />
+                    <Route path="/ordonnance" element={<Ordonnance role={role} />} />
                     <Route path="/listeClients" element={<ListeClients role={role} />} />
                     <Route path="/listeOrdonnances" element={<ListeOrdonnances role={role} />} />
                     <Route path="/error" element={<Error />} />

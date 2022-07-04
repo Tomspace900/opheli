@@ -6,13 +6,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Ordonnance = ({
-    nomMedecin,
     role,
     // idOrdo
 }) => {
     // Remplacer la const login par role et la const idOrdo par idOrdo A LA FIN UNIQUEMENT !!!!!
     const [login, setLogin] = useState('client');
     const [idOrdo, setIdOrdo] = useState(2);
+    const [nomMedecin, setNomMedecin] = useState('');
+    const [nomPatient, setNomPatient] = useState('');
     const navigate = useNavigate();
 
     const [src, setSrc] = useState('');
@@ -26,16 +27,34 @@ const Ordonnance = ({
 
     useEffect(() => {
         QRCode.toDataURL(link).then(setSrc);
-        axios
-            .post('http://localhost:8080/getOrdonnance', {
-                idOrdo: idOrdo,
-                role: login,
-            })
-            .then((response) => {
-                console.log(response.data);
-                setElement(response.data);
-            });
+        getData();
     }, []);
+
+    const getData = async () => {
+        let response = await axios.post('http://localhost:8080/getOrdonnance', {
+            idOrdo: idOrdo,
+            role: login,
+        });
+        console.log(response.data);
+        setElement(response.data);
+        console.log(response.data[0].IdPrescripteur);
+        axios
+            .post('http://localhost:8080/getNomMedecin', {
+                id: response.data[0].IdPrescripteur,
+            })
+            .then((res1) => {
+                console.log('medecin: ' + res1.data);
+                setNomMedecin(res1.data[0].NomUtilisateur);
+            });
+        axios
+            .post('http://localhost:8080/getNomPatient', {
+                id: response.data[0].IdPatient,
+            })
+            .then((res2) => {
+                console.log('patient: ' + res2.data);
+                setNomPatient(res2.data[0].NomUtilisateur);
+            });
+    };
 
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
@@ -182,7 +201,7 @@ const Ordonnance = ({
                 <div className="ordo-patient">
                     <span>Madame / Monsieur</span>
                     <br />
-                    <span>{element[0].Id}</span>
+                    <span>{nomPatient}</span>
                 </div>
             );
         } else return null;
@@ -354,17 +373,6 @@ const Ordonnance = ({
                                     }
                                 })()}
                             </span>
-                            {/* {(() => {
-                                if (changeName !== '') {
-                                    changeName;
-                                } else {
-                                    soin.Alternative !== null ? (
-                                        <span id="client-soin-title">{soin.Alternative}</span>
-                                    ) : (
-                                        <span id="client-soin-title">{soin.NomSoin}</span>
-                                    );
-                                }
-                            })()} */}
                         </div>
                         <div id="pharma-soin-generique">
                             {displayGenerique ? (
