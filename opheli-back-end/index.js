@@ -403,11 +403,21 @@ app.post('/updateSoins', (req, res) => {
 });
 
 app.post('/getNomMedecin', (req, res) => {
-  res.send(getNomMedecin(db, req.body.id));
+  if(id !== null){
+    const selectNom = "SELECT u.NomUtilisateur, u.PrenomUtilisateur FROM prescripteur p INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur WHERE IdPrescripteur = ?;";
+    db.query(selectNom, [id], (err, result) => {
+      res.send(result);
+    })
+  }
 })
 
 app.post('/getNomPatient', (req, res) => {
-  res.send(getNomPatient(db, req.body.id));
+  if(id !== null){
+    const selectNom = "SELECT u.NomUtilisateur, u.PrenomUtilisateur FROM patient p INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur WHERE IdPatient = ?;";
+    db.query(selectNom, [id], (err, result) => {
+      res.send(result);
+    })
+  }
 })
 
 app.listen(8080, () => {

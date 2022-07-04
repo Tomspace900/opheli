@@ -181,24 +181,4 @@ function addPrix(db, idSoin, prix){
     }
 }
 
-//return nom et prénom du médecin
-function getNomMedecin(db, id){
-    if(id !== null){
-        const selectNom = "SELECT u.NomUtilisateur, u.PrenomUtilisateur FROM prescripteur p INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur WHERE IdPrescripteur = ?;";
-        db.query(selectNom, [id], (err, res) => {
-            return [res[0].NomUtilisateur, res[0].PrenomUtilisateur];
-        })
-    }
-}
-
-//return nom et prénom du patient
-function getNomPatient(db, id){
-    if(id !== null){
-        const selectNom = "SELECT u.NomUtilisateur, u.PrenomUtilisateur FROM patient p INNER JOIN utilisateur u on u.IdUtilisateur = p.IdUtilisateur WHERE IdPatient = ?;";
-        db.query(selectNom, [id], (err, res) => {
-            return [res[0].NomUtilisateur, res[0].PrenomUtilisateur];
-        })
-    }
-}
-
 module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix, getNomMedecin, getNomPatient}
