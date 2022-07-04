@@ -132,6 +132,15 @@
     width: 40px;
 }
 
+#pharma-soin-empty-div {
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+}
+
+#pharma-soin-empty {
+}
+
 .ordo-notes {
     width: 95%;
     padding: 10px 5%;

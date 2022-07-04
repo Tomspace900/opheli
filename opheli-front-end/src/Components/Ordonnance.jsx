@@ -10,7 +10,7 @@ const Ordonnance = ({
     // idOrdo
 }) => {
     // Remplacer la const login par role et la const idOrdo par idOrdo A LA FIN UNIQUEMENT !!!!!
-    const [login, setLogin] = useState('pharma');
+    const [login, setLogin] = useState('mutuelle');
     const [idOrdo, setIdOrdo] = useState(2);
     const [nomMedecin, setNomMedecin] = useState('');
     const [nomPatient, setNomPatient] = useState('');
@@ -231,18 +231,22 @@ const Ordonnance = ({
                         <>
                             {element &&
                                 element.map((el) => {
-                                    // setDelivres([...generiques, { id: '', generique: '', price: '' }]);
                                     return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
                                 })}
                         </>
                     </div>
                 );
             case 'mutuelle':
+                const elementMutuelle = element.filter((soin) => {
+                    if (soin.NbRestants < soin.NbRenouvTotal) {
+                        return true;
+                    } else return false;
+                });
                 return (
                     <div className="ordo-soins">
                         <>
-                            {element &&
-                                element.map((el) => {
+                            {elementMutuelle &&
+                                elementMutuelle.map((el) => {
                                     return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
                                 })}
                         </>
@@ -260,11 +264,31 @@ const Ordonnance = ({
                     </div>
                 );
             case 'pharma':
+                const elementPharma = element.filter((soin) => {
+                    if (soin.NbRestants > 0) {
+                        return true;
+                    } else return false;
+                });
                 return (
                     <div className="ordo-soins">
                         <>
-                            {element &&
-                                element.map((el, index) => {
+                            {(() => {
+                                if (elementPharma) {
+                                    return (
+                                        <>
+                                            <div className="soin-card">
+                                                <div id="pharma-soin-empty-div">
+                                                    <span id="pharma-soin-empty">
+                                                        Cette ordonnance a déjà été entièrement utilisée
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    );
+                                }
+                            })()}
+                            {elementPharma &&
+                                elementPharma.map((el, index) => {
                                     return <OrdoSoinsCard soin={el} key={el.IdSoin} soinDelivre={delivres[index]} />;
                                 })}
                         </>
@@ -276,10 +300,6 @@ const Ordonnance = ({
     };
 
     const OrdoSoinsCard = ({ soin, soinDelivre }) => {
-        // Medecin voit juste nom et description
-        // Pharmacien Mutuelle Client voient le prix
-        // Pharmacien modifie le prix, le nb d'utilisations restantes et l'alternative
-
         const [changeName, setChangeName] = useState('');
 
         const [displayGenerique, setDisplayGenerique] = useState(false);
@@ -289,7 +309,6 @@ const Ordonnance = ({
 
         const handleGenerique = (e) => {
             setGenerique(e.target.value);
-            soinDelivre.generique = e.target.value;
         };
 
         const handleDeliver = () => {
@@ -304,6 +323,7 @@ const Ordonnance = ({
 
         function submitGenerique() {
             if (generique !== '') {
+                soinDelivre.generique = generique;
                 setChangeName(generique);
                 setDisplayGenerique(false);
             }
@@ -324,10 +344,15 @@ const Ordonnance = ({
                 return (
                     <div className="soin-card">
                         <div id="mutuelle-soin-name">
-                            <span id="mutuelle-soin-title">{soin.NomSoin}</span> <br />
+                            <span id="mutuelle-soin-title">
+                                {soin.NomSoin}
+                                <br />
+                                {'(Délivré ' + (soin.NbRenouvTotal - soin.NbRestants) + ' fois)'}
+                            </span>
+                            <br />
                         </div>
                         <div id="mutuelle-soin-price">
-                            <span>{soin.Prix}</span>
+                            <span>{(soin.NbRenouvTotal - soin.NbRestants) * soin.Prix + ' €'}</span>
                         </div>
                     </div>
                 );
@@ -335,7 +360,9 @@ const Ordonnance = ({
                 return (
                     <div className="soin-card">
                         <div id="client-soin-name">
-                            <span id="client-soin-title">{soin.Alternative !== null ? soin.Alternative : soin.NomSoin}</span>
+                            <span id="client-soin-title">
+                                {soin.Alternative !== null ? soin.Alternative + ' (générique)' : soin.NomSoin}
+                            </span>
                             <br />
                             <span id="client-soin-desc">{soin.Description}</span>
                         </div>
@@ -357,7 +384,7 @@ const Ordonnance = ({
                                     if (changeName !== '') {
                                         return changeName;
                                     } else {
-                                        return soin.Alternative !== null ? soin.Alternative : soin.NomSoin;
+                                        return soin.Alternative !== null ? soin.Alternative + ' (générique)' : soin.NomSoin;
                                     }
                                 })()}
                             </span>
@@ -396,7 +423,7 @@ const Ordonnance = ({
                             <span>Délivré</span>
                         </div>
                         <div id="pharma-soin-price">
-                            <input type="number" id="pharma-soin-input-price" onChange={handlePrice} />
+                            <input type="number" id="pharma-soin-input-price" min={0} onChange={handlePrice} />
                             <span> €</span>
                         </div>
                     </div>
@@ -496,7 +523,7 @@ const Ordonnance = ({
                 });
                 setDelivres(data);
                 console.log(data);
-                axios.post('http://localhost:8080/updateSoins', {soinsDelivres: delivres,});
+                axios.post('http://localhost:8080/updateSoins', { soinsDelivres: delivres });
                 createDelivres(element);
                 break;
             default:
