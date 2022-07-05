@@ -344,10 +344,13 @@ app.post('/createOrdonnance', (req, res) => {
 
   //formattage de la date
   const newDate = new Date(date);
-  const dateExp = new Date (newDate.setMonth(newDate.getMonth() + 3));
+  const dateExp = new Date (newDate);
+  dateExp.setMonth(dateExp.getMonth() + 3)
 
-  const dateCreation = "" + newDate.getFullYear() + "-" + newDate.getMonth() + "-" + newDate.getDay();
-  const dateExpiration = "" + dateExp.getFullYear() + "-" + dateExp.getMonth() + "-" + dateExp.getDay();
+  //const dateCreation = "" + newDate.getFullYear() + "-" + (newDate.getMonth() + 1) + "-" + newDate.getDay();
+  const dateCreation = newDate.toLocaleDateString("en-ZA");
+  //const dateExpiration = "" + dateExp.getFullYear() + "-" + (dateExp.getMonth() + 1) + "-" + dateExp.getDay();
+  const dateExpiration = dateExp.toLocaleDateString("en-ZA");
 
   const ordonnance = new Ordonnance(type, dateCreation, dateExpiration, notes, idPrescripteur, idPatient);
 
