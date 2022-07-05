@@ -15,19 +15,19 @@ import Contact from './Components/Contact';
 import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
 import ListeClients from './Components/Mutuelle/ListeClients';
-import ListeOrdonnances from './Components/List';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const App = () => {
     const [nom, setNom] = useState('');
-    const [code, setCode] = useState('');
-    const [id, setId] = useState('');
+    const [code, setCode] = useState(''); // Num de secu ou RPPS
+    const [id, setId] = useState(''); // Id d'utilisateur
     const [role, setRole] = useState('');
     const [idOrdo, setIdOrdo] = useState('');
     const [connected, setConnected] = useState(false);
 
-    /*
-    function handleConnect() {
+    /* function handleConnect() {
         if (!connected) {
             Axios.get('http://localhost:8080/infos').then((response) => {
                 setNom(response.data.nom);
@@ -40,7 +40,7 @@ const App = () => {
             });
         }
     }
-    setInterval(handleConnect, 1000);*/
+    setInterval(handleConnect, 1000); */
 
     return (
         <div className="app">
@@ -77,9 +77,8 @@ const App = () => {
                     <Route path="/profil" element={<Profil role={role} />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/createordo" element={<CreateOrdo role={role} idMedecin={code} />} />
-                    <Route path="/ordonnance" element={<Ordonnance role={role} />} />
+                    <Route path="/ordonnance/:idOrdo" element={<Ordonnance role={role} />} />
                     <Route path="/listeClients" element={<ListeClients role={role} />} />
-                    <Route path="/listeOrdonnances" element={<ListeOrdonnances role={role} />} />
                     <Route path="/error" element={<Error />} />
                 </Routes>
                 <Footer />

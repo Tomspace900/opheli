@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../CSS/Login.css';
 import '../CSS/Login-cards/LoginForms.css';
 import LoginForm from './Login-cards/LoginForm';
@@ -7,7 +7,7 @@ import RegisterClient from './Login-cards/RegisterClient';
 import RegisterPharma from './Login-cards/RegisterPharma';
 import RegisterMutuelle from './Login-cards/RegisterMutuelle';
 
-const Login = ({setNom, setRole, setCode, setConnected}) => {
+const Login = ({ setNom, setRole, setCode, setConnected }) => {
     const [action, setAction] = useState(true);
     const [login, setLogin] = useState('client');
 
@@ -16,16 +16,8 @@ const Login = ({setNom, setRole, setCode, setConnected}) => {
     };
 
     const handleLogin = (loginState) => {
-        
         setLogin(loginState);
     };
-
-    function tabOver(e) {
-        // e.target.style.background = '#5ccdc4a9';
-    }
-    function tabOut(e) {
-        // e.target.style.background = '#ffffff';
-    }
 
     function mouseOver(e) {
         e.target.style.color = '#5ccdc4a9';
@@ -36,6 +28,10 @@ const Login = ({setNom, setRole, setCode, setConnected}) => {
         e.target.style.border = 'solid #4a565a 1px';
     }
 
+    useEffect(() => {
+        document.getElementById('client').style.background = '#5ccdc4a9';
+    }, []);
+
     return (
         <div className="login">
             <span className="login-title">{action ? 'Connexion a votre compte' : 'Enregistrez-vous'}</span>
@@ -44,8 +40,6 @@ const Login = ({setNom, setRole, setCode, setConnected}) => {
                     <div
                         className="client"
                         id="client"
-                        onMouseOver={tabOver}
-                        onMouseLeave={tabOut}
                         onClick={() => {
                             handleLogin('client');
                             document.getElementById('client').style.background = '#5ccdc4a9';
@@ -58,22 +52,18 @@ const Login = ({setNom, setRole, setCode, setConnected}) => {
                     <div
                         className="medecin"
                         id="medecin"
-                        onMouseEnter={tabOver}
-                        onMouseLeave={tabOut}
                         onClick={() => {
                             handleLogin('medecin');
                             document.getElementById('client').style.background = '#ffffff';
                             document.getElementById('medecin').style.background = '#5ccdc4a9';
                             document.getElementById('pharma').style.background = '#ffffff';
-                            document.getElementById('mutuelle').style.background = '#ffffff';    
+                            document.getElementById('mutuelle').style.background = '#ffffff';
                         }}>
                         <span>Medecin</span>
                     </div>
                     <div
                         className="pharma"
                         id="pharma"
-                        onMouseEnter={tabOver}
-                        onMouseLeave={tabOut}
                         onClick={() => {
                             handleLogin('pharma');
                             document.getElementById('client').style.background = '#ffffff';
@@ -86,8 +76,6 @@ const Login = ({setNom, setRole, setCode, setConnected}) => {
                     <div
                         className="mutuelle"
                         id="mutuelle"
-                        onMouseEnter={tabOver}
-                        onMouseLeave={tabOut}
                         onClick={() => {
                             handleLogin('mutuelle');
                             document.getElementById('client').style.background = '#ffffff';
@@ -102,25 +90,85 @@ const Login = ({setNom, setRole, setCode, setConnected}) => {
                     ? (() => {
                           switch (login) {
                               case 'medecin':
-                                  return <LoginForm setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} account="medecin" />;
+                                  return (
+                                      <LoginForm
+                                          setNom={setNom}
+                                          setRole={setRole}
+                                          setCode={setCode}
+                                          setConnected={setConnected}
+                                          account="medecin"
+                                      />
+                                  );
                               case 'pharma':
-                                  return <LoginForm setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} account="pharma" />;
+                                  return (
+                                      <LoginForm
+                                          setNom={setNom}
+                                          setRole={setRole}
+                                          setCode={setCode}
+                                          setConnected={setConnected}
+                                          account="pharma"
+                                      />
+                                  );
                               case 'mutuelle':
-                                  return <LoginForm setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} account="mutuelle" />;
+                                  return (
+                                      <LoginForm
+                                          setNom={setNom}
+                                          setRole={setRole}
+                                          setCode={setCode}
+                                          setConnected={setConnected}
+                                          account="mutuelle"
+                                      />
+                                  );
                               default:
-                                  return <LoginForm setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} account="client" />;
+                                  return (
+                                      <LoginForm
+                                          setNom={setNom}
+                                          setRole={setRole}
+                                          setCode={setCode}
+                                          setConnected={setConnected}
+                                          account="client"
+                                      />
+                                  );
                           }
                       })()
                     : (() => {
                           switch (login) {
                               case 'medecin':
-                                  return <RegisterMedecin setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />;
+                                  return (
+                                      <RegisterMedecin
+                                          setNom={setNom}
+                                          setRole={setRole}
+                                          setCode={setCode}
+                                          setConnected={setConnected}
+                                      />
+                                  );
                               case 'pharma':
-                                  return <RegisterPharma setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />;
+                                  return (
+                                      <RegisterPharma
+                                          setNom={setNom}
+                                          setRole={setRole}
+                                          setCode={setCode}
+                                          setConnected={setConnected}
+                                      />
+                                  );
                               case 'mutuelle':
-                                  return <RegisterMutuelle setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />;
+                                  return (
+                                      <RegisterMutuelle
+                                          setNom={setNom}
+                                          setRole={setRole}
+                                          setCode={setCode}
+                                          setConnected={setConnected}
+                                      />
+                                  );
                               default:
-                                  return <RegisterClient setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />;
+                                  return (
+                                      <RegisterClient
+                                          setNom={setNom}
+                                          setRole={setRole}
+                                          setCode={setCode}
+                                          setConnected={setConnected}
+                                      />
+                                  );
                           }
                       })()}
             </div>

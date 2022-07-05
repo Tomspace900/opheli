@@ -12,23 +12,7 @@ function mouseOut(e) {
     e.target.style.background = '';
 }
 
-const ProfileInfos = ({role}) => {
-    const [ask, setAsked] = useState(false);
-    const [liste, setListe] = useState([]);
-    const [sexe, setSexe] = useState(0);
-    const [taille,setTaille] = useState(0);
-
-    if (ask === false) {
-        askDB()
-    }
-
-    function askDB() {
-        Axios.get('http://localhost:8080/profil').then(response => {
-            setListe(response.data[0])
-            setAsked(true)
-        })
-    }
-
+const ProfileInfos = ({role,liste,setAsked}) => {
     if (role == 'client') {
         return (
             <div className="profile-card">
@@ -36,8 +20,8 @@ const ProfileInfos = ({role}) => {
                     <div>Nom : <span>{liste.NomUtilisateur}</span></div>
                     <div>Prénom : <span>{liste.PrenomUtilisateur}</span></div>
                     <div>Adresse Mail : <span>{liste.Mail}</span></div>
-                    <div>Taille : <span>{liste.Taille}</span></div>
-                    <div>Poids : <span>{liste.Poids}</span></div>
+                    <div>Taille : <span>{liste.Taille} cm</span></div>
+                    <div>Poids : <span>{liste.Poids} kg</span></div>
                 </div>
                 <div className="profile-img">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="100" height="100" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -68,11 +52,12 @@ const ProfileInfos = ({role}) => {
     }
 };
 
-const ProfileOptions = ({role}) => {
+const ProfileOptions = ({role,setAsked}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
     const [healthinsurance, setHealthInsurance] = useState('');
     const [liste, setListe] = useState([]);
     const [ask,setAsk] = useState(false);
@@ -102,31 +87,27 @@ const ProfileOptions = ({role}) => {
         setHeight(e.target.value);
     };
 
+    const handleWeight = (e) => {
+        setWeight(e.target.value);
+    };
+
     const handleHealthInsurance =(e) => {
         setHealthInsurance(e.target.value);
     };
 
     const handleSubmitPassword = (e) => {
         e.preventDefault();
-        if (
-            password === '' ||
-            repeatPassword === ''
-        ) {
-            alert('Tout les champs sont obligatoires');
-        } else if (password !== repeatPassword) {
-            alert('Les mots de passes ne sont pas identiques');
-        } else if (password.length < 8) {
-            alert('Votre mot de passe doit contenir au moins 8 caractères');
+        if (password === '' || repeatPassword === '') {
+            setError('Tout les champs sont obligatoires');
+        } else if (repeatPassword.length < 8) {
+            setError('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
-            Axios.post(
-                'http://localhost:8080/client',
-                {
-                    mdp : password
-                }
-            ).then(response => {
-                console.log(response.data)
+            Axios.post('http://localhost:8080/mdp', {oldPw : password, newPw : repeatPassword}).then(response => {
                 if (response.data === 'success') {
-                    navigate('/Profile')
+                    setAsked(false)
+                    navigate('/profil')
+                } else {
+                    setError(response.data)
                 }
             });
         }
@@ -134,22 +115,15 @@ const ProfileOptions = ({role}) => {
 
     const handleSubmitEmail = (e) => {
         e.preventDefault();
-        if (
-
-            email === ''
-        ) {
-            alert('Tout les champs sont obligatoires');
+        if (email === '') {
+            setError('Tout les champs sont obligatoires');
         } else if (!email.includes('@')) {
-            alert('Email incorrect');
+            setError('Email incorrect');
         } else {
-            Axios.post(
-                'http://localhost:8080/email',
-                {
-                    mail: email,
-                }
-            ).then(response => {
+            Axios.post('http://localhost:8080/email', {mail: email}).then(response => {
                 if (response.data === 'success') {
-                    navigate('/List')
+                    setAsked(false)
+                    navigate('/profil')
                 }
             });
         }
@@ -164,14 +138,28 @@ const ProfileOptions = ({role}) => {
         } else {
             Axios.post('http://localhost:8080/taille', {taille: height}).then(response => {
                 if (response.data === 'success') {
-                    setAsk(false)
+                    setAsked(false)
                     navigate('/profil')
                 }
             });
         }
     };
 
-    const handleSubmitWeight = (e) => {};
+    const handleSubmitWeight = (e) => {
+        e.preventDefault();
+        if (weight === '') {
+            setError('Tout les champs sont obligatoires');
+        } else if (!typeof(weight)===Number || weight<0) {
+            setError('Poids incorrect');
+        } else {
+            Axios.post('http://localhost:8080/poids', {poids: weight}).then(response => {
+                if (response.data === 'success') {
+                    setAsked(false)
+                    navigate('/profil')
+                }
+            });
+        }
+    };
 
     const handleSubmitHealthInsurance = (e) => {
         e.preventDefault();
@@ -188,6 +176,7 @@ const ProfileOptions = ({role}) => {
                 }
             ).then(response => {
                 if (response.data === 'success') {
+                    setAsk(false)
                     navigate('/profil')
                 }
             });
@@ -198,6 +187,7 @@ const ProfileOptions = ({role}) => {
         return(
             <div className='profile-options'>
                 <div className='update'>
+                    {error}
                     <table className='table'>
                         <tr>
                             <td>
@@ -210,7 +200,7 @@ const ProfileOptions = ({role}) => {
                             <td>
                                 <div className='update-weight'>
                                     <div className='part-title'>Modifier votre poids</div>
-                                    <input type="number" id='weight' placeholder='Poids en kg' onChange={handleHeight} min="1" max="999"></input>
+                                    <input type="number" id='weight' placeholder='Poids en kg' onChange={handleWeight} min="1" max="999"></input>
                                     <button id='change-weight' onClick={handleSubmitWeight} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
                                 </div>
                             </td>
@@ -240,7 +230,7 @@ const ProfileOptions = ({role}) => {
                                     </div>
 
                                     <div className='add-health-insurance'>
-                                        <div>Ajouter une mutuelle</div>
+                                        <div className='part-title'>Ajouter une mutuelle</div>
                                         <input type="text" id='health-insurance' placeholder='Nom mutuelle' onChange={handleHealthInsurance}></input><br></br>
                                         <button id='add-health-insurance' onClick={handleSubmitHealthInsurance} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Valider</button>
                                     </div>
@@ -309,41 +299,29 @@ const MyOrdo = () => {
 }*/
 
 const DeleteAccount = () => {
-    const [password, setPassword] = useState('');
-    const [repeatPassword, setRepeatPassword] = useState('');
+    const [suppPassword, setSuppPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
-    const handlePassword = (e) => {
-        setPassword(e.target.value);
-    };
-
-
-    const handleRepeatPassword = (e) => {
-        setRepeatPassword(e.target.value);
+    const handleSuppPassword = (e) => {
+        setSuppPassword(e.target.value);
     };
 
     const handleSubmitPassword = (e) => {
         e.preventDefault();
-        if (
-            password === '' ||
-            repeatPassword === ''
-        ) {
-            alert('Tout les champs sont obligatoires');
-        } else if (password !== repeatPassword) {
-            alert('Les mots de passes ne sont pas identiques');
-        } else if (password.length < 8) {
-            alert('Votre mot de passe doit contenir au moins 8 caractères');
+        if (suppPassword === '') {
+            setError('Tout les champs sont obligatoires');
+        }else if (suppPassword.length < 8) {
+            setError('Votre mot de passe doit contenir au moins 8 caractères');
         } else {
             Axios.post(
-                'http://localhost:8080/client',
+                'http://localhost:8080/supp',
                 {
-                    mdp : password
+                    mdp : suppPassword
                 }
             ).then(response => {
                 console.log(response.data)
                 if (response.data === 'success') {
-                    navigate('/List')
+                    setError('Votre compte a été supprimé. Veuillez vous déconnecter.')
                 } else {
                     setError(response.data)
                 }
@@ -355,10 +333,9 @@ const DeleteAccount = () => {
         <div className='delete-account'>
             <h1>Suppression de compte</h1>
             <div>Veuillez saisir votre mot de passe :</div>
-            <input type="password" id='password' placeholder='Mot de passe' onChange={handlePassword}></input><br></br>
-            <div>Répétez votre mot de passe</div>
-            <input type="password" id='repeat-password' placeholder='Mot de passe' onChange={handleRepeatPassword}></input><br></br>
+            <input type="password" id='passwordDelete' placeholder='Mot de passe' onChange={handleSuppPassword}></input><br></br>
             <button id="change-password" onClick={handleSubmitPassword} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>Supprimer le compte</button>
+            {error}
         </div>
     )
 }
@@ -368,12 +345,26 @@ const Profile = ({role}) => {
 
     if (role === '') {navigate('/Error')}
 
+    const [liste, setListe] = useState([]);
+    const [ask, setAsked] = useState(false);
+
+    if (ask === false) {
+        askDB()
+    }
+
+    function askDB() {
+        Axios.get('http://localhost:8080/profil').then(response => {
+            setListe(response.data[0])
+            setAsked(true)
+        })
+    }
+
     return (
         <div className='profile'>
             <h1 className='profile-title'>Profil</h1>
-            <ProfileInfos role={role}/>
-            <ProfileOptions role={role}/>
-            <DeleteAccount/>
+            <ProfileInfos role={role} liste={liste} setAsked={setAsked}/>
+            <ProfileOptions role={role} setAsked={setAsked}/>
+            <DeleteAccount setAsked={setAsked}/>
 
 
 

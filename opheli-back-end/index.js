@@ -81,7 +81,55 @@ app.get('/profil', (req, res) => {
 app.post('/taille', (req,res) => {
   request = "UPDATE `opheli`.`patient` SET `Taille` = ? WHERE (`IdPatient` = ?) and (`IdUtilisateur` = ?);"
   db.query(request, [req.body.taille, code, id], (err, array)=> {
-    console.log(err)
+    return res.end("success")
+  });
+})
+
+app.post('/poids', (req,res) => {
+  request = "UPDATE `opheli`.`patient` SET `Poids` = ? WHERE (`IdPatient` = ?) and (`IdUtilisateur` = ?);"
+  db.query(request, [req.body.poids, code, id], (err, array)=> {
+    return res.end("success")
+  });
+})
+
+app.post('/email', (req,res) => {
+  if (role == 'mutuelle') {
+    request = "UPDATE `opheli`.`mutuelle` SET `Mail` = ? WHERE `IdMutuelle` = ?;"
+  } else {
+    request = "UPDATE `opheli`.`utilisateur` SET `Mail` = ? WHERE `IdUtilisateur` = ?;"
+  }
+  db.query(request, [req.body.mail, id], (err, array)=> {
+    return res.end("success")
+  });
+})
+
+app.post('/mdp', (req,res) => {
+  if (role == 'mutuelle') {
+    request = "SELECT MotDePasse from mutuelle WHERE IdMutuelle = ?"
+  } else {
+    request = "SELECT MotDePasse from utilisateur WHERE IdUtilisateur = ?"
+  }
+  db.query(request, [id], (err, mdp)=> {
+    bcrypt.compare(req.body.oldPw, mdp[0].MotDePasse, function(err, bonmdp) {
+      if (bonmdp == true) {
+        if (role == 'mutuelle') {
+          request = "UPDATE `opheli`.`mutuelle` SET `MotDePasse` = ? WHERE `IDMutuelle` = ?;"
+        } else {
+          request = "UPDATE `opheli`.`utilisateur` SET `MotDePasse` = ? WHERE `IdUtilisateur` = ?;"
+        }
+        bcrypt.hash(req.body.newPw, 8, (err, hash) => {
+          db.query(request, [hash, id], (err, mdp)=> {
+            return res.end("success");
+          });
+        });
+      } else {
+        return res.end("Mauvais mot de passe")
+      }
+    });
+  });
+
+  request = "UPDATE `opheli`.`utilisateur` SET `Mail` = ? WHERE `IdUtilisateur` = ?;"
+  db.query(request, [req.body.mail, id], (err, array)=> {
     return res.end("success")
   });
 })
@@ -282,6 +330,7 @@ app.post('/login',(req,res) => {
     }
     db.query(request, [idGlobal], (err, mdp)=> {
       bcrypt.compare(password, mdp[0].MotDePasse, function(err, bonmdp) {
+
         if (bonmdp == true) {
           if (roleUser == 'mutuelle') {
             nomGlobal = mdp[0].NomMutuelle
