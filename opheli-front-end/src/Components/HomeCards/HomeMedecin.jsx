@@ -1,10 +1,12 @@
 import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const HomeMedecin = ({role}) => {
+const HomePharma = ({ role }) => {
     const navigate = useNavigate();
 
-    if (role.role  == '') {navigate('/Error')}
+    if (role.role == '') {
+        navigate('/Error');
+    }
 
     function mouseOver(e) {
         e.target.style.background = '#5ccdc4a9';
@@ -29,7 +31,7 @@ const HomeMedecin = ({role}) => {
                     </svg>
                 </div>
             </Link>
-            <Link to={'/ordonnance'} className="home-div-right" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
+            <Link to={'/list'} className="home-div-right" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                 <div className="home-right-title-div">
                     <span className="home-right-title">Modifier une ordonnance</span>
                 </div>
@@ -48,4 +50,4 @@ const HomeMedecin = ({role}) => {
     );
 };
 
-export default HomeMedecin;
+export default HomePharma;
