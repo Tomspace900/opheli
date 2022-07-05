@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import '../CSS/List.css';
 import '../CSS/Login.css';
-import Axios from "axios";
-import {useNavigate} from "react-router-dom";
+import Axios from 'axios';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import Ordonnance from './Ordonnance';
 
-
-function List({role}) {
+function List({ role }) {
     const [access, setAccess] = useState(false);
     const navigate = useNavigate();
 
@@ -16,15 +16,17 @@ function List({role}) {
 
     if (access == false) {
         //requête qui get les ordos selon le rôle
-        Axios.get('http://localhost:8080/getListeOrdonnances').then(response => {
+        Axios.get('http://localhost:8080/getListeOrdonnances').then((response) => {
             setListOrdos(response.data);
             setAccess(true);
             console.log(response.data);
-        })
+        });
     }
 
-    function handleClick(idordo) {
-        navigate('/Ordonnance',{idordo})
+    function handleClick(idOrdo) {
+        let url = '/ordonnance/' + idOrdo;
+        console.log(url);
+        navigate(url);
     }
 
     return (
@@ -35,17 +37,19 @@ function List({role}) {
             <div className="page">
                 <table className="liste">
                     <tbody>
-                    {listOrdos.map(item => {
-                        return (
-                            <tr className='tr' onClick={() => handleClick(item.IDOrdonnance)}>
-                                <td className='td'>{item.IDOrdonnance}</td>
-                                <td className='td'>{item.DateCreation}</td>
-                                <td className='td'>{item.NomUtilisateur}</td>
-                                <td className='td'>{item.PrenomUtilisateur}</td>
-                                <td className='td'>{item.TypeOrdonnance}</td>
-                            </tr>
-                        );
-                    })}
+                        {listOrdos.map((item) => {
+                            return (
+                                // <Link to={'/ordonnance'}>
+                                <tr className="tr" onClick={() => handleClick(item.IDOrdonnance)}>
+                                    <td className="td">{item.IDOrdonnance}</td>
+                                    <td className="td">{item.DateCreation}</td>
+                                    <td className="td">{item.NomUtilisateur}</td>
+                                    <td className="td">{item.PrenomUtilisateur}</td>
+                                    <td className="td">{item.TypeOrdonnance}</td>
+                                </tr>
+                                // </Link>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
