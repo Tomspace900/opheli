@@ -9,7 +9,7 @@ function ListeClients({role}) {
     const [liste, setListe] = useState([]);;
     const navigate = useNavigate();
 
-    if (role  != 'medecin') {navigate('/Error')}
+    if (role  != 'mutuelle') {navigate('/Error')}
 
     function suppClient(id) {
         Axios.post('http://localhost:8080/suppClient',{idClient : id})

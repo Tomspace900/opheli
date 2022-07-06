@@ -5,6 +5,7 @@ import List from './List';
 import ListeClients from './Mutuelle/ListeClients';
 import Login from './Login';
 import HomePharma from './HomeCards/HomePharma';
+import HomeMutuelle from "./HomeCards/HomeMutuelle";
 
 const Home = ({ setNom, setRole, setCode, setConnected, role }) => {
     switch (role) {
@@ -23,7 +24,7 @@ const Home = ({ setNom, setRole, setCode, setConnected, role }) => {
         case 'mutuelle':
             return (
                 <div className="home">
-                    <ListeClients role={role} />
+                    <HomeMutuelle role={role} />
                 </div>
             );
         case 'pharma':
