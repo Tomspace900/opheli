@@ -1,7 +1,6 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Scanner from '../Scanner';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 
 const HomePharma = ({ role }) => {
@@ -14,7 +13,7 @@ const HomePharma = ({ role }) => {
 
     const [start, setStart] = useState(false);
 
-    if (role.role == '') {
+    if (role.role === '') {
         navigate('/Error');
     }
 

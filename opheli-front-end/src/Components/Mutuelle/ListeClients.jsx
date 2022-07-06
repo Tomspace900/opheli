@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import '../../CSS/List.css';
 import '../../CSS/Login.css';
-import Axios from "axios";
-import {useNavigate} from "react-router-dom";
+import Axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function ListeClients({role}) {
+function ListeClients({ role }) {
     const [ask, setAsked] = useState(false);
-    const [liste, setListe] = useState([]);;
+    const [liste, setListe] = useState([]);
     const navigate = useNavigate();
 
-    if (role  != 'mutuelle') {navigate('/Error')}
-
-    function suppClient(id) {
-        Axios.post('http://localhost:8080/suppClient',{idClient : id})
-        listeClients()
+    if (role !== 'mutuelle') {
+        navigate('/Error');
     }
 
-    if (ask == false) {
-        listeClients()
+    function suppClient(id) {
+        Axios.post('http://localhost:8080/suppClient', { idClient: id });
+        listeClients();
+    }
+
+    if (ask === false) {
+        listeClients();
     }
 
     function listeClients() {
-        Axios.get('http://localhost:8080/listeClients',{code:'liste'}).then(response => {
-            setListe(response.data)
-            setAsked(true)
+        Axios.get('http://localhost:8080/listeClients', { code: 'liste' }).then((response) => {
+            setListe(response.data);
+            setAsked(true);
         });
     }
 
@@ -43,13 +45,15 @@ function ListeClients({role}) {
                         </tr>
                     </thead>
                     <tbody>
-                        {liste.map(item => {
+                        {liste.map((item) => {
                             return (
                                 <tr className="tr">
                                     <td>{item.NomUtilisateur}</td>
                                     <td>{item.PrenomUtilisateur}</td>
                                     <td>{item.Mail}</td>
-                                    <td><button onClick={() => suppClient(item.IdPatient)}>Supprimer</button></td>
+                                    <td>
+                                        <button onClick={() => suppClient(item.IdPatient)}>Supprimer</button>
+                                    </td>
                                 </tr>
                             );
                         })}

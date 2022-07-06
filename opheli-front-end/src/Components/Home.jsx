@@ -2,10 +2,9 @@ import React from 'react';
 import './../CSS/Home.css';
 import HomeMedecin from './HomeCards/HomeMedecin';
 import List from './List';
-import ListeClients from './Mutuelle/ListeClients';
 import Login from './Login';
 import HomePharma from './HomeCards/HomePharma';
-import HomeMutuelle from "./HomeCards/HomeMutuelle";
+import HomeMutuelle from './HomeCards/HomeMutuelle';
 
 const Home = ({ setNom, setRole, setCode, setConnected, role }) => {
     switch (role) {

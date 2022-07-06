@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
 import './CSS/Reset.css';
 import './CSS/App.css';
 import './CSS/Index.css';
@@ -25,7 +24,6 @@ const App = () => {
     const [code, setCode] = useState(''); // Num de secu ou RPPS
     const [id, setId] = useState(''); // Id d'utilisateur
     const [role, setRole] = useState('');
-    const [idOrdo, setIdOrdo] = useState('');
     const [connected, setConnected] = useState(false);
 
     /* function handleConnect() {

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const HomeMutuelle = ({ role }) => {
     const navigate = useNavigate();
 
-    if (role.role == '') {
+    if (role.role === '') {
         navigate('/Error');
     }
 
