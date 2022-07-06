@@ -181,4 +181,69 @@ function addPrix(db, idSoin, prix){
     }
 }
 
-module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix}
+function deleteAllOrdonnancesAndPatientAndUtilisateur(db, idPatient, idUtilisateur){
+    const selectOrdonnance = "SELECT IdOrdonnance FROM ordonnance WHERE IdPatient = ?;";
+    db.query(selectOrdonnance, [idPatient], (err, res) => {
+        res.forEach((ordonnance) => {
+            deleteOrdonnance(db, ordonnance.IdOrdonnance);
+        })
+        const deletePatient = "DELETE FROM patient WHERE IdPatient = ?;";
+        db.query(deletePatient, [idPatient], (error, result) => {
+            if(error){
+                console.log("erreur lors de la suppression d'un patient");
+                console.log(error);
+            }
+            const deleteUtilisateur = "DELETE FROM utilisateur WHERE IdUtilisateur = ?;";
+            db.query(deleteUtilisateur, [idUtilisateur], (erreur, resultat) => {
+                if(erreur){
+                    console.log("erreur lors de la suppression d'un utilisateur");
+                    console.log(erreur);
+                }
+            })
+        });
+    })
+}
+
+function deleteOrdonnance(db, idOrdo){
+    const selectCategories = "SELECT IdCategorie FROM categorie WHERE IdOrdonnance = ?;";
+    db.query(selectCategories, [idOrdo], (err, res) => {
+        res.forEach((categorie) => {
+            deleteCategorie(db, categorie.IdCategorie);
+        })
+        const deleteOrdonnance = "DELETE FROM ordonnance WHERE IdOrdonnance = ?;";
+        db.query(deleteOrdonnance, [idOrdo], (error, result) => {
+            if(error){
+                console.log("erreur lors de la suppression d'une ordonnance");
+                console.log(error);
+            }
+        })
+    })
+}
+
+function deleteCategorie(db, idCategorie){
+    const selectSoins = "SELECT IdSoin FROM soin WHERE IdCategorie = ?;";
+    db.query(selectSoins, [idCategorie], (err, res) => {
+        res.forEach((soin) => {
+            deleteSoin(db, soin.IdSoin);
+        })
+        const deleteCategorie = "DELETE FROM categorie WHERE IdCategorie = ?;";
+        db.query(deleteCategorie, [idCategorie], (error, result) => {
+            if(error){
+                console.log("erreur lors de la suppression d'une catégorie");
+                console.log(error);
+            }
+        })
+    })
+}
+
+function deleteSoin(db, idSoin){
+    const deleteQuery = "DELETE FROM soin WHERE IdSoin = ?;";
+    db.query(deleteQuery, [idSoin], (err, res) => {
+        if(err){
+            console.log("erreur lors de la suppression d'un soin");
+            console.log(err);
+        }
+    })
+}
+
+module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix, deleteAllOrdonnancesAndPatientAndUtilisateur}
