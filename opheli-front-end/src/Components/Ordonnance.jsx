@@ -3,15 +3,12 @@ import QRCode from 'qrcode';
 import '../CSS/Ordonnance.css';
 import '../CSS/Form.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const Ordonnance = ({
-    role,
-    // idOrdo
-}) => {
-    // Remplacer la const login par role et la const idOrdo par idOrdo A LA FIN UNIQUEMENT !!!!!
-    const [login, setLogin] = useState('mutuelle');
-    const [idOrdo, setIdOrdo] = useState(2);
+const Ordonnance = ({ role }) => {
+    // Remplacer la const login par role et la const idOrdonnance par idOrdo A LA FIN UNIQUEMENT !!!!!
+    const [login, setLogin] = useState(role);
+    const { idOrdo } = useParams();
     const [nomMedecin, setNomMedecin] = useState('');
     const [nomPatient, setNomPatient] = useState('');
     const [sexePatient, setSexePatient] = useState('');
@@ -22,13 +19,14 @@ const Ordonnance = ({
 
     const [element, setElement] = useState([]);
 
-    // if (role == '') {
-    //     navigate('/Error');
-    // }
+    if (role == '') {
+        navigate('/Error');
+    }
 
     useEffect(() => {
+        console.log(idOrdo);
         QRCode.toDataURL(link).then(setSrc);
-        getData();
+        idOrdo && getData();
     }, []);
 
     const getData = async () => {
@@ -226,11 +224,16 @@ const Ordonnance = ({
 
         switch (login) {
             case 'medecin':
+                const elementMedecin = element.filter((soin) => {
+                    if (soin.NomSoin !== '') {
+                        return true;
+                    } else return false;
+                });
                 return (
                     <div className="ordo-soins">
                         <>
-                            {element &&
-                                element.map((el) => {
+                            {elementMedecin &&
+                                elementMedecin.map((el) => {
                                     return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
                                 })}
                         </>
@@ -238,8 +241,10 @@ const Ordonnance = ({
                 );
             case 'mutuelle':
                 const elementMutuelle = element.filter((soin) => {
-                    if (soin.NbRestants < soin.NbRenouvTotal) {
-                        return true;
+                    if (soin.NomSoin !== '') {
+                        if (soin.NbRestants < soin.NbRenouvTotal) {
+                            return true;
+                        } else return false;
                     } else return false;
                 });
                 return (
@@ -253,11 +258,16 @@ const Ordonnance = ({
                     </div>
                 );
             case 'client':
+                const elementClient = element.filter((soin) => {
+                    if (soin.NomSoin !== '') {
+                        return true;
+                    } else return false;
+                });
                 return (
                     <div className="ordo-soins">
                         <>
-                            {element &&
-                                element.map((el) => {
+                            {elementClient &&
+                                elementClient.map((el) => {
                                     return <OrdoSoinsCard soin={el} key={el.IdSoin} />;
                                 })}
                         </>
@@ -265,15 +275,26 @@ const Ordonnance = ({
                 );
             case 'pharma':
                 const elementPharma = element.filter((soin) => {
-                    if (soin.NbRestants > 0) {
-                        return true;
+                    if (soin.NomSoin !== '') {
+                        if (soin.NbRestants > 0) {
+                            return true;
+                        } else return false;
                     } else return false;
                 });
                 return (
                     <div className="ordo-soins">
                         <>
                             {(() => {
+                                console.log(elementPharma);
                                 if (elementPharma) {
+                                    console.log('ca map');
+                                    return (
+                                        elementPharma &&
+                                        elementPharma.map((el, index) => {
+                                            return <OrdoSoinsCard soin={el} key={el.IdSoin} soinDelivre={delivres[index]} />;
+                                        })
+                                    );
+                                } else {
                                     return (
                                         <>
                                             <div className="soin-card">
@@ -287,10 +308,6 @@ const Ordonnance = ({
                                     );
                                 }
                             })()}
-                            {elementPharma &&
-                                elementPharma.map((el, index) => {
-                                    return <OrdoSoinsCard soin={el} key={el.IdSoin} soinDelivre={delivres[index]} />;
-                                })}
                         </>
                     </div>
                 );
@@ -531,7 +548,7 @@ const Ordonnance = ({
         }
     }
 
-    if (element.length === 0) return <div>Loading</div>;
+    if (element.length === 0) return <div>Loading - Ordonnance N°{idOrdo}</div>;
 
     return (
         <div className="ordo">
