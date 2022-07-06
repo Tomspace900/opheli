@@ -8,6 +8,7 @@
     box-shadow: var(--shadow-grey);
     background-color: #ffffff;
     width: 100%;
+    margin-top: auto;
 }
 .footer-part-social{
     display: flex;

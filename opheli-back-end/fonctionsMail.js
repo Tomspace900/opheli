@@ -62,6 +62,10 @@ const createDataMailClient = (db, ID, usage) => {
 
 }
 
+const createDataMailCode = () => {
+
+}
+
 const sendMail = (htmlToSend, mailAddress, mailSubject)  => {
     const mailOptions = {
         from: "Mehdi DEMILE d'Opheli <no-reply.opheli@outlook.fr>",

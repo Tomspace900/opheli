@@ -6,3 +6,9 @@
     min-height: 100%;
     background-color: #5ccdc410;
 }
+
+body, html, div#root, #app, div.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
