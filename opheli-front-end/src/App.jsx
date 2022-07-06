@@ -1,11 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Footer from './Components/Footer';
-import Header from './Components/Header';
-import Home from './Components/Home';
+import { useState } from 'react';
+import axios from 'axios';
 import './CSS/Reset.css';
 import './CSS/App.css';
 import './CSS/Index.css';
 import './CSS/Form.css';
+import Footer from './Components/Footer';
+import Header from './Components/Header';
+import Home from './Components/Home';
 import Login from './Components/Login';
 import List from './Components/List';
 import CreateOrdo from './Components/CreateOrdo';
@@ -15,12 +17,8 @@ import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
 import ListeClients from './Components/Mutuelle/ListeClients';
 import UserList from './Components/Admin/UserList';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import axios from 'axios';
-import Scanner from './Components/Scanner';
 import HomePharma from './Components/HomeCards/HomePharma';
-import LoginAdmin from "./Components/Admin/LoginAdmin";
+import LoginAdmin from './Components/Admin/LoginAdmin';
 
 const App = () => {
     const [nom, setNom] = useState('');
@@ -83,7 +81,6 @@ const App = () => {
                     <Route path="/ordonnance/:idOrdo" element={<Ordonnance role={role} />} />
                     <Route path="/listeClients" element={<ListeClients role={role} />} />
                     <Route path="/error" element={<Error />} />
-                    <Route path="/testqrcode" element={<Scanner onResult={(res) => alert(res)} />} />
                     <Route path="/listeUtilisateurs" element={<UserList />} />
                     <Route path="/loginAdmin" element={<LoginAdmin />} />
                     <Route path="/homepharma" element={<HomePharma />} />
