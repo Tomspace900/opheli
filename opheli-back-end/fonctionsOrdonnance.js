@@ -181,7 +181,7 @@ function addPrix(db, idSoin, prix){
     }
 }
 
-function deleteAllOrdonnancesAndPatient(db, idPatient){
+function deleteAllOrdonnancesAndPatientAndUtilisateur(db, idPatient, idUtilisateur){
     const selectOrdonnance = "SELECT IdOrdonnance FROM ordonnance WHERE IdPatient = ?;";
     db.query(selectOrdonnance, [idPatient], (err, res) => {
         res.forEach((ordonnance) => {
@@ -193,7 +193,14 @@ function deleteAllOrdonnancesAndPatient(db, idPatient){
                 console.log("erreur lors de la suppression d'un patient");
                 console.log(error);
             }
-        })
+            const deleteUtilisateur = "DELETE FROM utilisateur WHERE IdUtilisateur = ?;";
+            db.query(deleteUtilisateur, [idUtilisateur], (erreur, resultat) => {
+                if(erreur){
+                    console.log("erreur lors de la suppression d'un utilisateur");
+                    console.log(erreur);
+                }
+            })
+        });
     })
 }
 
@@ -239,4 +246,4 @@ function deleteSoin(db, idSoin){
     })
 }
 
-module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix, deleteAllOrdonnancesAndPatient}
+module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix, deleteAllOrdonnancesAndPatientAndUtilisateur}
