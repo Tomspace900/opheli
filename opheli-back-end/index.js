@@ -8,10 +8,9 @@ const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
 const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
-const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique, getNomMedecin,
-  getNomPatient, addPrix
-} = require("./fonctionsOrdonnance");
+const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique, getNomMedecin, getNomPatient, addPrix, deleteAllOrdonnancesAndPatientAndUtilisateur} = require("./fonctionsOrdonnance");
 const {createDataMailClient} = require("./fonctionsMail");
+const crypto = require('crypto');
 
 //variables
 let code = ""; //Id en fonction du role
@@ -61,6 +60,88 @@ app.post('/check', (req,res) => {
   }
   console.log(access)
   res.send(access);
+})
+
+//ADMIN
+app.get('/listePatients',(req,res) => {
+  request = "SELECT IdUtilisateur, NomUtilisateur, PrenomUtilisateur, Mail, IdPatient from opheli.patient NATURAL JOIN opheli.utilisateur";
+  db.query(request, (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array);
+  });
+})
+
+app.get('/listePresc',(req,res) => {
+  request = "SELECT IdUtilisateur, NomUtilisateur, PrenomUtilisateur, Mail, IdPrescripteur from opheli.prescripteur NATURAL JOIN opheli.utilisateur";
+  db.query(request, (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array);
+  });
+})
+
+app.get('/listePharma',(req,res) => {
+  request = "SELECT IdUtilisateur, NomUtilisateur, PrenomUtilisateur, Mail, IdPharmacien from opheli.pharmacien NATURAL JOIN opheli.utilisateur";
+  db.query(request, (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array);
+  });
+})
+
+app.get('/listeMutuelle',(req,res) => {
+  request = "SELECT IdMutuelle, NomMutuelle, Mail, IdMutuelle from opheli.mutuelle";
+  db.query(request, (err, array)=> {
+    array = JSON.parse(JSON.stringify(array));
+    res.send(array);
+  });
+})
+
+app.post('/suppPatient',(req,res) => {
+  deleteSoins = "DELETE FROM soin WHERE IdCategorie IN (SELECT IdCategorie FROM categorie WHERE IdOrdonnance IN (SELECT IdOrdonnance FROM ordonnance WHERE IdPatient = ?))"
+  db.query(deleteSoins, [req.body.code], (err, rep)=> {
+    console.log(req.body.code)
+    deleteCat = "DELETE FROM categorie WHERE IdOrdonnance IN (SELECT IdOrdonnance FROM ordonnance WHERE IdPatient = ?)"
+    db.query(deleteCat, [req.body.code], ()=> {
+      deleteOrdo = "DELETE FROM ordonnance WHERE IdPatient = ?"
+      db.query(deleteOrdo, [req.body.code], ()=> {
+        deleteSouscrire = "DELETE FROM `opheli`.`souscrire` WHERE `IdPatient` = ?;";
+        db.query(deleteSouscrire, [req.body.code], ()=> {
+          deletePatient = "DELETE FROM patient WHERE IdUtilisateur = ?"
+          db.query(deletePatient, [req.body.id], ()=> {
+            deleteUser = "DELETE FROM utilisateur WHERE IdUtilisateur = ?"
+            db.query(deleteUser, [req.body.id], ()=> {
+              return res.send("success")
+            });
+          });
+        });
+      });
+    });
+  });
+})
+
+app.post('/suppPharmacien',(req,res) => {
+  deletePharma = "DELETE FROM `opheli`.`pharmacien` WHERE `IdUtilisateur` = ?;";
+  db.query(deletePharma, [req.body.id], ()=> {
+    deleteUser = "DELETE FROM `opheli`.`utilisateur` WHERE `IdUtilisateur` = ?;";
+    db.query(deletePharma, [req.body.id], ()=> {
+      return res.send("success");
+    });
+  });
+})
+
+app.post('/suppMutuelle',(req,res) => {
+  deleteSouscrire = "DELETE FROM `opheli`.`souscrire` WHERE `IdMutuelle` = ?;";
+  db.query(deleteSouscrire, [req.body.id], ()=> {
+    deleteMutuelle = "DELETE FROM `opheli`.`mutuelle` WHERE `IdMutuelle` = ?;";
+    db.query(deleteMutuelle, [req.body.id], ()=> {
+      return res.send("success");
+    });
+  });
+
+})
+
+app.post('/createCode',(req,res) => {
+  const randomString1 = crypto.randomBytes(5).toString('hex');
+  console.log(randomString1);
 })
 
 //PROFIL
@@ -377,9 +458,9 @@ app.post('/ajoutMutuelle',(req,res) => {
     res.send('success')
   });
 })
+
+
 //ORDONNANCES
-
-
 //créer une ordonnance
 app.post('/createOrdonnance', (req, res) => {
 

@@ -20,6 +20,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import Scanner from './Components/Scanner';
 import HomePharma from './Components/HomeCards/HomePharma';
+import LoginAdmin from "./Components/Admin/LoginAdmin";
 
 const App = () => {
     const [nom, setNom] = useState('');
@@ -84,7 +85,7 @@ const App = () => {
                     <Route path="/error" element={<Error />} />
                     <Route path="/testqrcode" element={<Scanner onResult={(res) => alert(res)} />} />
                     <Route path="/listeUtilisateurs" element={<UserList />} />
-                    {/* A supprimer : */}
+                    <Route path="/loginAdmin" element={<LoginAdmin />} />
                     <Route path="/homepharma" element={<HomePharma />} />
                 </Routes>
                 <Footer />

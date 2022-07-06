@@ -6,8 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 function ListeClients({role}) {
     const [ask, setAsked] = useState(false);
-    const [liste, setListe] = useState([]);
-    const [access, setAccess] = useState('start');
+    const [liste, setListe] = useState([]);;
     const navigate = useNavigate();
 
     if (role  != 'medecin') {navigate('/Error')}
@@ -36,7 +35,7 @@ function ListeClients({role}) {
             <div className="page">
                 <table className="liste">
                     <thead>
-                        <tr>
+                        <tr className="tr">
                             <td>Nom</td>
                             <td>Prénom</td>
                             <td>Mail</td>
@@ -46,7 +45,7 @@ function ListeClients({role}) {
                     <tbody>
                         {liste.map(item => {
                             return (
-                                <tr>
+                                <tr className="tr">
                                     <td>{item.NomUtilisateur}</td>
                                     <td>{item.PrenomUtilisateur}</td>
                                     <td>{item.Mail}</td>

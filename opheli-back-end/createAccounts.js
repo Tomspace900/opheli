@@ -48,22 +48,22 @@ class Prescripteur extends Utilisateur {
 
     addToDatabase(db) {
         const user = "INSERT INTO `opheli`.`utilisateur` (`NomUtilisateur`, `PrenomUtilisateur`, `Mail`, `MotDePasse`) VALUES (?, ?, ?, ?);";
-        db.query(user, [this.nom,this.prenom,this.mail,this.mdp], (err, id)=> {
+        db.query(user, [this.nom,this.prenom,this.mail,this.mdp], () => {
             //Récuperation ID utilisateur
             const verifUser = "SELECT IdUtilisateur FROM utilisateur WHERE NomUtilisateur = ? AND PrenomUtilisateur = ? AND Mail = ?";
-            db.query(verifUser, [this.nom,this.prenom,this.mail,this.mdp], (err, id)=> {
+            db.query(verifUser, [this.nom,this.prenom,this.mail,this.mdp], (err, id) => {
                 //Verification Adresse
                 const verifAdresse = "SELECT IdAdresse FROM adresse WHERE Rue = ? AND CodePostal = ? AND Ville = ?";
-                db.query(verifAdresse, [this.rue,this.code,this.ville], (err, add)=> {
+                db.query(verifAdresse, [this.rue,this.code,this.ville], (err, add) => {
                     if (add.length == 0) {
                         //Création adresse
                         const adresse = "INSERT INTO adresse (`Rue`, `CodePostal`, `Ville`) VALUES (?, ?, ?);";
-                        db.query(adresse, [this.rue,this.code,this.ville], (err, add)=> {
+                        db.query(adresse, [this.rue,this.code,this.ville], () => {
                             //Récuperation ID adresse
                             db.query(verifAdresse, [this.rue,this.code,this.ville], (err, add)=> {
                                 //Création prescripteur
                                 const prescripteur = "INSERT INTO `opheli`.`prescripteur` (`IdPrescripteur`, `IdAdresse`, `IdSpecialite`, `IdUtilisateur`) VALUES (?, ?, ?, ?);"
-                                db.query(prescripteur, [this.rpps,add[0].IdAdresse,this.spe,id[0].IdUtilisateur],(err, add)=> {
+                                db.query(prescripteur, [this.rpps,add[0].IdAdresse,this.spe,id[0].IdUtilisateur],() => {
                                     //Vérification de la création du compte
                                     const request = "SELECT IdUtilisateur from opheli.prescripteur NATURAL JOIN opheli.utilisateur WHERE IdPrescripteur = ?"
                                     db.query(request, [this.rpps], (err, ver)=> {

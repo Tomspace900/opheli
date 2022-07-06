@@ -15,8 +15,7 @@ const Header = ({nom,connected,setConnected, setNom, setRole, setCode, setId}) =
             setRole(response.data.role);
             setCode(response.data.code);
             setId(response.data.id);
-            navigate('/')
-        });
+        }).then(navigate('/'));
     }
 
     if (connected == true) {

@@ -1,7 +1,6 @@
 import React, {useState,useEffect,setState} from 'react';
 import '../../CSS/List.css';
 import '../../CSS/Login.css';
-import $ from "jquery";
 import {useNavigate} from "react-router-dom";
 import Axios from "axios";
 
@@ -11,13 +10,9 @@ function UserList({role}) {
     const [listePresc, setListePresc] = useState([]);
     const [listePharma, setListePharma] = useState([]);
     const [listeMutuelle, setListeMutuelle] = useState([]);
-    const [access, setAccess] = useState('start');
+    const [mail, setMail] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
-
-    function suppClient(id) {
-        Axios.post('http://localhost:8080/suppUser',{idClient : id})
-        listeUsers();
-    }
 
     if (ask == false) {
         listeUsers();
@@ -39,8 +34,37 @@ function UserList({role}) {
         });
     }
 
-    const handleSubmit = () => {
+    const handleMail = (e) => {
+        setMail(e.target.value)
+    }
 
+    const createCode = () => {
+        if (mail == '') {
+            setError("Tous les champs sont obligatoires.")
+        } else {
+            Axios.post('http://localhost:8080/createCode',{mail : mail})
+        }
+    }
+
+    function suppClient(id,code) {
+        Axios.post('http://localhost:8080/suppPatient',{id : id, code:code}).then(response => {
+            setAsked(false)
+            navigate('/listeUtilisateurs')
+        })
+    };
+
+    function suppMutuelle(id) {
+        Axios.post('http://localhost:8080/suppMutuelle',{id : id}).then(response => {
+            setAsked(false)
+            navigate('/listeUtilisateurs')
+        })
+    };
+
+    function suppPharmacien(id) {
+        Axios.post('http://localhost:8080/suppPharmacien',{id : id}).then(response => {
+            setAsked(false)
+            navigate('/listeUtilisateurs')
+        })
     };
 
     return (
@@ -49,51 +73,108 @@ function UserList({role}) {
                 <span className="login-title">Liste des utilisateurs</span>
             </div>
             <div className="page">
-                <div className="container">
-                    <table>
-                        <tbody>
-                        {listePresc.map(user => {
-                            return (
-                                <tr>
-                                    <td>{user.IdPrescripteur}</td>
-                                    <td>{user.NomSpecialite}</td>
-                                    <td>{user.Nom}</td>
-                                    <td>{user.Prenom}</td>
-                                    <td>{user.Mail}</td>
-                                    <td>
-                                        <form action="http://opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSubmit(event)}>
-                                            <input id="toDelete" name="toDelete" type="hidden" value={user.IdUtilisateur}/>
-                                            <button type="submit">Supprimer</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                        </tbody>
-                    </table>
+                <div className='titre'>Créer un code</div>
+                <div className='center'>
+                    <input type="email" id='name' placeholder='Adresse mail' onChange={handleMail}></input>
+                    <button onClick={createCode}>Créer un code</button>
+                    <div>{error}</div>
                 </div>
-                <div className="container">
-                    <table>
-                        <tbody>
-                        {listeClient.map(user => {
-                            return (
-                                <tr>
-                                    <td>{user.SecuriteSociale}</td>
-                                    <td>{user.Nom}</td>
-                                    <td>{user.Prenom}</td>
-                                    <td>{user.Mail}</td>
-                                    <td>
-                                        <form action="http://opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSubmit(event)}>
-                                            <input id="toDelete" name="toDelete" type="hidden" value={user.IdUtilisateur}/>
-                                            <button type="submit">Supprimer</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                        </tbody>
-                    </table>
-                </div>
+                <div className='titre'>Liste des prescripteurs</div>
+                <table className="liste">
+                    <thead>
+                    <tr className="trhead">
+                        <td className="tdhead">Numéro RPPS</td>
+                        <td className="tdhead">Nom</td>
+                        <td className="tdhead">Prénom</td>
+                        <td className="tdhead">Adresse mail</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {listePresc.map(user => {
+                        return (
+                            <tr className="tr">
+                                <td className="td">{user.IdPrescripteur}</td>
+                                <td className="td">{user.NomUtilisateur}</td>
+                                <td className="td">{user.PrenomUtilisateur}</td>
+                                <td className="td">{user.Mail}</td>
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </table>
+                <div className='titre'>Liste des pharmaciens</div>
+                <table className="liste">
+                    <thead>
+                    <tr className="trhead">
+                        <td className="tdhead">Numéro RPPS</td>
+                        <td className="tdhead">Nom</td>
+                        <td className="tdhead">Prénom</td>
+                        <td className="tdhead">Adresse mail</td>
+                        <td className="tdhead">Supprimer</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {listePharma.map(user => {
+                        return (
+                            <tr className="tr">
+                                <td className="td">{user.IdPharmacien}</td>
+                                <td className="td">{user.NomUtilisateur}</td>
+                                <td className="td">{user.PrenomUtilisateur}</td>
+                                <td className="td">{user.Mail}</td>
+                                <td className="td"><button onClick={() => suppPharmacien(user.IdUtilisateur)}>Supprimer</button></td>
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </table>
+                <div className='titre'>Liste des clients</div>
+                <table className="liste">
+                    <thead>
+                        <tr className="trhead">
+                            <td className="tdhead">Sécurité Sociale</td>
+                            <td className="tdhead">Nom</td>
+                            <td className="tdhead">Prénom</td>
+                            <td className="tdhead">Adresse mail</td>
+                            <td className="tdhead">Supprimer</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {listeClient.map(user => {
+                        return (
+                            <tr className="tr">
+                                <td className="td">{user.IdPatient}</td>
+                                <td className="td">{user.NomUtilisateur}</td>
+                                <td className="td">{user.PrenomUtilisateur}</td>
+                                <td className="td">{user.Mail}</td>
+                                <td className="td"><button onClick={() => suppClient(user.IdUtilisateur, user.IdPatient)}>Supprimer</button></td>
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </table>
+                <div className='titre'>Liste des mutuelles</div>
+                <table className="liste">
+                    <thead>
+                    <tr className="trhead">
+                        <td className="tdhead">Identifiant</td>
+                        <td className="tdhead">Nom</td>
+                        <td className="tdhead">Adresse mail</td>
+                        <td className="tdhead">Supprimer</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {listeMutuelle.map(user => {
+                        return (
+                            <tr className="tr">
+                                <td className="td">{user.IdMutuelle}</td>
+                                <td className="td">{user.NomMutuelle}</td>
+                                <td className="td">{user.Mail}</td>
+                                <td className="td"><button onClick={() => suppMutuelle(user.IdMutuelle)}>Supprimer</button></td>
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

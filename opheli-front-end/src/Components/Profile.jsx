@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import '../CSS/Profile.css';
 import { useState } from 'react';
 import Axios from "axios";
@@ -13,7 +12,7 @@ function mouseOut(e) {
 }
 
 const ProfileInfos = ({role,liste,setAsked}) => {
-    if (role == 'client') {
+    if (role === 'client') {
         return (
             <div className="profile-card">
                 <div className="profile-attribute">
@@ -32,7 +31,7 @@ const ProfileInfos = ({role,liste,setAsked}) => {
                 </div>
             </div>
         );
-    } else if (role == 'medecin' || role == 'pharmacien') {
+    } else if (role === 'medecin' || role === 'pharmacien') {
         return (
             <div className="profile-card">
                 <div className="profile-attribute">
@@ -183,7 +182,7 @@ const ProfileOptions = ({role,setAsked}) => {
         }
     };
 
-    if (role == 'client') {
+    if (role === 'client') {
         return(
             <div className='profile-options'>
                 <div className='update'>
