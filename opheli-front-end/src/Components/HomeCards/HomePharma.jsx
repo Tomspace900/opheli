@@ -1,6 +1,8 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Scanner from '../Scanner';
+import { Html5Qrcode } from 'html5-qrcode';
 
 const HomePharma = ({ role }) => {
     const navigate = useNavigate();
@@ -9,9 +11,12 @@ const HomePharma = ({ role }) => {
     const [displayQr, setDisplayQr] = useState(false);
 
     const [id, setId] = useState('');
-    // if (role.role == '') {
-    //     navigate('/Error');
-    // }
+
+    const [start, setStart] = useState(false);
+
+    if (role.role == '') {
+        navigate('/Error');
+    }
 
     function mouseOver(e) {
         e.target.style.background = '#5ccdc4a9';
@@ -30,36 +35,61 @@ const HomePharma = ({ role }) => {
         navigate(url);
     }
 
+    let html5QrCode;
+    const qrConfig = { fps: 10 };
+
+    function onResult(res) {
+        let url = '/ordonnance/' + res;
+        console.log(url);
+        navigate(url);
+    }
+
+    const handleStart = () => {
+        setStart(true);
+        html5QrCode = new Html5Qrcode('reader');
+        console.log('start');
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+            onResult(decodedText);
+            handleStop();
+        };
+        html5QrCode.start({ facingMode: 'environment' }, qrConfig, qrCodeSuccessCallback);
+    };
+
+    const handleStop = () => {
+        setStart(false);
+        try {
+            html5QrCode
+                .stop()
+                .then((res) => {
+                    html5QrCode.clear();
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+            console.log('stop');
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <div className="home-cards">
-            {displayQr ? (
-                <div
-                    className="home-div-left-active"
-                    onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}
-                    onClick={() => {
-                        setDisplayQr(true);
-                        setDisplayId(false);
-                    }}>
+            <div
+                className="home-div-left"
+                onMouseEnter={mouseOver}
+                onMouseLeave={mouseOut}
+                onClick={() => {
+                    setDisplayQr(true);
+                    setDisplayId(false);
+                    handleStart();
+                }}>
+                <div id="reader" style={start ? null : { display: 'none' }} />
+                {displayQr ? null : (
                     <div className="home-left-title-div">
                         <span className="home-left-title">Scanner un QR Code d'ordonnance</span>
                     </div>
-                    <div className="home-left-svg-div">
-                        <h1>Ici c'est le truc de Max</h1>
-                    </div>
-                </div>
-            ) : (
-                <div
-                    className="home-div-left"
-                    onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}
-                    onClick={() => {
-                        setDisplayQr(true);
-                        setDisplayId(false);
-                    }}>
-                    <div className="home-left-title-div">
-                        <span className="home-left-title">Scanner un QR Code d'ordonnance</span>
-                    </div>
+                )}
+                {displayQr ? null : (
                     <div className="home-left-svg-div">
                         <svg className="home-scan-ordo-svg" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -70,21 +100,15 @@ const HomePharma = ({ role }) => {
                             <line x1="5" y1="12" x2="19" y2="12" />
                         </svg>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
+
             {displayId ? (
-                <div
-                    className="home-div-right-active"
-                    onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}
-                    onClick={() => {
-                        setDisplayId(true);
-                        setDisplayQr(false);
-                    }}>
+                <div className="home-div-right-active" onMouseEnter={mouseOver} onMouseLeave={mouseOut}>
                     <div className="home-right-title-div">
                         <span className="home-right-title">Entrer un numéro d'ordonnance</span>
                     </div>
-                    <div className="home-right-svg-div">
+                    <div className="home-right-content-div">
                         <form>
                             <input type="number" min={1} onChange={handleId} />
                             <br />
@@ -111,12 +135,13 @@ const HomePharma = ({ role }) => {
                     onClick={() => {
                         setDisplayId(true);
                         setDisplayQr(false);
+                        handleStop();
                     }}>
                     <div className="home-right-title-div">
                         <span className="home-right-title">Entrer un numéro d'ordonnance</span>
                     </div>
                     <div className="home-right-svg-div">
-                        <svg className="home-id-ordo-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <svg className="home-id-ordo-svg" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M12 3a3 3 0 0 0 -3 3v12a3 3 0 0 0 3 3" />
                             <path d="M6 3a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3" />

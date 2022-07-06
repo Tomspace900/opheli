@@ -1,23 +1,24 @@
-import React, { useEffect } from "react";
-import { Html5Qrcode } from "html5-qrcode";
-const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
-let html5QrCode;
+import React, { useEffect } from 'react';
+import { Html5Qrcode } from 'html5-qrcode';
 
-const Scanner = (props) => {
+const Scanner = () => {
+    let html5QrCode;
+    const qrConfig = { fps: 10 };
+
+    function onResult(res) {
+        alert(res);
+    }
+
     useEffect(() => {
-        html5QrCode = new Html5Qrcode("reader");
+        html5QrCode = new Html5Qrcode('reader');
     }, []);
 
     const handleStart = () => {
         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-            props.onResult(decodedText);
+            onResult(decodedText);
             handleStop();
         };
-        html5QrCode.start(
-            { facingMode: "environment" },
-            qrConfig,
-            qrCodeSuccessCallback
-        );
+        html5QrCode.start({ facingMode: 'environment' }, qrConfig, qrCodeSuccessCallback);
     };
 
     const handleStop = () => {
@@ -36,11 +37,9 @@ const Scanner = (props) => {
     };
 
     return (
-        <div style={{ position: "relative"}}>
+        <div>
             <div id="reader" width="100%" />
-            <button onClick={() => handleStart()}>
-                Start
-            </button>
+            <button onClick={() => handleStart()}>Start</button>
             <button onClick={() => handleStop()}>Stop</button>
         </div>
     );

@@ -9,7 +9,9 @@ function List({ role }) {
     const [access, setAccess] = useState(false);
     const navigate = useNavigate();
 
-    //if (role  == '') {navigate('/Error')}
+    if (role == '') {
+        navigate('/Error');
+    }
 
     //TODO ça c'était pour mes tests c'est pas final je pense -Clovis
     const [listOrdos, setListOrdos] = useState([]);

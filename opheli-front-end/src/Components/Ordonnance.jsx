@@ -15,7 +15,7 @@ const Ordonnance = ({ role }) => {
     const navigate = useNavigate();
 
     const [src, setSrc] = useState('');
-    const [link, setLink] = useState('http://localhost:3000/ordonnance');
+    // const [link, setLink] = useState(idOrdo);
 
     const [element, setElement] = useState([]);
 
@@ -25,7 +25,7 @@ const Ordonnance = ({ role }) => {
 
     useEffect(() => {
         console.log(idOrdo);
-        QRCode.toDataURL(link).then(setSrc);
+        QRCode.toDataURL(idOrdo).then(setSrc);
         idOrdo && getData();
     }, []);
 
