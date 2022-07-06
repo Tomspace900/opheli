@@ -487,6 +487,9 @@ app.post('/getNomPatient', (req, res) => {
   }
 })
 
+app.post('/TestQRcode', (req, res) => {
+})
+
 app.listen(8080, () => {
   console.log("Le serveur est bien lancé");
 });

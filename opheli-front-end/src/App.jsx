@@ -18,6 +18,7 @@ import UserList from './Components/Admin/UserList';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import Scanner from "./Components/Scanner";
 
 const App = () => {
     const [nom, setNom] = useState('');
@@ -80,6 +81,7 @@ const App = () => {
                     <Route path="/ordonnance/:idOrdo" element={<Ordonnance role={role} />} />
                     <Route path="/listeClients" element={<ListeClients role={role} />} />
                     <Route path="/error" element={<Error />} />
+                    <Route path="/testqrcode" element={<Scanner onResult={(res) => alert(res)} />} />
                     <Route path="/listeUtilisateurs" element={<UserList />} />
                 </Routes>
                 <Footer />
