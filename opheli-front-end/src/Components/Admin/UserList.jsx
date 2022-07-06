@@ -3,47 +3,44 @@ import '../../CSS/List.css';
 import '../../CSS/Login.css';
 import $ from "jquery";
 import {useNavigate} from "react-router-dom";
+import Axios from "axios";
 
 function UserList({role}) {
-    const [patients, setPat] = useState([]);
+    const [ask, setAsked] = useState(false);
+    const [listeClient, setListeClient] = useState([]);
+    const [listePresc, setListePresc] = useState([]);
+    const [listePharma, setListePharma] = useState([]);
+    const [listeMutuelle, setListeMutuelle] = useState([]);
+    const [access, setAccess] = useState('start');
     const navigate = useNavigate();
 
-    if (role  != 'admin') {navigate('/Error')}
+    function suppClient(id) {
+        Axios.post('http://localhost:8080/suppUser',{idClient : id})
+        listeUsers();
+    }
 
-    if (patients.length == 0) {
-        $.ajax({
-            type: 'POST',
-            url: "http://opheli/opheli-back-end/PHP/Admin/patients.php",
-            dataType: 'json',
-            success: function (response) {
-                setPat(response);
-            },
+    if (ask == false) {
+        listeUsers();
+    }
+
+    function listeUsers() {
+        Axios.get('http://localhost:8080/listePatients').then(response => {
+            setListeClient(response.data);
+            Axios.get('http://localhost:8080/listePresc').then(response => {
+                setListePresc(response.data);
+                Axios.get('http://localhost:8080/listePharma').then(response => {
+                    setListePharma(response.data);
+                    Axios.get('http://localhost:8080/listeMutuelle').then(response => {
+                        setListeMutuelle(response.data);
+                        setAsked(true);
+                    });
+                });
+            });
         });
     }
 
-    const [prescripteurs, setPre] = useState([]);
-    if (prescripteurs.length == 0) {
-        $.ajax({
-            type: 'POST',
-            url: "http://opheli/opheli-back-end/PHP/Admin/prescripteurs.php",
-            dataType: 'json',
-            success: function (response) {
-                setPre(response);
-            },
-        });
-    }
+    const handleSubmit = () => {
 
-    const handleSumbit = (e) => {
-        e.preventDefault();
-        const form = $(e.target);
-        $.ajax({
-            type: "POST",
-            url: form.attr("action"),
-            data: form.serialize(),
-            success(data) {
-                console.log(data);
-            },
-        });
     };
 
     return (
@@ -55,7 +52,7 @@ function UserList({role}) {
                 <div className="container">
                     <table>
                         <tbody>
-                        {prescripteurs.map(user => {
+                        {listePresc.map(user => {
                             return (
                                 <tr>
                                     <td>{user.IdPrescripteur}</td>
@@ -64,7 +61,7 @@ function UserList({role}) {
                                     <td>{user.Prenom}</td>
                                     <td>{user.Mail}</td>
                                     <td>
-                                        <form action="http://opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSumbit(event)}>
+                                        <form action="http://opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSubmit(event)}>
                                             <input id="toDelete" name="toDelete" type="hidden" value={user.IdUtilisateur}/>
                                             <button type="submit">Supprimer</button>
                                         </form>
@@ -78,7 +75,7 @@ function UserList({role}) {
                 <div className="container">
                     <table>
                         <tbody>
-                        {patients.map(user => {
+                        {listeClient.map(user => {
                             return (
                                 <tr>
                                     <td>{user.SecuriteSociale}</td>
@@ -86,7 +83,7 @@ function UserList({role}) {
                                     <td>{user.Prenom}</td>
                                     <td>{user.Mail}</td>
                                     <td>
-                                        <form action="http://opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSumbit(event)}>
+                                        <form action="http://opheli/opheli-back-end/PHP/Admin/user_functions.php" method="post" onSubmit={(event) => handleSubmit(event)}>
                                             <input id="toDelete" name="toDelete" type="hidden" value={user.IdUtilisateur}/>
                                             <button type="submit">Supprimer</button>
                                         </form>

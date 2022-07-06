@@ -8,13 +8,13 @@ import './CSS/Index.css';
 import './CSS/Form.css';
 import Login from './Components/Login';
 import List from './Components/List';
-import UserList from './Components/Admin/UserList';
 import CreateOrdo from './Components/CreateOrdo';
 import Profil from './Components/Profile';
 import Contact from './Components/Contact';
 import Ordonnance from './Components/Ordonnance';
 import Error from './Components/Error';
 import ListeClients from './Components/Mutuelle/ListeClients';
+import UserList from './Components/Admin/UserList';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -80,6 +80,7 @@ const App = () => {
                     <Route path="/ordonnance/:idOrdo" element={<Ordonnance role={role} />} />
                     <Route path="/listeClients" element={<ListeClients role={role} />} />
                     <Route path="/error" element={<Error />} />
+                    <Route path="/listeUtilisateurs" element={<UserList />} />
                 </Routes>
                 <Footer />
             </BrowserRouter>
