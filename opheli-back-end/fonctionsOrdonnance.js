@@ -181,6 +181,22 @@ function addPrix(db, idSoin, prix){
     }
 }
 
+function deleteAllOrdonnancesAndPatient(db, idPatient){
+    const selectOrdonnance = "SELECT IdOrdonnance FROM ordonnance WHERE IdPatient = ?;";
+    db.query(selectOrdonnance, [idPatient], (err, res) => {
+        res.forEach((ordonnance) => {
+            deleteOrdonnance(db, ordonnance.IdOrdonnance);
+        })
+        const deletePatient = "DELETE FROM patient WHERE IdPatient = ?;";
+        db.query(deletePatient, [idPatient], (error, result) => {
+            if(error){
+                console.log("erreur lors de la suppression d'un patient");
+                console.log(error);
+            }
+        })
+    })
+}
+
 function deleteOrdonnance(db, idOrdo){
     const selectCategories = "SELECT IdCategorie FROM categorie WHERE IdOrdonnance = ?;";
     db.query(selectCategories, [idOrdo], (err, res) => {
@@ -190,7 +206,7 @@ function deleteOrdonnance(db, idOrdo){
         const deleteOrdonnance = "DELETE FROM ordonnance WHERE IdOrdonnance = ?;";
         db.query(deleteOrdonnance, [idOrdo], (error, result) => {
             if(error){
-                console.log("erreur lors de la suppression d'une catégorie");
+                console.log("erreur lors de la suppression d'une ordonnance");
                 console.log(error);
             }
         })
@@ -223,4 +239,4 @@ function deleteSoin(db, idSoin){
     })
 }
 
-module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix, deleteOrdonnance}
+module.exports = {Ordonnance, Categorie, Soin, selectOrdo, updateDate, useSoin, addGenerique, selectListOrdo, addPrix, deleteAllOrdonnancesAndPatient}
