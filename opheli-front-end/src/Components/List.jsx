@@ -3,7 +3,6 @@ import '../CSS/List.css';
 import '../CSS/Login.css';
 import Axios from 'axios';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import Ordonnance from './Ordonnance';
 
 function List({ role }) {
     const [access, setAccess] = useState(false);
@@ -41,7 +40,6 @@ function List({ role }) {
                     <tbody>
                         {listOrdos.map((item) => {
                             return (
-                                // <Link to={'/ordonnance'}>
                                 <tr className="tr" onClick={() => handleClick(item.IDOrdonnance)}>
                                     <td className="td">{item.IDOrdonnance}</td>
                                     <td className="td">{item.DateCreation}</td>
@@ -49,7 +47,6 @@ function List({ role }) {
                                     <td className="td">{item.PrenomUtilisateur}</td>
                                     <td className="td">{item.TypeOrdonnance}</td>
                                 </tr>
-                                // </Link>
                             );
                         })}
                     </tbody>

@@ -286,8 +286,7 @@ const Ordonnance = ({ role }) => {
                         <>
                             {(() => {
                                 console.log(elementPharma);
-                                if (elementPharma) {
-                                    console.log('ca map');
+                                if (elementPharma.length > 0) {
                                     return (
                                         elementPharma &&
                                         elementPharma.map((el, index) => {
