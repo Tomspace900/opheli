@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const HomePharma = ({ role }) => {
+const HomeMedecin = ({ role }) => {
     const navigate = useNavigate();
 
     if (role.role == '') {
@@ -50,4 +50,4 @@ const HomePharma = ({ role }) => {
     );
 };
 
-export default HomePharma;
+export default HomeMedecin;
