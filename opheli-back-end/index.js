@@ -482,7 +482,7 @@ app.get('/listeMutuelles', (req,res) => {
 
 app.post('/ajoutMutuelle',(req,res) => {
   request = "INSERT INTO `opheli`.`souscrire` (`IdMutuelle`, `IdPatient`) VALUES (?, ?);";
-  db.query(request,[req.body.mutuelle,code], (err, array)=> {
+  db.query(request,[req.body.mutuelle,code], ()=> {
     res.send('success')
   });
 })
