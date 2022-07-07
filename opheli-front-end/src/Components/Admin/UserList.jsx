@@ -1,4 +1,4 @@
-import React, {useState,useEffect,setState} from 'react';
+import React, {useState} from 'react';
 import '../../CSS/List.css';
 import '../../CSS/Login.css';
 import {useNavigate} from "react-router-dom";
@@ -13,6 +13,11 @@ function UserList({role}) {
     const [mail, setMail] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [date, setDate] = useState(Date());
+
+    if (role !== 'admin') {
+        navigate('/Error')
+    }
 
     if (ask == false) {
         listeUsers();
@@ -42,7 +47,9 @@ function UserList({role}) {
         if (mail == '') {
             setError("Tous les champs sont obligatoires.")
         } else {
-            Axios.post('http://localhost:8080/createCode',{mail : mail})
+            Axios.post('http://localhost:8080/createCode',{mail : mail, date : date}).then(response => {
+                setError("Nouveau code : "+response.data)
+            })
         }
     }
 

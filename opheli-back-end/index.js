@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 let bcrypt = require('bcrypt');
 const {PORT, USER, PASSWORD} = require("./const");
 let cors = require('cors')
-const {checkCode} = require("./createAccounts");
 const {suppClient} = require("./fonctionsMutuelle");
 const {selectOrdo, updateDate, useSoin, selectListOrdo, Ordonnance, Categorie, Soin, addGenerique, getNomMedecin, getNomPatient, addPrix, deleteAllOrdonnancesAndPatientAndUtilisateur} = require("./fonctionsOrdonnance");
 const {createDataMailClient} = require("./fonctionsMail");
@@ -58,7 +57,6 @@ app.post('/check', (req,res) => {
       break;
 
   }
-  console.log(access)
   res.send(access);
 })
 
@@ -98,7 +96,6 @@ app.get('/listeMutuelle',(req,res) => {
 app.post('/suppPatient',(req,res) => {
   deleteSoins = "DELETE FROM soin WHERE IdCategorie IN (SELECT IdCategorie FROM categorie WHERE IdOrdonnance IN (SELECT IdOrdonnance FROM ordonnance WHERE IdPatient = ?))"
   db.query(deleteSoins, [req.body.code], (err, rep)=> {
-    console.log(req.body.code)
     deleteCat = "DELETE FROM categorie WHERE IdOrdonnance IN (SELECT IdOrdonnance FROM ordonnance WHERE IdPatient = ?)"
     db.query(deleteCat, [req.body.code], ()=> {
       deleteOrdo = "DELETE FROM ordonnance WHERE IdPatient = ?"
@@ -140,8 +137,12 @@ app.post('/suppMutuelle',(req,res) => {
 })
 
 app.post('/createCode',(req,res) => {
-  const randomString1 = crypto.randomBytes(5).toString('hex');
-  console.log(randomString1);
+  const date = new Date(req.body.date);
+  const code = crypto.randomBytes(5).toString('hex');
+  const request = "INSERT INTO `opheli`.`code` (`Code`, `DateCreation`, `Utilisation`) VALUES (?, ?, '0');"
+  db.query(request, [code,date.toLocaleDateString("en-ZA")], (err, array)=> {
+    return res.send(code)
+  });
 })
 
 //PROFIL
@@ -431,6 +432,33 @@ app.post('/login',(req,res) => {
   });
 })
 
+app.post('/loginAdmin', (req,res) => {
+  const secu = req.body.id;
+  let password = req.body.password;
+  const roleUser = req.body.role;
+  let request = "SELECT IdUtilisateur from admin WHERE IdUtilisateur = ?;";
+  db.query(request, [req.body.id], (err, iduser)=> {
+    if (iduser == null || iduser.length == 0) {
+      return res.end('error')
+    }
+    request = "SELECT MotDePasse, NomUtilisateur, PrenomUtilisateur from utilisateur WHERE IdUtilisateur = ?;";
+    db.query(request, [iduser[0].IdUtilisateur], (err, mdp)=> {
+      bcrypt.compare(password, mdp[0].MotDePasse, function(err, bonmdp) {
+        if (bonmdp == true) {
+          const nomGlobal = mdp[0].PrenomUtilisateur+" "+mdp[0].NomUtilisateur
+          code = secu
+          id = iduser[0].IdUtilisateur
+          role = roleUser
+          nom = nomGlobal
+          return res.end('success');
+        } else {
+          return res.end('error')
+        }
+      });
+    });
+  });
+})
+
 //MUTUELLE
 app.get('/listeClients',(req,res) => {
   request = "SELECT NomUtilisateur, PrenomUtilisateur, Mail, opheli.patient.IdPatient  from opheli.souscrire, opheli.patient NATURAL JOIN opheli.utilisateur WHERE opheli.souscrire.IdPatient = opheli.patient.IdPatient AND opheli.souscrire.IdMutuelle = ?";
@@ -545,7 +573,6 @@ app.post('/updateSoins', (req, res) => {
   })
   const idPatientQuery = "SELECT o.IdPatient FROM ordonnance o INNER JOIN categorie c on c.IdOrdonnance = o.IdOrdonnance INNER JOIN soin s on s.IdCategorie = c.IdCategorie WHERE s.IdSoin = ?;";
   db.query(idPatientQuery, [Soins[0].id], (err, result) => {
-    console.log(result[0].IdPatient);
     createDataMailClient(db, result[0].IdPatient, "used");
   });
 });

@@ -71,6 +71,10 @@ const App = () => {
                         path="/login"
                         element={<Login setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />}
                     />
+                    <Route
+                        path="/admin"
+                        element={<LoginAdmin setNom={setNom} setRole={setRole} setCode={setCode} setConnected={setConnected} />}
+                    />
                     <Route path="/list" element={<List role={role} />} />
                     <Route path="/users" element={<UserList />} />
                     <Route path="/profil" element={<Profil role={role} />} />
@@ -80,7 +84,6 @@ const App = () => {
                     <Route path="/listeClients" element={<ListeClients role={role} />} />
                     <Route path="/error" element={<Error />} />
                     <Route path="/listeUtilisateurs" element={<UserList />} />
-                    <Route path="/loginAdmin" element={<LoginAdmin />} />
                     <Route path="/homepharma" element={<HomePharma />} />
                 </Routes>
                 <Footer />

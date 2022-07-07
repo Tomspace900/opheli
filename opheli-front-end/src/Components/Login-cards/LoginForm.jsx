@@ -1,6 +1,6 @@
-import React, {useEffect, useRef} from 'react';
+import React from 'react';
 import { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import Axios from 'axios';
 
 const LoginForm = ({ account, setNom, setRole, setCode, setConnected}) => {

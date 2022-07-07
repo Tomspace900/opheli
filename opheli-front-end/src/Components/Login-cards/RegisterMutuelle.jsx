@@ -43,7 +43,6 @@ const RegisterMutuelle = ({setNom, setRole, setCode, setConnected}) => {
 
     const handleRepeatPassword = (e) => {
         setRepeatPassword(e.target.value);
-        console.log(e.target.value);
         setSubmitted(false);
     };
 
