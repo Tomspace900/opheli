@@ -34,7 +34,7 @@ const Login = ({ setNom, setRole, setCode, setConnected }) => {
 
     return (
         <div className="login">
-            <span className="login-title">{action ? 'Connexion a votre compte' : 'Enregistrez-vous'}</span>
+            <span className="login-title">{action ? 'Connexion à votre compte' : 'Enregistrez-vous'}</span>
             <div className="card">
                 <div className="card-menu">
                     <div
@@ -59,7 +59,7 @@ const Login = ({ setNom, setRole, setCode, setConnected }) => {
                             document.getElementById('pharma').style.background = '#ffffff';
                             document.getElementById('mutuelle').style.background = '#ffffff';
                         }}>
-                        <span>Medecin</span>
+                        <span>Médecin</span>
                     </div>
                     <div
                         className="pharma"
