@@ -3,18 +3,17 @@ const handlebars = require('handlebars');
 const fs = require('fs');
 
 const transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
-    secureConnection: false,
-    port: 587,
+    service: 'gmail',
+    auth: {
+        user: 'noreply.opheli@gmail.com',
+        pass: 'xrunwakdjfhjdklf'
+    },
+    logger: true,
+    secure: false,
     tls: {
-        ciphers:'SSLv3',
         rejectUnauthorized: false
     },
-    auth: {
-        user: 'no-reply.opheli@outlook.fr',
-        pass: 'Mehdi2000!'
-    }
-})
+});
 
 let templateFile = fs.readFileSync("../opheli-back-end/mailTemplate.html", "utf8");
 let templateCompiled = handlebars.compile(templateFile);
@@ -68,7 +67,7 @@ const createDataMailCode = () => {
 
 const sendMail = (htmlToSend, mailAddress, mailSubject)  => {
     const mailOptions = {
-        from: "Mehdi DEMILE d'Opheli <no-reply.opheli@outlook.fr>",
+        from: "Mehdi DEMILE d'Opheli <no-reply.opheli@test.com>",
         to: mailAddress,
         subject: mailSubject,
         html: htmlToSend
