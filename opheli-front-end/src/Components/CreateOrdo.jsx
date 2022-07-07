@@ -16,7 +16,7 @@ function App({ idMedecin, role }) {
     const navigate = useNavigate();
 
     console.log(role);
-    //if (role  != 'medecin') {navigate('/Error')}
+    if (role  != 'medecin') {navigate('/Error')}
 
     const handleIdPatient = (e) => {
         setIdPatient(e.target.value);
@@ -70,7 +70,7 @@ function App({ idMedecin, role }) {
                     nbRenouvTotal: nbUseSimple,
                     soinsSimples: soinsSimples,
                     notes: notes,
-                });
+                }).then(navigate('/'));
                 break;
 
             default:
@@ -83,10 +83,7 @@ function App({ idMedecin, role }) {
                         nbRenouvTotal: nbUseSimple,
                         soinsSimples: soinsSimples,
                         notes: notes,
-                    })
-                    .then((r) => {
-                        console.log(r);
-                    });
+                    }).then(navigate('/'));
                 break;
         }
     }
