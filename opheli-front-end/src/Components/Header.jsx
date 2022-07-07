@@ -1,37 +1,39 @@
 import React from 'react';
 import { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../CSS/Header.css';
 import Axios from 'axios';
 
-const Header = ({nom,connected,setConnected, setNom, setRole, setCode, setId}) => {
+const Header = ({ nom, connected, setConnected, setNom, setRole, setCode, setId }) => {
     const navigate = useNavigate();
 
     function handleDisconnect() {
-        setConnected(false)
-        Axios.get('http://localhost:8080/deconnexion')
-        Axios.get('http://localhost:8080/infos').then((response) => {
-            setNom(response.data.nom);
-            setRole(response.data.role);
-            setCode(response.data.code);
-            setId(response.data.id);
-        }).then(navigate('/'));
+        setConnected(false);
+        Axios.get('http://localhost:8080/deconnexion');
+        Axios.get('http://localhost:8080/infos')
+            .then((response) => {
+                setNom(response.data.nom);
+                setRole(response.data.role);
+                setCode(response.data.code);
+                setId(response.data.id);
+            })
+            .then(navigate('/'));
     }
 
-    if (connected == true) {
+    const [titleOver, setTitleOver] = useState(false);
+
+    if (connected === true) {
         return (
             <div className="header">
                 <Link
                     to={'/'}
                     className="opheli"
-                    onMouseEnter={(e) => {
-                        e.target.style.color = '#5ccdc4';
+                    onMouseOver={() => {
+                        return <img src="../../assets/img/Opheli_Logo_Blue.png" alt="logo-blue" />;
                     }}
-                    onMouseLeave={(e) => {
-                        e.target.style.color = '#4a565a';
-                    }}>
-                    Opheli
-                </Link>
+                    onMouseOut={() => {
+                        return <img src="../../assets/img/Opheli_Logo_Black.png" alt="logo-black" />;
+                    }}></Link>
                 <div className="header-profile">
                     <Link to={'/profil'} className="header-user-link">
                         <svg className="header-user-svg" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -62,13 +64,17 @@ const Header = ({nom,connected,setConnected, setNom, setRole, setCode, setId}) =
                 <Link
                     to={'/'}
                     className="opheli"
-                    onMouseEnter={(e) => {
-                        e.target.style.color = '#5ccdc4';
+                    onMouseOver={() => {
+                        setTitleOver(true);
                     }}
-                    onMouseLeave={(e) => {
-                        e.target.style.color = '#4a565a';
+                    onMouseOut={() => {
+                        setTitleOver(false);
                     }}>
-                    Opheli
+                    {titleOver ? (
+                        <img src="/Opheli_Logo_Blue.png" alt="logo-blue" />
+                    ) : (
+                        <img src="/Opheli_Logo_Black.png" alt="logo-black" />
+                    )}
                 </Link>
             </div>
         );
