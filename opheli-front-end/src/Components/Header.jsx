@@ -22,18 +22,24 @@ const Header = ({ nom, connected, setConnected, setNom, setRole, setCode, setId 
 
     const [titleOver, setTitleOver] = useState(false);
 
-    if (connected === true) {
-        return (
-            <div className="header">
-                <Link
-                    to={'/'}
-                    className="opheli"
-                    onMouseOver={() => {
-                        return <img src="../../assets/img/Opheli_Logo_Blue.png" alt="logo-blue" />;
-                    }}
-                    onMouseOut={() => {
-                        return <img src="../../assets/img/Opheli_Logo_Black.png" alt="logo-black" />;
-                    }}></Link>
+    return (
+        <div className="header">
+            <Link
+                to={'/'}
+                className="opheli"
+                onMouseOver={() => {
+                    setTitleOver(true);
+                }}
+                onMouseOut={() => {
+                    setTitleOver(false);
+                }}>
+                {titleOver ? (
+                    <img src="/Opheli_Logo_Blue.png" alt="logo-blue" />
+                ) : (
+                    <img src="/Opheli_Logo_Black.png" alt="logo-black" />
+                )}
+            </Link>
+            {connected ? (
                 <div className="header-profile">
                     <Link to={'/profil'} className="header-user-link">
                         <svg className="header-user-svg" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -56,29 +62,9 @@ const Header = ({ nom, connected, setConnected, setNom, setRole, setCode, setId 
                         </svg>
                     </div>
                 </div>
-            </div>
-        );
-    } else {
-        return (
-            <div className="header">
-                <Link
-                    to={'/'}
-                    className="opheli"
-                    onMouseOver={() => {
-                        setTitleOver(true);
-                    }}
-                    onMouseOut={() => {
-                        setTitleOver(false);
-                    }}>
-                    {titleOver ? (
-                        <img src="/Opheli_Logo_Blue.png" alt="logo-blue" />
-                    ) : (
-                        <img src="/Opheli_Logo_Black.png" alt="logo-black" />
-                    )}
-                </Link>
-            </div>
-        );
-    }
+            ) : null}
+        </div>
+    );
 };
 
 export default Header;

@@ -1,15 +1,15 @@
 .page {
     margin: 20px 0px;
     padding: 20px;
-    border-radius: 40px;
-    box-shadow: var(--shadow-blue);
+    border-radius: 20px;
+    box-shadow: var(--shadow-grey-small);
     background: white;
 }
 
 .liste {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 30px;
+    border-radius: 10px;
     overflow: hidden;
 }
 .tr {
@@ -31,6 +31,7 @@
 .tr:hover {
     background: #5ccdc4a9;
 }
+
 .td {
     padding: 5px;
     border-bottom: 2px solid white;
