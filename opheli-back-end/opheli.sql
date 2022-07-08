@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`IdUtilisateur`) VALUES
-(7);
+(1);
 
 -- --------------------------------------------------------
 
@@ -62,10 +62,8 @@ CREATE TABLE IF NOT EXISTS `adresse` (
 --
 
 INSERT INTO `adresse` (`IdAdresse`, `Rue`, `CodePostal`, `Ville`) VALUES
-(1, '34 rue du four', '94360', 'Bry-sur-Marne'),
-(2, '11 rue des Nations Unies', '97470', 'Saint Benoit'),
-(3, '99 rue de Groussay', '17300', 'Rochefort'),
-(4, '59 boulevard Aristide Briand', '71200', 'LE CREUSOT');
+('5', '10 rue de la Convention', '75015', 'PARIS'),
+('6', '82 boulevard Jacques Tête', '95300', 'Pontoise');
 
 -- --------------------------------------------------------
 
@@ -88,9 +86,9 @@ CREATE TABLE IF NOT EXISTS `categorie` (
 --
 
 INSERT INTO `categorie` (`IdCategorie`, `TypeCategorie`, `NbRenouvTotal`, `IdOrdonnance`) VALUES
-(1, 'simple', 3, 1),
-(2, 'ALD', 2, 2),
-(3, 'simple', 1, 2);
+('4', 'simple', '1', '3'),
+('5', 'simple', '4', '4'),
+('6', 'simple', '1', '5');
 
 -- --------------------------------------------------------
 
@@ -107,6 +105,12 @@ CREATE TABLE IF NOT EXISTS `code` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
+
+INSERT INTO `code` (`Code`, `DateCreation`, `Utilisation`) VALUES
+('28286c6cc2', '2022-07-08', '1'),
+('587e326632', '2022-07-08', '1'),
+('5c3a1d1c6d', '2022-07-08', '1'),
+('a08bc6c1d2', '2022-07-08', '0');
 
 --
 -- Structure de la table `mutuelle`
@@ -126,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `mutuelle` (
 --
 
 INSERT INTO `mutuelle` (`IdMutuelle`, `Mail`, `NomMutuelle`, `MotDePasse`) VALUES
-('mutuelletest', 'mutuelle@hotmail.com', 'Mutuelle des oiseaux', '$2y$10$4gjgKSvH5dfofs3K1JR1YOB.DvcPiOsgZ/BHOImOSPX1JOn5g3V.q');
+('harmoniesante', 'harmonie.sante@test.com', 'Harmonie Santé', '$2b$08$bJT8lwoOE92ugKNDT/LwO.RN7GZUKvr9lk2g/MLWOA7EIqm0e2Lgy');
 
 -- --------------------------------------------------------
 
@@ -153,8 +157,9 @@ CREATE TABLE IF NOT EXISTS `ordonnance` (
 --
 
 INSERT INTO `ordonnance` (`IdOrdonnance`, `TypeOrdonnance`, `DateCreation`, `DateExpiration`, `Notes`, `IdPrescripteur`, `IdPatient`) VALUES
-(1, 'simple', '2022-06-28', '2022-08-30', NULL, '12354698351', '1111111111111'),
-(2, 'bizone', '2022-03-13', '2022-04-20', 'Otite externe', '22222222222', '1111111111111');
+('3', 'simple', '2022-07-08', '2022-10-08', 'Rappels des vaccins de 2017', '12345678901', '1234567890000'),
+('4', 'simple', '2022-07-08', '2022-10-08', 'A renouveler en cas de voyage prolongé', '12345678901', '1234567891111'),
+('5', 'simple', '2022-07-08', '2022-10-08', 'Hygiène dentaire quotidienne, à renouveler si besoin', '12345678901', '1234567891111');
 
 -- --------------------------------------------------------
 
@@ -179,7 +184,8 @@ CREATE TABLE IF NOT EXISTS `patient` (
 --
 
 INSERT INTO `patient` (`IdPatient`, `DateNaissance`, `Sexe`, `Taille`, `Poids`, `IdUtilisateur`) VALUES
-('1111111111111', '2000-06-16', 1, 182, '64.9', 3);
+('1234567890000', '2002-08-11', '0', '173', NULL, '10'),
+('1234567891111', '2001-07-04', '0', '178', NULL, '11');
 
 -- --------------------------------------------------------
 
@@ -201,8 +207,7 @@ CREATE TABLE IF NOT EXISTS `pharmacie` (
 --
 
 INSERT INTO `pharmacie` (`IdPharmacie`, `NomPharmacie`, `IdAdresse`) VALUES
-(1, 'Pharmacie des beaux jours', 2),
-(2, 'Pharmacie de la gare', 4);
+('3', 'Pharmacie des Plantes', '6');
 
 -- --------------------------------------------------------
 
@@ -225,8 +230,7 @@ CREATE TABLE IF NOT EXISTS `pharmacien` (
 --
 
 INSERT INTO `pharmacien` (`IdPharmacien`, `IdUtilisateur`, `IdPharmacie`) VALUES
-('33333333333', 5, 1),
-('56481354658', 6, 2);
+('12345678902', '9', '3');
 
 -- --------------------------------------------------------
 
@@ -251,8 +255,7 @@ CREATE TABLE IF NOT EXISTS `prescripteur` (
 --
 
 INSERT INTO `prescripteur` (`IdPrescripteur`, `IdAdresse`, `IdSpecialite`, `IdUtilisateur`) VALUES
-('12354698351', 3, 4, 2),
-('22222222222', 1, 1, 4);
+('12345678901', '5', '2', '8');
 
 -- --------------------------------------------------------
 
@@ -278,12 +281,12 @@ CREATE TABLE IF NOT EXISTS `soin` (
 --
 
 INSERT INTO `soin` (`IdSoin`, `NomSoin`, `Description`, `Prix`, `Alternative`, `NbRestants`, `IdCategorie`) VALUES
-(3, 'Doliprane', 'Boite de doliprane (1000mg)', NULL, NULL, 0, 1),
-(4, 'Efferalgan', 'Boite d\'Efferalgan (1000 mg)', NULL, NULL, 0, 1),
-(5, 'Panotile Sol Auric 8ml', '4 gouttes matin, midi et soir en bain d\'oereille dans l\'oreille douloureuse', NULL, NULL, 0, 3),
-(6, 'Efferalgan 1g CPR EFF 8 (paracétamol)', '1 comprimé effervescent le matin, le midi et le soir si douleur', NULL, NULL, 0, 3),
-(7, 'Solupred 20mg CPR EFF SEC 20 ', '2 comprimés le matin à dissoudre', NULL, NULL, 0, 2),
-(8, 'Dafalgan codeine 500mg/30mg CPR 16', 'Jusqu\'à 2 comprimés au coucher selon besoin, en espacant les prises de 4h minimum en cas de forte douleur', NULL, NULL, 0, 2);
+('9', 'Vaccin grippe', 'Conserver au froid', NULL, NULL, '1', '4'),
+('10', 'Vaccin rougeole', 'Rappel à faire avant 2024', NULL, NULL, '1', '4'),
+('11', 'Doliprane', '3 boites, gélules de 500mg', NULL, NULL, '4', '5'),
+('12', 'Fil dentaire', 'Matin et soir chaque jour', NULL, NULL, '1', '6'),
+('13', 'Bain de bouche', '1 fois par jour le soir', NULL, NULL, '1', '6'),
+('14', 'Gratte langue', 'Max. 3 fois par semaine', NULL, NULL, '1', '6');
 
 -- --------------------------------------------------------
 
@@ -304,7 +307,8 @@ CREATE TABLE IF NOT EXISTS `souscrire` (
 --
 
 INSERT INTO `souscrire` (`IdMutuelle`, `IdPatient`) VALUES
-('mutuelletest', '1111111111111');
+('harmoniesante', '1234567891111'),
+('harmoniesante', '1234567890000');
 
 -- --------------------------------------------------------
 
@@ -352,13 +356,12 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 --
 
 INSERT INTO `utilisateur` (`IdUtilisateur`, `NomUtilisateur`, `PrenomUtilisateur`, `Mail`, `MotDePasse`) VALUES
-(1, 'Paysant', 'Mathilde', 'mathilde@hotmail.com', '$2y$10$BjmzK.gph1lRRGyvmLVznulTkg/CN8Hqrzrw7qthJwl0xvCRoN50W'),
-(2, 'Gregoire', 'Ila', 'IlaGregoire@jourrapide.com', '$2y$10$Co6zqtNh2TQFNTkchWJFf.WCdNeihcqq2FfFiZJliefmxugnkdb4G'),
-(3, 'Patient', 'Test', 'test@hotmail.com', '$2y$10$Zkxu6U0HsY8sadZBrB4TbeizMaiaUvSOiAKCbYPPClXH98BFsKXou'),
-(4, 'Prescripteur', 'Test', 'prescripteu@hotmail.com', '$2y$10$/MtyqkE1YSUXRFWaQGxBmekDeh2MbSthJa1rKyqfquwP.unuLGe8G'),
-(5, 'Pharmacien', 'Test', 'pharmacien@hotmail.com', '$2y$10$0JiyBFGjx8jZTYwull8xweVR.1C199q.Dqqr8YPspIeA5HZLfrT4C'),
-(6, 'Jeoffroi', 'Franchet', 'JeoffroiFranchet@armyspy.com', '$2y$10$O0JI1/bXPSEMx7lp0KEoyOoBcM5TYya.aEReNBid08NP/Vjpn6Pki'),
-(7, 'Admin', 'Test', 'admin@hotmail.com', '$2y$10$j4xbvYohhSQNmGZ3JazRpOvhjqpATFjWVGCRVXHcQsadS1h6VNALK');
+('1', 'DEMILE', 'Mehdi', 'noreply.opheli@gmail.com', '$2b$08$SYOUFV.UHBdS4MDgymB.KOuSQKUtGOhfMDAvtEmAt0fku8LcLrGim'),
+('8', 'LAHAYE', 'Stéphanie', 'stephanie.lahaye@test.com', '$2b$08$Y9S9foAQ90bJ0TUqddVVJuGZ3qaLKIt2OnwtffuWVF.j9y2YaMCKC'),
+('9', 'VILLERS', 'Eric', 'eric.villers@test.com', '$2b$08$ZdH.FI1Pa2a4JVntR1NqBuBdsUJ.22FHWDhuSvR6uf3x15CpRNk3O'),
+('10', 'BILDSTEIN', 'Maximilien', 'maximilien.bildstein@efrei.net', '$2b$08$pO7Kd3ZC3L5LZTmxWFu1KOuHBvX53qLCBqFSTbpt98ECMnm1d0fie'),
+('11', 'THOUVENOT OUDART', 'Clovis', 'clovis.thouvenot-oudart@efrei.net', '$2b$08$AspBsTsOvpo7PbLQJ01XVOwuf1ThwpGtsS4FI1bx1iAH9MI1fh2t.');
+
 
 --
 -- Contraintes pour les tables déchargées

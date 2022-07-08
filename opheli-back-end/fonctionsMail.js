@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'noreply.opheli@gmail.com',
-        pass: 'xrunwakdjfhjdklf'
+        pass: 'ainappwnhrdoamkj'
     },
     logger: true,
     secure: false,
@@ -61,13 +61,13 @@ const createDataMailClient = (db, ID, usage) => {
 
 }
 
-const createDataMailCode = () => {
+const createDataMailCode = (code, mailAddress) => {
 
 }
 
 const sendMail = (htmlToSend, mailAddress, mailSubject)  => {
     const mailOptions = {
-        from: "Mehdi DEMILE d'Opheli <no-reply.opheli@test.com>",
+        from: "Mehdi DEMILE d'Opheli <noreply.opheli@gmail.com>",
         to: mailAddress,
         subject: mailSubject,
         html: htmlToSend
